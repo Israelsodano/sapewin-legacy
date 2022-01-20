@@ -14,7 +14,7 @@ namespace SapewinWeb.Models
 
         public MyContext()
         {
-            //Database.EnsureCreated();
+            Database.EnsureCreated();
         }
         
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
