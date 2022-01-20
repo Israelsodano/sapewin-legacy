@@ -1,0 +1,105 @@
+﻿@model IEnumerable<SapewinWeb.Models.Telas>
+
+<ul class="navbar-nav navbar-sidenav" id="UtilAccordion" style="font-size:small;">
+
+    @foreach (var Telautil in Model)
+    {
+        <li class="nav-item" data-placement="right" title="@Telautil.Nome.Replace("Cadastro", "").Replace("Feriados", "Feriados ").Replace("de", " de ")">
+            <div class="form-inline">
+                <label style="margin-left:5px;" class="custom-control custom-checkbox mb-2 mr-sm-2 mb-sm-0">
+                    <input type="checkbox" checked="checked" Funcs="@($".Func{Telautil.Nome}")" id="@($"CkTelautil{Telautil.Nome}")" class="custom-control-input CkTelautil Tela">
+                    <span class="custom-control-indicator"></span>
+                    <span class="custom-control-description"></span>
+                </label>
+                <a class="nav-link nav-link-collapse collapsed Telautil" data-toggle="collapse" href="#@Telautil.Nome" data-parent="#UtilAccordion">
+                    <span class="nav-link-text">
+                        @Telautil.Nome.Replace("Cadastro", "").Replace("Feriados", "Feriados ").Replace("de", " de ")
+                        <i class="fa fa-angle-right iconTelautil" style="margin-left:5px;"></i>
+                    </span>
+                </a>
+            </div>
+            <ul style="list-style:none;" class="sidenav-second-level collapse" id="@Telautil.Nome">
+                @foreach (var Funcaoutil in SapewinWeb.Metodos.ObjUsuario.RetornaFuncoes(Telautil.FuncoesdeTelas.ToList()))
+                {
+                    <li>
+                        <label class="custom-control custom-checkbox mb-2 mr-sm-2 mb-sm-0">
+                            <input type="checkbox" checked="checked" IDFunc="@Funcaoutil.IDFuncao" IDFuncaoTela="@Telautil.Nome-@Funcaoutil.Nome" Telautil="@($"#CkTelautil{Telautil.Nome}")" class="custom-control-input FuncaodeTela Funcaoutil @($"Func{Telautil.Nome}")">
+                            <span class="custom-control-indicator"></span>
+                            <span class="custom-control-description">@Funcaoutil.Nome</span>
+                        </label>
+                    </li>
+                }
+            </ul>
+        </li>
+    }
+
+</ul>
+<script>
+    monitorador();
+    $('.Telautil').click(function () {
+        Telautil = $(this);
+        if (!Telautil.hasClass('collapsed')) {
+            Telautil.children().first().children().first().removeClass('fa-angle-down');
+            Telautil.children().first().children().first().addClass('fa-angle-right');
+        } else {
+            $('.iconTelautil').removeClass('fa-angle-down');
+            $('.iconTelautil').addClass('fa-angle-right');
+            Telautil.children().first().children().first().removeClass('fa-angle-right');
+            Telautil.children().first().children().first().addClass('fa-angle-down');
+        }
+    });
+
+    $('.CkTelautil').click(function () {
+        ck = $(this);
+        if(ck.is(':checked')){
+            $(ck.attr('Funcs')).prop('checked', true);
+        } else {
+            $(ck.attr('Funcs')).prop('checked', false);
+        }
+
+        if ($('.Funcaoutil').length == $('.Funcaoutil:checked').length) {
+            $('.MarcatdsUtil').prop('checked', true);
+        } else {
+            $('.MarcatdsUtil').prop('checked', false);
+        }
+
+    });
+
+    $('.Funcaoutil').click(function () {
+        func = $(this);
+
+        funcoesgeraisutil = new Array();
+
+        funcoescheckadasutil = new Array();
+
+
+        $('.Funcaoutil').each(function (idx, el) {
+            if ($(el).attr('Telautil') == func.attr('Telautil')) {
+                funcoesgeraisutil.push($(el).attr('Telautil'));
+                if($(el).is(':checked')){
+                    funcoescheckadasutil.push($(el).attr('Telautil'));
+                }
+            }
+        });
+
+        if (funcoesgeraisutil.length == funcoescheckadasutil.length) {
+            $(func.attr('Telautil')).prop('indeterminate', false);
+            $(func.attr('Telautil')).prop('checked', true);
+        } else if (funcoescheckadasutil.length == 0) {
+            $(func.attr('Telautil')).prop('indeterminate', false);
+            $(func.attr('Telautil')).prop('checked', false);
+        }
+        else {
+            $(func.attr('Telautil')).prop('indeterminate', true);
+        }
+
+        if ($('.Funcaoutil').length == $('.Funcaoutil:checked').length) {
+            $('.MarcatdsUtil').prop('checked', true);
+        } else {
+            $('.MarcatdsUtil').prop('checked', false);
+        }
+    });
+</script>
+
+
+

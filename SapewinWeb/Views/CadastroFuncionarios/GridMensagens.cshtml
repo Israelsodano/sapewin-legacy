@@ -1,0 +1,51 @@
+﻿@model IEnumerable<SapewinWeb.Models.MensagensFuncionarios>
+
+@foreach (var Mensagem in Model)
+{
+    <tr>
+        <td>@Mensagem.DataInicial.ToString().Substring(0, 10)</td>
+        <td>@(Mensagem.DataFinal == null ? "Indefinido" : Mensagem.DataFinal.Value.ToString().Substring(0, 10))</td>
+        <td>@Mensagem.Mensagem.Nome</td>
+        <td>
+            @if (Mensagem.DataFinal == null)
+            {
+                <button class="btn btn-sm text-white btn-info mypopover" data-content="@("<div class=\"form-inline\"><input type=\"date\" id=\"InputBaixa\" style=\"width:150px;margin-right:10px;\" class=\"form-control form-control-sm\" /><button class=\"btn btn-sm btn-dark\" valor=\"" + $"{Mensagem.DataInicial.Year.ToString("0000")}-{Mensagem.DataInicial.Month.ToString("00")}-{Mensagem.DataInicial.Day.ToString("00")}/{(Mensagem.DataFinal == null ? ($"/{Mensagem.Mensagem.Nome}") : ($"{Mensagem.DataFinal.Value.Year.ToString("0000")}-{Mensagem.DataFinal.Value.Month.ToString("00")}-{Mensagem.DataFinal.Value.Day.ToString("00")}/{Mensagem.Mensagem.Nome}"))}" +"\" onclick=\"btn = $(this); if ($('#InputBaixa').val() != '') { var baixa = btn.attr('valor').split('/'); var ini = new Date(baixa[0]).getTime(); var fim = new Date($('#InputBaixa').val()).getTime(); if (DateDiff(ini, fim) <= 0) { baixa[1] = $('#InputBaixa').val(); var str = baixa[0] + '/' + baixa[1] + '/' + baixa[2]; Mensagens = Mensagens.filter(function (x) { return x != btn.attr('valor'); }); Mensagens.push(str); AtualizaGridMensagens(); $('.popover').popover('hide'); } else { $('#txtalertaModal').text('A data de inicio é maior que a final'); $('#AlertaModal').removeAttr('hidden', 'hidden'); }}\">Baixa</button></div>")" title="Data da Baixa na Mensagem" data-toggle="popover" type="button"><i class="fa fa-calendar-check-o" aria-hidden="true"></i></button>
+            }
+            <script>
+                </script>
+            <button valor="@($"{Mensagem.DataInicial.Year.ToString("0000")}-{Mensagem.DataInicial.Month.ToString("00")}-{Mensagem.DataInicial.Day.ToString("00")}/{(Mensagem.DataFinal == null ? ($"/{Mensagem.Mensagem.Nome}") : ($"{Mensagem.DataFinal.Value.Year.ToString("0000")}-{Mensagem.DataFinal.Value.Month.ToString("00")}-{Mensagem.DataFinal.Value.Day.ToString("00")}/{Mensagem.Mensagem.Nome}"))}")" class="btn btn-sm text-white btn-danger btnRemoverMensagem" title="Remover" type="button"><i class="fa fa-fw fa-trash-o"></i></button>
+        </td>
+    </tr>
+}
+
+<script>
+    monitorador();
+    $(document).ready(function () {
+        $('[data-toggle="popover"]').popover({ html: true });
+    });
+
+    var verificapopover = false;
+
+    $(document).on('click', '.popover', function () {
+        verificapopover = false;
+    });
+
+    $(document).on('mouseleave', '.popover', function () {
+        verificapopover = true;
+    });
+
+    $('.mypopover').mouseleave(function () {
+        verificapopover = true;
+    });
+
+    $('.mypopover').click(function () {
+        verificapopover = false;
+        $('.popover').popover('hide');
+    });
+
+    $(document).click(function () {
+        if (verificapopover) {
+            $('.popover').popover('hide');
+        }
+    });
+</script>

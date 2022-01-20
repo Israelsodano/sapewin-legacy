@@ -1,0 +1,101 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>Dpatec - Sapewin</title>
+    <link href="~/Contents/bootstrap.css" rel="stylesheet" />
+    <link rel="stylesheet" href="~/Contents/font-awesome.css" type="text/css">
+    <link href="~/Contents/Principal.css" rel="stylesheet" />
+    <link href="~/Contents/SlideComponet.css" rel="stylesheet" />
+    <link href="~/Content/jquery.fancybox.css" rel="stylesheet" />
+    <script src="~/scripts/jquery.min.js"></script>
+    <script src="~/scripts/jquery.easing.min.js"></script>
+    <script src="~/scripts/bootstrap.min.js"></script>
+    <script src="~/scripts/bootstrap.bundle.min.js"></script>
+    <script src="~/scripts/sb-admin.js"></script>
+    <script src="~/Scripts/jquery.fancybox.js" type="text/javascript"></script>
+
+</head>
+
+<body class="fixed-nav fixed-top bg-dark" id="page-top">
+    <div id="MyNavBar">
+        @RenderPage("_Nav.cshtml")
+    </div>
+    <div class="content-wrapper justify-content-around" style="overflow: auto;height:500px" id="Mywrapper">
+        <div class="alert alert-danger alert-dismissible fade show" hidden="hidden" id="AlertaGeral" role="alert">
+            <button type="button" id="FechaAlertaGeral" class="close" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            <strong class="txtalerta" id="txtalertaGeral"></strong>
+        </div>
+        <div class="container-fluid" id="BodyGeral" style="height:100%;">
+        </div>
+        <footer class="sticky-footer" style="margin-top:20px;">
+            <div class="container">
+                <div class="text-center"> <small>Dpatec Equipamento de Ponto - Sapewin @DateTime.Now.Date</small> </div>
+            </div>
+        </footer>
+    </div>
+    <div id="WinGenerica" data-backdrop="static" class="modal fade" style="overflow-x:auto; overflow-y:auto;">
+        <div class="modal-dialog modal-lg" id="ModalTamanho" role="document">
+            <div class="modal-content" id="ModalWin">
+
+            </div>
+        </div>
+    </div>
+
+    <a class="scroll-to-top rounded" href="#page-top"> <i class="fa fa-angle-up"></i> </a>
+</body>
+</html>
+<script src="~/scripts/Index.js"></script>
+<script>
+
+    monitorador();
+    $('#MyNavBar').on('click', '.indice', function (e) {
+        $('#navbarResponsive').removeClass('show');
+        e.preventDefault();
+        e.defaultPrevented = true;
+        btn = $(this);
+        $('#BodyGeral').fadeOut(200, function () {
+            $('#BodyGeral').fadeIn(100);
+            $('#BodyGeral').html(' <div class="container-fluid align-items-center text-center align-self-center flex-column d-flex justify-content-center" style="height:' + $('#Mywrapper').height() + 'px;" ><i class="fa fa-spinner fa-spin fa-5x fa-fw"></i></div>');
+            $('#BodyGeral').load(btn.attr('Evento'), function (r, s, h) {
+                if (s == 'success') {
+                    history.pushState('', '', btn.attr('Evento'));
+
+                } else {
+                    $('#txtalertaGeral').text('Erro: ' + h.status + " : " + h.statusText);
+                    $('#AlertaGeral').removeAttr('hidden');$('#Mywrapper').animate({ scrollTop: 0 }, 1000);
+                }
+            });
+        });
+    });
+
+    $('#FechaAlertaGeral').click(function () {
+        $(this).parent().attr('hidden', 'hidden');
+    });
+
+    $('#BodyGeral').on('click', '.btnAlterar,.btnNovo,.btnRemover', function (e) {
+        btn = $(this);
+        $('#ModalWin').load($(this).attr('Evento'), function (r, s, h) {
+            if (s == "success") {
+                $('#ModalTamanho').removeClass('modal-xlg');
+                $('#ModalTamanho').addClass('modal-lg');
+                if (btn.attr('Evento').startsWith('/CadastroParametros/CadastroParametros')) {
+                    $('#ModalTamanho').removeClass('modal-lg');
+                    $('#ModalTamanho').addClass('modal-xlg');
+                }
+                $('#WinGenerica').modal('show');
+            } else {
+                $('#txtalerta').text('Erro: ' + h.statusText + ' : ' + h.status)
+                $('#Alerta').removeAttr('hidden');$('#Mywrapper').animate({ scrollTop: 0 }, 1000);
+            }
+
+        });
+    });
+</script>

@@ -1,0 +1,44 @@
+﻿@model SapewinWeb.Models.GrupodeFeriados
+<div class="modal-header" style="margin-bottom:10px;">
+    <h5 class="modal-title"><i class="fa fa-th" aria-hidden="true"></i> Cadastro de Feriados Especificos > Remover</h5>
+</div>
+<div class="alert alert-danger alert-dismissible fade show" hidden="hidden" id="AlertaModal" role="alert">
+    <button type="button" id="FechaAlertaModal" class="close" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+    <strong class="txtalerta" id="txtalertaModal"></strong>
+</div>
+<form id="FormRemover" action="/CadastroFeriadosEspecificos/CadastroFeriadosEspecificos_Remover_Salvar/?id=@Model.IDFeriado" method="post">
+    <div class="modal-body">
+        
+        <div class="form-group"> <span> Tem certeza que deseja <strong>remover</strong> o Grupo <strong>@Model.Descricao</strong>?</span></div>
+    </div>
+    <div class="modal-footer">
+        <button type="submit" class="btn btn-outline-success">Sim</button>
+        <button type="button" class="btn btn-outline-danger" data-dismiss="modal">Não</button>
+    </div>
+</form>
+<script>
+    monitorador();
+    $('#FormRemover').submit(function (e) {
+        e.preventDefault();
+        e.defaultPrevented = true;
+        $.post($(this).attr('action'), $(this).serialize(), function (data) {
+            if (data.status == true) {
+                LoadGridCadastroFeriadosEspecificos();
+                $('#WinGenerica').modal('hide');
+               
+            } else {
+                $('#txtalertaModal').text(data.msg);
+                $('#AlertaModal').removeAttr('hidden', 'hidden');
+            }
+        });
+    });
+
+    $('#FechaAlertaModal').click(function () {
+        $(this).parent().attr('hidden', 'hidden')
+    });
+</script>
+
+
+

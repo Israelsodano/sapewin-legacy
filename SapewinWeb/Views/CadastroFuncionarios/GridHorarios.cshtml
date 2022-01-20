@@ -1,0 +1,13 @@
+﻿@model IEnumerable<SapewinWeb.Models.HorariosOcasionais>
+
+@foreach (var Horarios in Model)
+{
+    <tr>        
+        <td>@Horarios.Data.ToString().Substring(0, 10)</td>
+        <td>@Horarios.Horario.IDHorario.ToString("0000") - @Horarios.Horario.Descricao</td>
+        <td>
+            <button valor="@Horarios.Data.Year.ToString("0000")-@Horarios.Data.Month.ToString("00")-@Horarios.Data.Day.ToString("00")/@Horarios.Horario.IDHorario" class="btn btn-sm text-white btn-danger btnRemoverHorario" title="Remover" type="button"><i class="fa fa-fw fa-trash-o"></i></button>
+        </td>
+    </tr>
+}
+

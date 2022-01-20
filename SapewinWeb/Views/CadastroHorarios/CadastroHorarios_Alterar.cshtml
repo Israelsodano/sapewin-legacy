@@ -1,0 +1,467 @@
+﻿@model SapewinWeb.Models.Horarios
+<div class="modal-header" style="margin-bottom:10px;">
+    <h5 class="modal-title"><i class="fa fa-th" aria-hidden="true"></i> Cadastro de Horarios > Alterar</h5>
+</div>
+<div class="alert alert-danger alert-dismissible fade show" hidden="hidden" id="AlertaModal" role="alert">
+    <button type="button" id="FechaAlertaModal" class="close" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+    <strong class="txtalerta" id="txtalertaModal"></strong>
+</div>
+<script src="~/scripts/jquery.maskedinput.min.js"></script>
+<script>
+    $(function () {
+        $(".Hrr").mask("99:99");
+        $('.Carga').mask("@(Model.CargaSemanal ? "999:99" : "99:99")");
+    });
+</script>
+<div class="modal-body">
+    <div class="row">
+        <div class="form-group col-3">
+            <label>Código</label>
+            <input type="text" id="txtID" disabled="disabled" value="@Model.IDHorario.ToString("000000000")" maxlength="9" placeholder="Máx. 9 Dígitos" class="form-control">
+
+        </div>
+        <div class="form-group col-8">
+            <label>Descrição</label>
+            <input type="text" id="txtDesc" name="Descricao" form="@(Model.Tipo == SapewinWeb.Models.Horarios.tipo.Fixo ? "FormAlterarFixo" : "FormAlterarCarga" )" value="@Model.Descricao" maxlength="50" class="form-control">
+        </div>
+    </div>
+
+    <ul class="nav nav-tabs" style="margin-top:15px; margin-bottom:15px;">
+        <li class="nav-item">
+            <a class="nav-link @(Model.Tipo == SapewinWeb.Models.Horarios.tipo.Fixo ? "active" : "")" data-toggle="tab" id="Fixo" href="#PainelFixo" role="tab"><i class="fa fa-lock" aria-hidden="true"></i><span> Fixo</span></a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link @(Model.Tipo == SapewinWeb.Models.Horarios.tipo.Carga ? "active" : "")" data-toggle="tab" id="Carga" href="#PainelCarga" role="tab"><i class="fa fa-unlock" aria-hidden="true"></i><span> Carga</span></a>
+        </li>
+    </ul>
+    <div class="tab-content">
+        <div class="tab-pane @(Model.Tipo == SapewinWeb.Models.Horarios.tipo.Fixo ? "active show " : "")fade" id="PainelFixo" role="tabpanel">
+            <form id="FormAlterarFixo" action="/CadastroHorarios/CadastroHorarios_Alterar_Salvar/?id=@Model.IDHorario" method="post">
+                
+                <div class="row" style="font-size:small;">
+                    <div class="col-12 col-md-9 col-sm-9 d-flex">
+                        <div class="form-group" style="margin-right:15px;">
+                            <label>Entrada</label>
+                            <input class="form-control form-control-sm Hrr periodo" maxlength="5" value="@(Model.Tipo == SapewinWeb.Models.Horarios.tipo.Fixo ? Model.Entrada : "")" placeholder="__:__" name="Entrada" style="max-width:80px;" />
+                        </div>
+                        <div class="form-group" style="margin-left:10px;">
+                            <label>Ent. Interv</label>
+                            <input class="form-control form-control-sm Hrr intervalo" maxlength="5" value="@(Model.Tipo == SapewinWeb.Models.Horarios.tipo.Fixo ? Model.EntradaIntervalo : "")" placeholder="__:__" name="EntradaIntervalo" style="max-width:80px;" />
+                        </div>
+                        <div class="form-group" style="margin-left:25px;margin-right:10px;">
+                            <label>Sai. Interv</label>
+                            <input class="form-control form-control-sm Hrr intervalo" maxlength="5" value="@(Model.Tipo == SapewinWeb.Models.Horarios.tipo.Fixo ? Model.SaidaIntervalo : "")" placeholder="__:__" name="SaidaIntervalo" style="max-width:80px;" />
+                        </div>
+                        <div class="form-group" style="margin-left:15px;">
+                            <label>Saida</label>
+                            <input class="form-control form-control-sm Hrr periodo" maxlength="5" value="@(Model.Tipo == SapewinWeb.Models.Horarios.tipo.Fixo ? Model.Saida : "")" placeholder="__:__" name="Saida" style="max-width:80px;" />
+                        </div>
+                    </div>
+                    <div class="col-2">
+                        <div class="form-group">
+                            <label class="custom-control custom-checkbox mb-2 mr-sm-2 mb-sm-0">
+                                <input type="checkbox"@(Model.Tipo == SapewinWeb.Models.Horarios.tipo.Fixo ? String.IsNullOrEmpty(Model.ViradadoDia) ? "" : "checked=\"checked\"" : "") value="@Model.ViradadoDia" class="custom-control-input Viradadodia">
+                                <span class="custom-control-indicator"></span>
+                                <span class="custom-control-description">Virada</span>
+                            </label>
+                            <input name="ViradadoDia" value="@(Model.Tipo == SapewinWeb.Models.Horarios.tipo.Fixo ? Model.ViradadoDia : "")" @(Model.Tipo == SapewinWeb.Models.Horarios.tipo.Fixo ? String.IsNullOrEmpty(Model.ViradadoDia) ? "disabled=\"disabled\" " : "" : "disabled=\"disabled\" ")maxlength="5" class="form-control form-control-sm Hrr txtVirada" style="width:100px;" />
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="tab-pane @( Model.Tipo == SapewinWeb.Models.Horarios.tipo.Carga ? "active show " : "")fade" id="PainelCarga" role="tabpanel">
+            <form id="FormAlterarCarga" action="/CadastroHorarios/CadastroHorarios_Alterar_Salvar/?id=@Model.IDHorario" method="post">
+                
+                <label class="custom-control custom-checkbox mb-2 mr-sm-2 mb-sm-0" style="font-size:small">
+                    <input type="checkbox" @(Model.Tipo == SapewinWeb.Models.Horarios.tipo.Carga ? Model.CargaSemanal? "checked=\"checked\" " : "" : "")name="CargaSemanal" id="CargaSemanal" class="custom-control-input">
+                    <span class="custom-control-indicator"></span>
+                    <span class="custom-control-description" style="margin-bottom:15px;">Carga Semanal</span>
+                </label>
+                <div class="d-flex justify-content-between" style="font-size:small">
+                    <div class="d-flex">
+                        <div class="form-group" style="margin-right:10px;">
+                            <label>Carga</label>
+                            <input class="form-control form-control-sm Carga" value="@(Model.Tipo == SapewinWeb.Models.Horarios.tipo.Carga ?  Model.Carga : "")" maxlength="6" placeholder="@(Model.CargaSemanal ? "___:__" : "__:__")" name="Carga" style="max-width:80px;" />
+                        </div>
+                        <div class="form-group" style="margin-right:10px;">
+                            <label>Total Intervalo</label>
+                            <input class="form-control form-control-sm Hrr intervalo" value="@(Model.Tipo == SapewinWeb.Models.Horarios.tipo.Carga ? Model.TotaldoIntervalo : "")" maxlength="5" placeholder="__:__" name="TotaldoIntervalo" style="max-width:80px;" />
+                        </div>
+                    </div>
+                    <div class="form-group" style="margin-right:10px;">
+                        <label class="custom-control custom-checkbox mb-2 mr-sm-2 mb-sm-0">
+                            <input type="checkbox" @(Model.Tipo == SapewinWeb.Models.Horarios.tipo.Carga ? String.IsNullOrEmpty(Model.ViradadoDia) ? "" : "checked=\"checked\" " : "") class="custom-control-input Viradadodia">
+                            <span class="custom-control-indicator"></span>
+                            <span class="custom-control-description">Virarda</span>
+                        </label>
+                        <input class="form-control form-control-sm Hrr txtVirada" value="@(Model.Tipo == SapewinWeb.Models.Horarios.tipo.Carga ? Model.ViradadoDia : "")" maxlength="5" @(Model.Tipo == SapewinWeb.Models.Horarios.tipo.Carga ? String.IsNullOrEmpty(Model.ViradadoDia) ? "disabled=\"disabled\" " : "" : "disabled=\"disabled\" ")name="ViradadoDia" style="max-width:80px;" />
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="form-group">
+        <button class="btn btn-dark btn-sm" id="IntervalosAdicionais">Intervalos Adicionais</button>
+    </div>
+    <div class="form-group">
+        <label class="custom-control custom-checkbox mb-2 mr-sm-2 mb-sm-0">
+            <input type="checkbox" @(String.IsNullOrEmpty(Model.TotaldoIntervalo) ? "checked=\"checked\" " : "")id="SemIntervalo" class="custom-control-input">
+            <span class="custom-control-indicator"></span>
+            <span class="custom-control-description">Sem Intervalo</span>
+        </label>
+    </div>
+    <div class="form-group">
+        <label class="custom-control custom-checkbox mb-2 mr-sm-2 mb-sm-0">
+            <input type="checkbox" @(Model.NDescontarIntervalo ? "checked=\"checked\" " : "")id="NDescontaIntervalo" class="custom-control-input">
+            <span class="custom-control-indicator"></span>
+            <span class="custom-control-description">Não Descontar Intervalo</span>
+        </label>
+    </div>
+    <div class="form-group">
+        <label class="custom-control custom-checkbox mb-2 mr-sm-2 mb-sm-0">
+            <input type="checkbox" @(Model.VintqHoras ? "checked=\"checked\" " : "")id="VntqHoras" class="custom-control-input">
+            <span class="custom-control-indicator"></span>
+            <span class="custom-control-description">Vinte e quatro Horas</span>
+        </label>
+    </div>
+    <div class="d-flex">
+        <label>Total de Horas do Período : <span id="ttPeriodo">@(Model.Tipo == SapewinWeb.Models.Horarios.tipo.Fixo ? Model.TotalJornada : "")</span></label>
+    </div>
+    <div class="d-flex">
+        <label>Total de Horas do Intervalo : <span id="ttIntervalo">@(Model.Tipo == SapewinWeb.Models.Horarios.tipo.Fixo ? Model.TotaldoIntervalo : "")</span></label>
+    </div>
+</div>
+<div class="modal-footer">
+    <button type="submit" id="SalvarHorario" form="@(Model.Tipo == SapewinWeb.Models.Horarios.tipo.Fixo ? "FormAlterarFixo" : "FormAlterarCarga")" class="btn btn-outline-success"><i class="fa fa-fw fa-floppy-o"></i> Salvar</button>
+    <button type="button" class="btn btn-outline-danger" data-dismiss="modal"><i class="fa fa-fw fa-ban"></i> Cancelar</button>
+</div>
+<div id="winIntervalosAdicionais" class="modal fade" data-backdrop="static" style="overflow-x:auto; overflow-y:auto;">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"><i class="fa fa-th" aria-hidden="true"></i> Intervalos Auxiliares</h5>
+            </div>
+            <div class="modal-body">
+                <div class="modal-body">
+                    <ul class="nav nav-tabs" style="margin-bottom:10px;">
+                        <li class="nav-item">
+                            <a class="nav-link active" data-toggle="tab" id="Fixo" href="#Predefinido" role="tab"><i class="fa fa-lock" aria-hidden="true"></i><span> Pré-Definido</span></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" data-toggle="tab" id="Carga" href="#IntervaloCarga" role="tab"><i class="fa fa-unlock" aria-hidden="true"></i><span> Carga</span></a>
+                        </li>
+                    </ul>
+                    <div class="tab-content">
+                        <div class="tab-pane fade active show" id="Predefinido" role="tabpanel">
+                            <div class="row">
+                                <div class="form-group col4" style="margin-right:10px;">
+                                    <label style="font-size:small">Inicio</label>
+                                    <input class="form-control form-control-sm Hrr IntervalosFixos" maxlength="5" placeholder="__:__" style="max-width:80px;" />
+                                </div>
+                                <div class="form-group col4">
+                                    <label style="font-size:small">Fim</label>
+                                    <div class="d-flex">
+                                        <input class="form-control form-control-sm Hrr IntervalosFixos" maxlength="5" placeholder="__:__" style="max-width:80px;margin-right:10px;" />
+                                        <button class="btn btn-sm btn-dark addIntervalos" Tipo="IntervalosFixos"><i class="fa fa-fw fa-plus"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="IntervaloCarga" role="tabpanel">
+                            <div class="row">
+                                <div class="form-group col4" style="margin-right:10px;">
+                                    <label style="font-size:small">Carga</label>
+                                    <div class="d-flex">
+                                        <input class="form-control form-control-sm Hrr IntervalosCarga" maxlength="5" placeholder="__:__" style="max-width:80px;margin-right:10px;" />
+                                        <button class="btn btn-sm btn-dark addIntervalos" Tipo="IntervalosCarga"><i class="fa fa-fw fa-plus"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-header" style="margin-bottom:10px;"><h6><i class="fa fa-th" aria-hidden="true"></i> Intervalos Auxiliares</h6></div>
+                    <div class="row">
+                        <div class="col-10">
+                            <table class="table table-sm table-bordered table-hover" style="font-size:small;">
+                                <thead>
+                                    <tr>
+                                        <th></th>
+                                        <th>Tipo</th>
+                                        <th>Intervalos</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody id="TabIntervalos"> 
+                                                                 
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="col-2 align-items-center text-center align-self-center flex-column d-flex justify-content-center">
+                            <div>
+                                <a id="intervaloup" href="#"><i class="fa fa-arrow-up" aria-hidden="true"></i></a>
+                            </div>
+                            <div>
+                                <a id="intervalodown" href="#"><i class="fa fa-arrow-down" aria-hidden="true"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="SalvarIntervalo" class="btn btn-outline-success"><i class="fa fa-fw fa-floppy-o"></i> Salvar</button>
+                    <button type="button" class="btn btn-outline-danger" id="CancelarIntervalo"><i class="fa fa-fw fa-ban"></i> Cancelar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    monitorador();
+    $('#TabIntervalos').load('/CadastroHorarios/GridIntervalos/');
+
+    var LinhasdeIntervalos = 0;
+
+
+    $('#intervaloup').click(function (e) {
+        e.preventDefault();
+        e.defaultPrevented = true;
+        if (LinhasdeIntervalos != 0) {
+            $('#TabIntervalos').load('/CadastroHorarios/MudaOrdem/?id=' + LinhasdeIntervalos + '&sentido=up');
+        }
+    });
+
+    $('#intervalodown').click(function (e) {
+        e.preventDefault();
+        e.defaultPrevented = true;
+        if (LinhasdeIntervalos != 0) {
+            $('#TabIntervalos').load('/CadastroHorarios/MudaOrdem/?id=' + LinhasdeIntervalos + '&sentido=down');
+        }
+    });
+
+    $('#CancelarIntervalo').click(function () {
+        $('#winIntervalosAdicionais').modal('hide');
+        $('#TabIntervalos').load('/CadastroHorarios/GridIntervalos/?str=CANCELAR');
+    });
+
+    $('#SalvarIntervalo').click(function () {
+        $('#winIntervalosAdicionais').modal('hide');
+        $('#TabIntervalos').load('/CadastroHorarios/GridIntervalos/?str=SALVAR');
+    });
+
+    $('#IntervalosAdicionais').click(function () {
+        LinhasdeIntervalos = 0;
+        $('#TabIntervalos').load('/CadastroHorarios/GridIntervalos/', function (r, s, x) {
+            if (s == 'success') {
+                $('#winIntervalosAdicionais').modal('show');
+            }
+        });
+    });
+
+    $('.addIntervalos').click(function () {
+        btn = $(this);
+        var str = '';
+        if (btn.attr('Tipo') == 'IntervalosCarga') {
+            if ($('.IntervalosCarga').val() != '') {
+                str = $('.IntervalosCarga').val() + '/Carga';
+                $('#TabIntervalos').load('/CadastroHorarios/GridIntervalos/?str=' + str, function (r, s, x) {
+                    if (s == 'success') {
+                        $('.IntervalosCarga').val('');
+                    }
+                });
+            }
+        } else {
+            if ($('.IntervalosFixos').first().val() != '' && $('.IntervalosFixos').last().val() != '') {
+                str = $('.IntervalosFixos').first().val() + '-' + $('.IntervalosFixos').last().val() + '/Fixo';
+                $('#TabIntervalos').load('/CadastroHorarios/GridIntervalos/?str=' + str, function (r, s, x) {
+                    if (s == 'success') {
+                        $('.IntervalosFixos').val('');
+                    }
+                });
+            }
+        }
+    });
+
+    $('#TabIntervalos').on('click', '.btnRemoverIntervalo', function () {
+        btn = $(this);
+        $('#TabIntervalos').load('/CadastroHorarios/GridIntervalos/?Remover=' + btn.attr('IntervaloID'), function (r, s, x) {
+            if (s == 'success') {
+                if (btn.attr('IntervaloID') == LinhasdeIntervalos) {
+                    LinhasdeIntervalos = 0;
+                }
+            }
+            if (s == 'error') {
+                $('#txtalertaModal').text('Erro ao excluir');
+                $('#AlertaModal').removeAttr('hidden', 'hidden');
+            }
+        });
+    });
+
+    $('#CargaSemanal').click(function () {
+        $('.Carga').val('')
+        if ($(this).is(':checked')) {
+            $('.Carga').mask("999:99");
+            $('.Carga').attr('placeholder', '___:__');
+        } else {
+            $('.Carga').mask("99:99");
+            $('.Carga').attr('placeholder', '__:__');
+            $('.Carga').addClass('Hrr');
+        }
+    });
+
+
+
+    $('#Fixo').click(function () {
+        $('#SalvarHorario').attr('form', 'FormAlterarFixo');
+        $('#txtDesc').attr('form', 'FormAlterarFixo');
+        $('#txtID').attr('form', 'FormAlterarFixo');
+    });
+
+    $('#Carga').click(function () {
+        $('#SalvarHorario').attr('form', 'FormAlterarCarga');
+        $('#txtDesc').attr('form', 'FormAlterarCarga');
+        $('#txtID').attr('form', 'FormAlterarCarga');
+    });
+
+    $("#txtID").keyup(function () {
+        if ($("#txtID").val() != "") {
+            $("#txtID").val($("#txtID").val().replace(/[/\D]/gi, ""));
+        }
+    });
+
+    $('.Hrr').focusout(function () {
+        txt = $(this);
+        if (Tempo_Minuto([txt.val()])[0] >= 1440) {
+            txt.val('');
+        }
+        if (!txt.val().includes('_')) {
+            if (txt.val().split(':')[1] > 59) {
+                txt.val('');
+            }
+        }
+    });
+
+    $('.Carga').focusout(function () {
+        txt = $(this);
+        if (txt.hasClass('Hrr')) {
+            if (Tempo_Minuto([txt.val()])[0] >= 1440) {
+                txt.val('');
+            }
+            if (!txt.val().includes('_')) {
+                if (txt.val().split(':')[1] > 59) {
+                    txt.val('');
+                }
+            }
+        } else {
+            if (Tempo_Minuto([txt.val()])[0] > 10080) {
+                txt.val('');
+            }
+            if (!txt.val().includes('_')) {
+                if (txt.val().split(':')[1] > 59) {
+                    txt.val('');
+                }
+            }
+        }
+    });
+
+    function periodoTotal() {
+        if (($('.periodo').first().val().length == 5 && !$('.periodo').first().val().includes('_')) && ($('.periodo').last().val().length == 5) && !$('.periodo').last().val().includes('_')) {
+
+            var periodo1 = 0;
+
+            var periodo2 = 0;
+
+            var intervalo = 0;
+
+            var total;
+
+            if (($('.intervalo').first().val().length == 5 && !$('.intervalo').first().val().includes('_')) && ($('.intervalo').last().val().length == 5 && !$('.intervalo').last().val().includes('_'))) {
+
+                periodo1 = Tempo_Minuto([$('.periodo').first().val(), $('.intervalo').first().val()]);
+                periodo1 = periodo1[1] <= periodo1[0] ? (periodo1[1] + 1440) - periodo1[0] : periodo1[1] - periodo1[0];
+
+                periodo2 = Tempo_Minuto([$('.periodo').last().val(), $('.intervalo').last().val()]);
+                periodo2 = periodo2[0] <= periodo2[1] ? (periodo2[0] + 1440) - periodo2[1] : periodo2[0] - periodo2[1];
+
+                intervalo = Tempo_Minuto([$('.intervalo').first().val(), $('.intervalo').last().val()]);
+                intervalo = intervalo[1] < intervalo[0] ? (intervalo[1] + 1440) - intervalo[0] : intervalo[1] - intervalo[0];
+
+                total = !($('#NDescontaIntervalo').is(':checked')) ? SomaHoras_Tempo([periodo1, periodo2]) : SomaHoras_Tempo([periodo1, periodo2, intervalo]);
+            } else {
+                total = Tempo_Minuto([$('.periodo').first().val(), $('.periodo').last().val()]);
+                total = total[1] <= total[0] ? (total[1] + 1440) - total[0] : total[1] - total[0];
+                total = Minuto_Tempo([total]);
+            }
+
+            $('#ttPeriodo').text(total);
+
+        } else {
+            $('#ttPeriodo').text('');
+        }
+    }
+
+    $('.periodo').keyup(periodoTotal);
+
+    $('.intervalo').keyup(function () {
+        if (($('.intervalo').first().val().length == 5 && !$('.intervalo').first().val().includes('_')) && ($('.intervalo').last().val().length == 5 && !$('.intervalo').last().val().includes('_'))) {
+            minutosEntrada = eval((parseInt($('.intervalo').first().val().split(':')[0]) * 60) + (parseInt($('.intervalo').first().val().split(':')[1])));
+            minutosSaida = eval((parseInt($('.intervalo').last().val().split(':')[0]) * 60) + (parseInt($('.intervalo').last().val().split(':')[1])));
+
+            minutostotais = minutosEntrada > minutosSaida ? (minutosSaida + 1440) - minutosEntrada : minutosSaida - minutosEntrada;
+
+            $('#ttIntervalo').text(((minutostotais / 60 < 10) ? ("0" + Math.floor(minutostotais / 60)) : ("" + Math.floor(minutostotais / 60))) + ":" + ((minutostotais % 60 < 10) ? ("0" + minutostotais % 60) : ("" + minutostotais % 60)));
+
+        } else {
+            $('#ttIntervalo').text('');
+        }
+        periodoTotal();
+    });
+
+    $('.Viradadodia').click(function () {
+        if ($(this).is(':checked')) {
+            $('.Viradadodia').prop('checked', true);
+            $('.txtVirada').removeAttr('disabled');
+        } else {
+            $('.Viradadodia').prop('checked', false);
+            $('.txtVirada').val('');
+            $('.txtVirada').attr('disabled', 'disabled');
+        }
+    });
+
+    $('#SemIntervalo').click(function () {
+        if ($('#SemIntervalo').is(':checked')) {
+            $('.intervalo').attr('disabled', 'disabled');
+            $('.intervalo').val('');
+            $('#NDescontaIntervalo').attr('disabled', 'disabled');
+            $('#NDescontaIntervalo').prop('checked', false);
+        } else {
+            $('.intervalo').removeAttr('disabled');
+            $('#NDescontaIntervalo').removeAttr('disabled');
+        }
+        periodoTotal()
+    });
+
+    $('#NDescontaIntervalo').click(periodoTotal);
+
+    $('#FormAlterarFixo,#FormAlterarCarga').submit(function (e) {
+        e.preventDefault();
+        e.defaultPrevented = true;     
+
+        $.post($(this).attr('action') + '&DescontarIntervalo=' + $('#NDescontaIntervalo').is(':checked') + '&VintqHoras=' + $('#VntqHoras').is(':checked'), $(this).serialize(), function (data) {
+            if (data.status == true) {
+                LoadGridCadastroHorarios();
+                $('#WinGenerica').modal('hide');
+               
+            } else {
+                $('#txtalertaModal').text(data.msg);
+                $('#AlertaModal').removeAttr('hidden', 'hidden');
+            }
+        });
+    });
+
+    $('#FechaAlertaModal').click(function () {
+        $(this).parent().attr('hidden', 'hidden');
+    });
+
+</script>

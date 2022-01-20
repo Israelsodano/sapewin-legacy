@@ -1,0 +1,61 @@
+﻿@model IEnumerable<SapewinWeb.Metodos.ListadeObjs>
+@foreach (var intervalos in Model)
+{   
+    <tr class="intervalosAuxiliares" IntervaloID="@intervalos.ID">
+        <td>
+            <label style="margin-left:10px;" class="custom-control custom-checkbox mb-2 mr-sm-2 mb-sm-0">
+                <input type="checkbox" IntervaloID="@intervalos.ID" class="custom-control-input CkIntervalo">
+                <span class="custom-control-indicator"></span>
+                <span class="custom-control-description"></span>
+            </label>
+        </td>
+        <td class="linhaintervalos">@intervalos.Obj.Tipo.ToString()</td>
+        <td class="linhaintervalos">@(intervalos.Obj.Tipo == SapewinWeb.Metodos.ObjIntervalosAuxiliares.tipo.Carga ? intervalos.Obj.Carga : $"{intervalos.Obj.Inicio}-{intervalos.Obj.Fim}")</td>
+        <td>
+            <button class="btn btn-sm text-white btn-danger btnRemoverIntervalo" IntervaloID="@intervalos.ID" title="Remover"><i class="fa fa-fw fa-trash-o"></i></button>
+        </td>
+    </tr>
+}
+<script>   
+    monitorador();
+    $('.intervalosAuxiliares').each(function (idx, el) {
+        if (LinhasdeIntervalos == $(el).attr('IntervaloID')) {
+            $(el).addClass('table-active');
+            $(el).children().first().children().first().children().first().prop('checked', true);
+            
+        }
+    });
+
+    $('.linhaintervalos').click(function () {
+        linhaintervalos = $(this);
+        if (linhaintervalos.parent().children().first().children().first().children().first().is(':checked')) {
+            linhaintervalos.parent().removeClass('table-active');
+            linhaintervalos.parent().children().first().children().first().children().first().prop('checked', false);
+            linhaintervalossdeIntervalos = 0;
+
+        } else {
+            $('.intervalosAuxiliares').removeClass('table-active');
+            $('.CkIntervalo').prop('checked', false);
+            linhaintervalos.parent().addClass('table-active');
+            linhaintervalos.parent().children().first().children().first().children().first().prop('checked', true);
+            LinhasdeIntervalos = linhaintervalos.parent().children().first().children().first().children().first().attr('IntervaloID');
+        }
+    });
+
+    $('.CkIntervalo').click(function () {
+        ck = $(this);
+        if (ck.is(':checked')) {
+            $('.intervalosAuxiliares').removeClass('table-active');
+            $('.CkIntervalo').prop('checked', false);
+            ck.prop('checked', true);
+            ck.parent().parent().parent().addClass('table-active');
+            LinhasdeIntervalos = ck.attr('IntervaloID');
+        } else {
+            $('.intervalosAuxiliares').removeClass('table-active');
+            $('.CkIntervalo').prop('checked', false);
+            ck.parent().parent().parent().removeClass('table-active');
+            LinhasdeIntervalos = 0;
+        }
+
+    });
+</script>

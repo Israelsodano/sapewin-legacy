@@ -1,0 +1,98 @@
+﻿@model IEnumerable<SapewinWeb.Models.Cargos>
+<html>
+<head>
+    <style>
+        
+        body
+        {
+            margin: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+            font-size: 1rem;
+            line-height: 1.5;
+            color: #212529;
+            text-align: left;
+            background-color: #fff;
+        }
+
+        table
+        {
+            width: 100%;
+        }
+    
+        .Direita
+        {
+            text-align: right;
+        }
+
+        .Centro
+        {
+            text-align: center;
+        }
+
+        .Esqueda
+        {
+            text-align: left;
+        }
+
+        .Bordas
+        {
+            border: 1px solid #808080;
+        }
+
+    </style>
+
+</head>
+<body>
+
+    <!--Cabecalho-->
+    <table>
+        <tr>
+            <th>RELATÓRIO DE CARGOS</th>
+        </tr>
+    </table>
+    <!--Cabecalho-->
+
+        <hr />
+
+    <!--Dados da empresa-->
+    <table>
+        <tr>
+            <td class="Esqueda">Empresa: @ViewBag.NomeEmpresa</td>
+            <td class="Direita">@ViewBag.Documento</td>
+        </tr>
+    </table>
+
+        <hr />
+
+    <table>
+        <tr>
+            <td class="Esqueda">Endreço: @ViewBag.Rua</td>
+            <td class="Direita">@ViewBag.Estado</td>
+        </tr>
+    </table>
+    <!--Dados da empresa-->
+
+    <!--Corpo-->
+    <table>
+        <thead>
+            <tr>
+                <th class="Bordas">ID</th>
+                <th class="Bordas">Nome</th>
+                <th class="Bordas">Número de Funcionarios</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var Cargo in Model)
+            {
+                <tr>
+                    <td class="Bordas Centro">@Cargo.IDCargo</td>
+                    <td class="Bordas Centro">@Cargo.Nome</td>
+                    <td class="Bordas Centro">@Cargo.Funcionarios.Count</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <!--Corpo-->
+
+</body>
+</html>

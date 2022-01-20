@@ -1,0 +1,11 @@
+﻿@model IEnumerable<SapewinWeb.Models.FeriadosEspecificos>
+@foreach (var Feriado in Model)
+{
+    <tr>
+        <td>@(Feriado.Dia < 10 ? "0" + Feriado.Dia : "" + Feriado.Dia)/@(Feriado.Mes < 10 ? "0" + Feriado.Mes : "" + Feriado.Mes)/@(Feriado.Ano == 0 ? "Todos" : "" + Feriado.Ano)</td>
+        <td>@Feriado.Descricao</td>
+        <td>
+            <button type="button" class="btn btn-danger btnRemoverFeriado" Feriado="@Feriado.Ano-@(Feriado.Mes < 10 ? "0" + Feriado.Mes : "" + Feriado.Mes)-@(Feriado.Dia < 10 ? "0" + Feriado.Dia : "" + Feriado.Dia)"><i class="fa fa-fw fa-trash-o"></i></button>
+        </td>
+    </tr>
+}

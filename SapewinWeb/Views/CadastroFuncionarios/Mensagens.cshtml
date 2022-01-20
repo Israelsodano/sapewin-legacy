@@ -1,0 +1,185 @@
+﻿@model IEnumerable<SapewinWeb.Models.Mensagem>
+<div class="modal-header" style="margin-bottom:10px;">
+    <h5 class="modal-title"><i class="fa fa-th" aria-hidden="true"></i> Mensagens</h5>
+</div>
+<div class="alert alert-danger alert-dismissible fade show" hidden="hidden" id="AlertaModal" role="alert">
+    <button type="button" id="FechaAlertaModal" class="close" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+    <strong class="txtalerta" id="txtalertaModal"></strong>
+</div>
+<div class="modal-body" style="font-size:small;">
+    <div class="row">
+        <div class="col-4 col-lg-3">
+            <div class="form-group">
+                <label>Data Inicial</label>
+                <input class="form-control form-control-sm" type="date" id="dataInicio" />
+            </div>
+        </div>
+        <div class="col-4 col-lg-3">
+            <div class="form-group">
+                <label>Data Final</label>
+                <div class="d-flex">
+                    <div class="d-flex">
+                        <input class="form-control form-control-sm" style="margin-right:10px;" type="date" id="dataFinal" />
+                        <div class="switch">
+                            <label>
+                                <input id="Indefinido" type="checkbox">
+                                <span class="slider"></span>
+                                <span>Indefinido</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <label>Mensagem</label>
+        <div class="d-flex">
+            <select class="form-control form-control-sm" id="cbxMsg" style="margin-right:10px;">
+                <option selected="selected" value="a" disabled="disabled"></option>
+                @foreach (var Mensagem in Model)
+                {
+                    <option value="@Mensagem.Nome">@Mensagem.Nome</option>
+                }
+            </select>
+            <button class="btn btn-sm btn-dark" id="AddMensagem"><i class="fa fa-fw fa-plus"></i></button>
+        </div>
+    </div>
+    <table class="table table-sm table-bordered">
+        <thead>
+            <tr>
+                <th>Inicío</th>
+                <th>Fim</th>
+                <th>Mensagem</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody id="tabMensagem"></tbody>
+    </table>
+    <script>
+
+        function AtualizaGridMensagens() {
+            $('#tabMensagem').load('/CadastroFuncionarios/GridMensagens/', {Array: Mensagens }, function (r, s, x) {
+                if (s == 'success') {
+                    console.log(s);
+                    $('#dataInicio').val('');
+                    $('#cbxMsg').val('a');
+                    $('#dataFinal').val('');
+
+                    $('#AlertaModal').attr('hidden', 'hidden');
+                } else {
+                    $('#txtalertaModal').text('Erro: ' + x.statusText + ' : ' + x.status);
+                    $('#AlertaModal').removeAttr('hidden', 'hidden');
+                }
+            });
+        }
+        AtualizaGridMensagens();
+    </script>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-outline-info" data-dismiss="modal"><i class="fa fa-undo" aria-hidden="true"></i> Voltar</button>
+</div>
+<script src="~/scripts/Index.js"></script>
+<script>
+    monitorador();
+    $('#Indefinido').click(function () {
+        if ($(this).is(':checked')) {
+            $('#dataFinal').val('');
+            $('#dataFinal').attr('disabled', 'disabled');
+        } else {
+            $('#dataFinal').removeAttr('disabled');
+        }
+    });
+
+    $('#AddMensagem').click(function () {        
+        var mensagem = "";
+        if ($('#Indefinido').is(':checked')) {
+            if ($('#dataInicio').val() != '' && $('#cbxMsg').val() != 'a' && $('#cbxMsg').val() != null) {
+                mensagem = $('#dataInicio').val() + '//' + $('#cbxMsg').val();
+                if (isNewIn(mensagem, Mensagens)) {
+                    Mensagens.push(mensagem);
+                    AtualizaGridMensagens();                  
+
+                } else {
+                    $('#txtalertaModal').text('Já existe uma mensagem cadastrada para o mesmo período');
+                    $('#AlertaModal').removeAttr('hidden', 'hidden');
+                }
+
+            } else {
+                $('#txtalertaModal').text('Preencha todos os campos');
+                $('#AlertaModal').removeAttr('hidden', 'hidden');
+            }
+        } else {
+            if ($('#dataInicio').val() != '' && $('#cbxMsg').val() != 'a' && $('#dataFinal').val() != '' && $('#cbxMsg').val() != null) {
+                if (DateDiff($('#dataInicio').val(), $('#dataFinal').val()) <= 0) {
+                    mensagem = $('#dataInicio').val() + '/' + $('#dataFinal').val() + '/' + $('#cbxMsg').val();
+                    if (isNewIn(mensagem, Mensagens)) {
+                        Mensagens.push(mensagem);
+                        AtualizaGridMensagens();
+                    } else {
+                        $('#txtalertaModal').text('Já existe uma mensagem cadastrada para o mesmo período');
+                        $('#AlertaModal').removeAttr('hidden', 'hidden');
+                    }
+                } else {
+                    $('#txtalertaModal').text('A data de inicio é maior que a final');
+                    $('#AlertaModal').removeAttr('hidden', 'hidden');
+                }
+            } else {
+                $('#txtalertaModal').text('Preencha todos os campos');
+                $('#AlertaModal').removeAttr('hidden', 'hidden');
+            }
+        }
+    });
+
+    $('#FechaAlertaModal').click(function () {
+        $(this).parent().attr('hidden', 'hidden');
+    });
+
+    $('#tabMensagem').on('click', '.btnRemoverMensagem', function () {
+        btn = $(this);
+        Mensagens = Mensagens.filter(function (itens) { return itens != btn.attr('valor') });
+        AtualizaGridMensagens();
+    });
+
+    function DateDiff(data1, data2) {
+        console.log(data1);
+        console.log(data2);
+
+        try {
+            var one_day = 1000 * 60 * 60 * 24;
+
+            var ini = new Date(data1).getTime();
+            var fim = new Date(data2).getTime();
+
+            var diff = ini - fim;
+
+            return Math.round(diff / one_day);
+
+        } catch (e) {
+            throw DOMException;
+        }
+
+    }
+
+    function isNewIn(stringcartao, array) {
+
+        if (array.filter(function (x) {
+
+            var ini = new Date(x.split('/')[0]).getTime();
+            var fim = x.split('/')[1] == '' ? 0 : new Date(x.split('/')[1]).getTime();
+
+            var inistr = new Date(stringcartao.split('/')[0]).getTime();
+            var fimstr = stringcartao.split('/')[1] == '' ? 0 : new Date(stringcartao.split('/')[1]).getTime();
+
+            return ((inistr >= ini) && ((inistr <= fim && fim != 0) || fim == 0)) || ((fimstr >= ini && fimstr != 0) && ((fimstr == 0) || ((fimstr <= fim && fim != 0) || fim == 0))) || ((inistr <= ini && (fimstr == 0 || (fimstr >= fim && fim != 0))));
+
+        }).length > 0) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+</script>

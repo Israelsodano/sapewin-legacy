@@ -1,0 +1,141 @@
+﻿<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-3 col-md-6 col-sm-6 col-12"  style="margin-bottom:25px;border-right:ridge;">
+            <div class="card-header justify-content-between" style="margin-bottom:10px;background-color: rgba(255, 133, 27, 0.3);">
+                <div class="d-flex justify-content-between">
+                    <strong><i class="fa fa-address-book" aria-hidden="true"></i> Cadastros</strong>
+                    <div class="text-right">
+                        <label style="margin-left:5px;" class="custom-control custom-checkbox mb-2 mr-sm-2 mb-sm-0">
+                            <input type="checkbox" Tela=".CkTelacad" Funcoes=".Funcaocad" class="custom-control-input MarcatdsTelas MarcatdsCad">
+                            <span class="custom-control-indicator"></span>
+                            <span class="custom-control-description">Marcar Todos</span>
+                        </label>
+                    </div>  
+                </div>                                                                                                
+            </div>
+            <div id="TabCadastros" style="margin-bottom:25px;max-height:500px;overflow:auto;">
+                @{ 
+                    Html.RenderAction("GridCadastros", new { id = ViewBag.Usuario });
+                }
+            </div>
+               
+        </div>
+        <div class="col-lg-3 col-md-6 col-sm-6 col-12" style="margin-bottom:25px;border-right:ridge;">
+            <div class="card-header justify-content-between" style="margin-bottom:10px;background-color: rgba(255, 133, 27, 0.3);">
+                <div class="d-flex justify-content-between">
+                    <strong><i class="fa fa-wrench" aria-hidden="true"></i> Ferramentas</strong>
+                    <div class="text-right">
+                        <label style="margin-left:5px;" class="custom-control custom-checkbox mb-2 mr-sm-2 mb-sm-0">
+                            <input type="checkbox" Tela=".CkTelafer" Funcoes=".Funcaofer" class="custom-control-input MarcatdsTelas MarcatdsFer">
+                            <span class="custom-control-indicator"></span>
+                            <span class="custom-control-description">Marcar Todos</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div id="TabFerramentas" style="margin-bottom:25px;max-height:500px;overflow:auto;">
+                @{
+                    Html.RenderAction("GridFerramentas", new { id = ViewBag.Usuario });
+                }   
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6 col-sm-6 col-12" style="margin-bottom:25px;border-right:ridge;">
+            <div class="card-header justify-content-between" style="margin-bottom:10px;background-color: rgba(255, 133, 27, 0.3);">
+                <div class="d-flex justify-content-between">
+                    <strong><i class="fa fa-briefcase" aria-hidden="true"></i> Útil</strong>
+                    <div class="text-right">
+                        <label style="margin-left:5px;" class="custom-control custom-checkbox mb-2 mr-sm-2 mb-sm-0">
+                            <input type="checkbox" Tela=".CkTelautil" Funcoes=".Funcaoutil" class="custom-control-input MarcatdsTelas MarcatdsUtil">
+                            <span class="custom-control-indicator"></span>
+                            <span class="custom-control-description">Marcar Todos</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div id="TabUtil" style="margin-bottom:25px;max-height:500px;overflow:auto;">
+                @{
+                    Html.RenderAction("GridUtils", new { id = ViewBag.Usuario });
+                }
+                
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6 col-sm-6 col-12" style="margin-bottom:25px;border-right:ridge;">
+            <div class="card-header justify-content-between" style="margin-bottom:10px;background-color: rgba(255, 133, 27, 0.3);">
+                <div class="d-flex justify-content-between">
+                    <strong><i class="fa fa-file-pdf-o" aria-hidden="true"></i> Relatórios</strong>
+                    <div class="text-right">
+                        <label style="margin-left:5px;" class="custom-control custom-checkbox mb-2 mr-sm-2 mb-sm-0">
+                            <input type="checkbox" Tela=".CkTelarel" Funcoes=".Funcaorel" class="custom-control-input MarcatdsTelas MarcatdsRel">
+                            <span class="custom-control-indicator"></span>
+                            <span class="custom-control-description">Marcar Todos</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div id="TabRelatorios" style="margin-bottom:25px;max-height:500px;overflow:auto;">
+             @{
+                 Html.RenderAction("GridRelatorios", new { id = ViewBag.Usuario });
+             }
+            </div>
+        </div>
+    </div>
+</div>
+@if (ViewBag.Usuario != null)
+{
+    <script>
+        $.post('/CadastroUsuarios/RetornaPermissoesdeTela/?id=@ViewBag.Usuario', function (data) {
+            if(data.status == true){
+                var Perm = new Array();
+                Perm = data.Permissoes;
+                $('.FuncaodeTela').each(function (idx, el) {
+                    if(Perm.includes($(el).attr('IDFuncaoTela'))) {
+                        $(el).prop('checked', true);
+                    } else {
+                        $(el).prop('checked', false);
+                    }
+                });
+
+                $('.Tela').each(function (idx, el) {
+                    if ($($(el).attr('Funcs')).length == $($(el).attr('Funcs') + ":checked").length) {
+                        $(el).prop('checked', true);
+                    } else if ($($(el).attr('Funcs') + ":checked").length == 0) {
+                        $(el).prop('checked', false);
+                    } else {
+                        $(el).prop('indeterminate', true);
+                    }
+                });
+            } 
+        });
+    </script>
+}
+<script>
+    monitorador();
+    var Funcs = [];
+
+    $('.MarcatdsTelas').each(function (idx1, el1) {
+        $($(el1).attr('Funcoes')).each(function (idx2, el2) {
+            if ($(el2).is(':checked')) {
+                Funcs.push(el2);
+            }
+        });
+        console.log(el1);
+        if ($($(el1).attr('Funcoes') + ":checked").length == $($(el1).attr('Funcoes')).length) {
+            $(el1).prop('checked', true);
+        }
+    });
+
+
+    $('.MarcatdsTelas').click(function () {
+        ck = $(this);
+        if (ck.is(':checked')) {
+            $(ck.attr('Tela')).prop('indeterminate', false);
+            $(ck.attr('Tela')).prop('checked', true);
+            $(ck.attr('Funcoes')).prop('checked', true);
+
+        } else {
+            $(ck.attr('Tela')).prop('indeterminate', false);
+            $(ck.attr('Tela')).prop('checked', false);
+            $(ck.attr('Funcoes')).prop('checked', false);
+        }
+    });
+</script>

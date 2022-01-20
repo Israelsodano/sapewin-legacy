@@ -1,0 +1,725 @@
+﻿@model IEnumerable<SapewinWeb.Models.Horarios>
+<div class="modal-header" style="margin-bottom:10px;">
+    <h5 class="modal-title"><i class="fa fa-th" aria-hidden="true"></i> Cadastro de Escalas > Incluir</h5>
+</div>
+<div class="alert alert-danger alert-dismissible fade show" hidden="hidden" id="AlertaModal" role="alert">
+    <button type="button" id="FechaAlertaModal" class="close" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+    <strong class="txtalerta" id="txtalertaModal"></strong>
+</div>
+<div class="modal-body">
+    <div class="row">
+        <div class="form-group col-lg-3 col-12">
+            <label>Código</label>
+            <input type="text" form="FormSemanal" id="ID" name="id" maxlength="18" placeholder="Máx. 9 Dígitos" class="form-control">
+        </div>
+        <div class="form-group col-lg-6 col-12">
+            <label>Descrição</label>
+            <input type="text" form="FormSemanal" id="Descricao" name="Descricao" maxlength="50" class="form-control">
+        </div>
+        <div class="form-group col-lg-3 col-12">
+            <label>Virada Semanal</label>
+            <select class="form-control" form="FormSemanal" id="ViradaSemana" name="ViradaSemana">
+                <option value="1">Segunda</option>
+                <option value="2">Terça</option>
+                <option value="3">Quarta</option>
+                <option value="4">Quinta</option>
+                <option value="5">Sexta</option>
+                <option value="6">Sábado</option>
+                <option value="7" selected="selected">Domingo</option>
+            </select>
+        </div>
+    </div>
+    <ul class="nav nav-tabs" style="margin-top:15px; margin-bottom:15px;font-size:12px;">
+        <li class="nav-item">
+            <a class="nav-link active Tipos" Formatt="FormSemanal" data-toggle="tab" id="Semanal" href="#PainelSemanal" role="tab"><span> Semanal</span></a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link Tipos" Formatt="FormRevezamento" data-toggle="tab" id="Revezamento" href="#PainelRevezamento" role="tab"><span> Revezamento</span></a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link Tipos" Formatt="FormCargaSemanal" data-toggle="tab" id="CargaSemanal" href="#PainelCargaSemanal" role="tab"><span> Carga Semanal</span></a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link Tipos" Formatt="FormLivre" data-toggle="tab" id="Livre" href="#PainelLivre" role="tab"><span> Livre</span></a>
+        </li>
+    </ul>
+    <div class="tab-content">
+        <div class="tab-pane fade active show" id="PainelSemanal" role="tabpanel">
+            <form method="post" id="FormSemanal" action="/CadastroEscalas/CadastroEscalas_Incluir_Salvar/?tipo=1">
+                <div class="form-group">
+                    <div class="form-inline">
+                        <label style="font-size:small;width:45px;">Seg.</label>
+                        <select class="form-control form-control-sm Horr" style="max-width:77px" id="Seg">
+                            <option value="1">Fixo</option>
+                            <option value="2">Carga</option>
+                        </select>
+                        <select class="form-control form-control-sm Seg dia" style="width:50%; margin-left:10px;margin-right:10px;">
+                            <option disabled="disabled" selected="selected"></option>
+                            <option value="0">Folga</option>
+                            @foreach (var Horario in Model)
+                            {
+                                <option style="display:none"></option>
+                                <option value="@Horario.IDHorario">@Horario.IDHorario - @Horario.Descricao</option>
+                            }
+                        </select>
+                        <label id="TotalSeg" style="font-size:small;">00:00</label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="form-inline">
+                        <label style="font-size:small;width:45px;">Ter.</label>
+                        <select class="form-control form-control-sm Horr" style="max-width:77px" id="Ter">
+                            <option value="1">Fixo</option>
+                            <option value="2">Carga</option>
+                        </select>
+                        <select class="form-control form-control-sm Ter dia" style="width:50%; margin-left:10px;margin-right:10px;">
+                            <option disabled="disabled" selected="selected"></option>
+                            <option value="0">Folga</option>
+                            @foreach (var Horario in Model)
+                            {
+                                <option value="@Horario.IDHorario">@Horario.IDHorario - @Horario.Descricao</option>
+                            }
+                        </select>
+                        <label id="TotalTer" style="font-size:small;">00:00</label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="form-inline">
+                        <label style="font-size:small;width:45px;">Qua.</label>
+                        <select class="form-control form-control-sm Horr" style="max-width:77px" id="Qua">
+                            <option value="1">Fixo</option>
+                            <option value="2">Carga</option>
+                        </select>
+                        <select class="form-control form-control-sm Qua dia" style="width:50%; margin-left:10px;margin-right:10px;">
+                            <option disabled="disabled" selected="selected"></option>
+                            <option value="0">Folga</option>
+                            @foreach (var Horario in Model)
+                            {
+                                <option value="@Horario.IDHorario">@Horario.IDHorario - @Horario.Descricao</option>
+                            }
+                        </select>
+                        <label id="TotalQua" style="font-size:small;">00:00</label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="form-inline">
+                        <label style="font-size:small;width:45px;">Qui.</label>
+                        <select class="form-control form-control-sm Horr" style="max-width:77px" id="Qui">
+                            <option value="1">Fixo</option>
+                            <option value="2">Carga</option>
+                        </select>
+                        <select class="form-control form-control-sm Qui dia" style="width:50%; margin-left:10px;margin-right:10px;">
+                            <option disabled="disabled" selected="selected"></option>
+                            <option value="0">Folga</option>
+                            @foreach (var Horario in Model)
+                            {
+                                <option value="@Horario.IDHorario">@Horario.IDHorario - @Horario.Descricao</option>
+                            }
+                        </select>
+                        <label id="TotalQui" style="font-size:small;">00:00</label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="form-inline">
+                        <label style="font-size:small;width:45px;">Sex.</label>
+                        <select class="form-control form-control-sm Horr" style="max-width:77px" id="Sex">
+                            <option value="1">Fixo</option>
+                            <option value="2">Carga</option>
+                        </select>
+                        <select class="form-control form-control-sm Sex dia" style="width:50%; margin-left:10px;margin-right:10px;">
+                            <option disabled="disabled" selected="selected"></option>
+                            <option value="0">Folga</option>
+                            @foreach (var Horario in Model)
+                            {
+                                <option value="@Horario.IDHorario">@Horario.IDHorario - @Horario.Descricao</option>
+                            }
+                        </select>
+                        <label id="TotalSex" style="font-size:small;">00:00</label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="form-inline">
+                        <label style="font-size:small;width:45px;">Sab.</label>
+                        <select class="form-control form-control-sm Horr" style="max-width:77px" id="Sab">
+                            <option value="1">Fixo</option>
+                            <option value="2">Carga</option>
+                        </select>
+                        <select class="form-control form-control-sm Sab dia" style="width:50%; margin-left:10px;margin-right:10px;">
+                            <option value="0">Folga</option>
+                            <option selected="selected" value="-1">Sábado</option>
+                            @foreach (var Horario in Model)
+                            {
+                                <option value="@Horario.IDHorario">@Horario.IDHorario - @Horario.Descricao</option>
+                            }
+                        </select>
+                        <label id="TotalSab" style="font-size:small;">00:00</label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="form-inline">
+                        <label style="font-size:small;width:45px;">Dom.</label>
+                        <select class="form-control form-control-sm Horr" style="max-width:77px" id="Dom">
+                            <option value="1">Fixo</option>
+                            <option value="2">Carga</option>
+                        </select>
+                        <select class="form-control form-control-sm Dom dia" style="width:50%; margin-left:10px;margin-right:10px;">
+                            <option value="0">Folga</option>
+                            <option selected="selected" value="-2">Domingo</option>
+                            @foreach (var Horario in Model)
+                            {
+                                <option value="@Horario.IDHorario">@Horario.IDHorario - @Horario.Descricao</option>
+                            }
+                        </select>
+                        <label id="TotalDom" style="font-size:small;">00:00</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-9 text-right">
+                        <div class="form-group">
+                            <label style="font-size:small;margin-right:13px;">Total Semanal <span id="TotalGeral">00:00</span></label>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="tab-pane fade" id="PainelRevezamento" role="tabpanel">
+            <form method="post" id="FormRevezamento" action="/CadastroEscalas/CadastroEscalas_Incluir_Salvar/?tipo=2">
+                <div class="row" style="border-bottom: 1px solid rgba(0, 0, 0, 0.125);">
+                    <div class="form-group col-12 col-lg-3">
+                        <label style="font-size:small;width:45px">Início</label>
+                        <input type="date" style="width:150px" name="Inicio" class="form-control form-control-sm" />
+                    </div>                   
+                </div>
+                <div class="row" style="border-bottom: 1px solid rgba(0, 0, 0, 0.125);margin-bottom:10px;">
+                    <div class="form-group col-12 col-lg-2">
+                        <label style="font-size:small;width:45px">Dias</label>
+                        <select class="form-control form-control-sm" id="Dias" style="max-width:150px;">
+                            <option selected="selected" value="a" disabled="disabled"></option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                            <option value="6">6</option>
+                            <option value="7">7</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-12 col-lg-2">
+                        <label style="font-size:small;width:45px">Tipo</label>
+                        <select class="form-control form-control-sm" style="max-width:150px;" id="TipoRevezamento">
+                            <option value="1">Fixo</option>
+                            <option value="2">Carga</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-12 col-lg-8">
+                        <label style="font-size:small;width:45px">Horario</label>
+                        <div class="form-inline">
+                            <select class="form-control form-control-sm" style="max-width:60%;margin-right:10px;" id="HorariosRevezamento">
+                                <option selected="selected" value="a" disabled="disabled"></option>
+                                <option value="0">Folga</option>
+                                <option value="-1">Sabado</option>
+                                <option value="-2">Domingo</option>
+                                @foreach (var Horario in Model)
+                                {
+                                    <option value="@Horario.IDHorario">@Horario.IDHorario - @Horario.Descricao</option>
+                                }
+                            </select>
+                            <button type="button" class="btn btn-sm btn-dark" id="addHorarios"><i class="fa fa-fw fa-plus"></i></button>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-header" style="margin-bottom:10px;background-color: rgba(255, 133, 27, 0.3);"><strong>Horarios</strong></div>
+                <div class="row">
+                    <div class="col-10">
+                        <table class="table table-sm table-bordered table-hover" style="font-size:small;">
+                            <thead>
+                                <tr>
+                                    <th width="10px;"></th>
+                                    <th>Qtd. Dias</th>
+                                    <th>Horário</th>
+                                    <th>Tipo</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody id="TabHorarios"></tbody>
+                        </table>
+                    </div>
+                    <div class="col-2">
+                        <div>
+                            <a id="Horarioup" href="#"><i class="fa fa-arrow-up" aria-hidden="true"></i></a>
+                        </div>
+                        <div>
+                            <a id="Horariodown" href="#"><i class="fa fa-arrow-down" aria-hidden="true"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="tab-pane fade" id="PainelCargaSemanal" role="tabpanel">
+            <script src="~/scripts/jquery.maskedinput.min.js"></script>
+            <script>
+                $(function () {
+                    $(".Hrr").mask("99:99");
+                });
+            </script>
+            <form method="post" id="FormCargaSemanal" action="/CadastroEscalas/CadastroEscalas_Incluir_Salvar/?tipo=3">               
+                <div class="d-flex">
+                    <div class="form-group" style="margin-right:10px;">
+                        <label style="font-size:small">Dia de inicio</label>
+                        <select class="form-control form-control-sm" id="Diainicio">
+                            <option value="a" disabled="disabled" selected="selected"></option>
+                            <option value="1">Segunda</option>
+                            <option value="2">Terça</option>
+                            <option value="3">Quarta</option>
+                            <option value="4">Quinta</option>
+                            <option value="5">Sexta</option>
+                            <option value="6">Sabado</option>
+                            <option value="7">Domingo</option>
+                        </select>
+                    </div>
+                    <div class="form-group" style="margin-right:10px;">
+                        <label style="font-size:small">Horário de Entrada</label>
+                        <div class="d-flex">
+                            <input class="form-control form-control-sm Hrr" maxlength="5" placeholder="__:__" id="HoraEntrada" style="max-width:80px;margin-right:10px;" />
+                            <label style="font-size:small;" class="custom-control custom-checkbox mb-2 mr-sm-2 mb-sm-0">
+                                <input type="checkbox" id="Direto" class="custom-control-input">
+                                <span class="custom-control-indicator"></span>
+                                <span class="custom-control-description">Direto </span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div style="border-bottom: 1px solid rgba(0, 0, 0, 0.125);margin-bottom:10px;">
+                    <div class="form-group">
+                        <label style="font-size:small">Horário</label>
+                        <div class="d-flex">
+                            <select class="form-control form-control-sm" id="HorarioCargaSemanal" style="max-width:80%;">
+                                <option disabled="disabled" value="a" selected="selected"></option>
+                                @foreach (var Horario in SapewinWeb.Metodos.ListaMemoriaHorarios.RetornaListadeHorarios(SapewinWeb.Metodos.ListaMemoriaHorarios.tipo.CargaSemanal))
+                                {
+                                    <option value="@Horario.IDHorario">@Horario.IDHorario - @Horario.Descricao</option>
+                                }
+                            </select>
+                            <button type="button" style="margin-left:10px;" class="btn btn-sm btn-dark" id="AddCargaSemanal"><i class="fa fa-fw fa-plus"></i></button>
+                        </div>
+                    </div>
+                </div> 
+                <div class="card-header" style="margin-bottom:10px;background-color: rgba(255, 133, 27, 0.3);"><strong>Horarios</strong></div>              
+                <div class="row">
+                    <div class="col-10">
+                        <table class="table table-sm table-bordered table-hover" style="font-size:small;">
+                            <thead>
+                                <tr>
+                                    <th></th>
+                                    <th>ID</th>
+                                    <th>Descrição</th>
+                                    <th>Carga Horária</th>
+                                    <th>Dia Ini.</th>
+                                    <th>Hora Entr.</th>
+                                    <th>Direto</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody id="TabCargaSemanal"></tbody>
+                        </table>
+                    </div>
+                    <div class="col-2">
+                        <div>
+                            <a id="HorarioCargaSemanalup" href="#"><i class="fa fa-arrow-up" aria-hidden="true"></i></a>
+                        </div>
+                        <div>
+                            <a id="HorarioCargaSemanaldown" href="#"><i class="fa fa-arrow-down" aria-hidden="true"></i></a>
+                        </div>
+                    </div>                  
+                </div>              
+            </form>
+        </div>
+    </div>
+</div>
+<div class="modal-footer">
+    <button type="submit" id="salvar" form="FormSemanal" class="btn btn-outline-success"><i class="fa fa-fw fa-floppy-o"></i> Salvar</button>
+    <button type="button" class="btn btn-outline-danger" data-dismiss="modal"><i class="fa fa-fw fa-ban"></i> Cancelar</button>
+</div>
+<div id="WinEscalas" data-backdrop="static" class="modal fade" style="overflow-x:auto; overflow-y:auto;">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content" id="ModalWinEscalas">
+            <div class="modal-header"><h6><i class="fa fa-calendar-check-o" aria-hidden="true"></i> Folgas</h6></div>
+            <div class="modal-body">
+                <form method="post" action="/CadastroEscalas/AddFolga/?id=" id="FormFolgas">
+                    <table class="table table-sm table-bordered table-hover">
+                        <tbody id="TabFolgas"></tbody>
+                    </table>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" form="FormFolgas" class="btn btn-outline-success"><i class="fa fa-fw fa-floppy-o"></i> Salvar</button>
+                <button type="button" class="btn btn-outline-danger" onclick="$('#WinEscalas').modal('hide');"><i class="fa fa-fw fa-ban"></i> Cancelar</button>
+            </div>
+        </div>
+    </div>
+</div>
+@*<script src="~/scripts/jquery.min.js"></script>*@
+<script src="~/scripts/Index.js"></script>
+<script>
+    monitorador();
+    var LinhadeHorario = 0;
+
+    var LinhaCargaSemanal = 0;
+
+    var Horarios;
+    $.post('/CadastroEscalas/CadastroEscalas_JsonHorarios', function (data) {
+        Horarios = data.Horarios;
+    });
+
+    function AtualizaHorarios() {
+        $.post('/CadastroEscalas/CadastroEscalas_JsonHorarios', function (data) {
+            Horarios = data.Horarios;
+        });
+    }
+
+    $('#FormFolgas').submit(function (e) {
+        e.preventDefault();
+        e.defaultPrevented = true;
+
+        Folgas = new Array();
+        $('.folga').each(function (idx, el) {
+            Folgas.push($(el).is(':checked'));            
+        });
+        $.post($(this).attr('action') + $('.folga').first().parent().attr('IDRef') + '&Folgas=' + Folgas.join('&Folgas='), function (data) {
+            if(data.status == true){
+                $('#WinEscalas').modal('hide');
+            }
+        });
+
+    });
+
+    $('.Hrr').focusout(function () {
+        txt = $(this);
+        if (Tempo_Minuto([txt.val()])[0] >= 1440) {
+            txt.val('');
+        }
+        if (!txt.val().includes('_')) {
+            if (txt.val().split(':')[1] > 59) {
+                txt.val('');
+            }
+        }
+    });
+
+    $('#HorarioCargaSemanalup').click(function () {
+        $('#TabCargaSemanal').load('/CadastroEscalas/MudaOrdemCargaSemanal/?id=' + LinhaCargaSemanal + '&sentido=up')
+    });
+
+    $('#HorarioCargaSemanaldown').click(function () {
+        $('#TabCargaSemanal').load('/CadastroEscalas/MudaOrdemCargaSemanal/?id=' + LinhaCargaSemanal + '&sentido=down')
+    });
+
+    $('#AddCargaSemanal').click(function () {
+        $('#TabCargaSemanal').load('/CadastroEscalas/GridHorariosCargaSemanal/?id=' + $('#HorarioCargaSemanal').val() + '&Diainicio=' + $('#Diainicio').val() + '&HoraEntrada=' + $('#HoraEntrada').val() + '&Direto=' + $('#Direto').is(':checked'), function (r, s, x) {
+            if (s == 'success') {
+                $('#HorarioCargaSemanal').val('a');
+                $('#Diainicio').val('a');
+                $('#HoraEntrada').val('');
+                $('#Direto').prop('checked', false);
+            }
+            if (s == 'error') {
+                $('#txtalertaModal').text('Erro: ' + x.status + " : " + x.statusText);
+                $('#AlertaModal').removeAttr('hidden');$('#Mywrapper').animate({ scrollTop: 0 }, 1000);
+            }
+        });
+    });
+
+
+    $('.Tipos').click(function () {
+        tipo = $(this);
+        $('#salvar').attr('form', tipo.attr('Formatt'));
+        $('#ID').attr('form', tipo.attr('Formatt'));
+        $('#Descricao').attr('form', tipo.attr('Formatt'));
+        $('#ViradaSemana').attr('form', tipo.attr('Formatt'));
+    });   
+
+    $('#Horarioup').click(function (e) {
+        e.preventDefault();
+        e.defaultPrevented = true;
+        if (LinhadeHorario != 0) {
+            $('#TabHorarios').load('/CadastroEscalas/MudaOrdem/?id=' + LinhadeHorario + '&sentido=up');
+        }
+    });
+
+    $('#Horariodown').click(function (e) {
+        e.preventDefault();
+        e.defaultPrevented = true;
+        if (LinhadeHorario != 0) {
+            $('#TabHorarios').load('/CadastroEscalas/MudaOrdem/?id=' + LinhadeHorario + '&sentido=down');
+        }
+    });
+
+    $('#TipoRevezamento').change(function () {
+        valor = $(this);
+        AtualizaHorarios();
+        $('#HorariosRevezamento').children().remove();
+        $('#HorariosRevezamento').append('<option selected="selected" disabled="disabled"></option>');        
+        $('#HorariosRevezamento').append('<option value="0">Folga</option>');
+        $('#HorariosRevezamento').append('<option value="-1">Sabado</option>');
+        $('#HorariosRevezamento').append('<option value="-2">Domingo</option>');
+        var TipoHorario = Horarios.filter(function (item) { return item.Tipo == valor.val(); })
+        for (var i = 0; i < TipoHorario.length; i++) {
+            $('#HorariosRevezamento').append('<option value="' + TipoHorario[i].IDHorario + '">' + TipoHorario[i].IDHorario + ' -  ' + TipoHorario[i].Descricao + '</option>');
+        }        
+    });
+
+    $('#addHorarios').click(function () {
+        if (($('#HorariosRevezamento').val() != 'a' && $('#HorariosRevezamento').val() != null) && ($('#Dias').val() != 'a' && $('#Dias').val() != null)) {
+            $('#TabHorarios').load('/CadastroEscalas/GridHorarios/?id=' + $('#HorariosRevezamento').val() + '&dias=' + $('#Dias').val(), function (r, s, x) {
+                if (s == 'success') {
+                    $('#Dias').val('a');
+                    $('#HorariosRevezamento').val('a');
+                } else {
+                    $('#txtalertaModal').text('Erro: ' + x.status + " : " + x.statusText);
+                    $('#AlertaModal').removeAttr('hidden');$('#Mywrapper').animate({ scrollTop: 0 }, 1000);
+                }
+            });
+        } else {
+            $('#txtalertaModal').text('Preencha todos os campos');
+            $('#AlertaModal').removeAttr('hidden');$('#Mywrapper').animate({ scrollTop: 0 }, 1000);
+        }
+    });
+
+    $('#TabHorarios').on('click', '.btnRemoverHorario', function () {
+        btn = $(this);
+        if (LinhadeHorario == btn.attr('IDHorario')) {
+
+        }
+        $('#TabHorarios').load('/CadastroEscalas/GridHorarios/?Remover=' + btn.attr('IDHorario'), function (r, s, x) {
+            if (s == 'error') {
+                $('#txtalertaModal').text('Erro: ' + x.status + " : " + x.statusText);
+                $('#AlertaModal').removeAttr('hidden');$('#Mywrapper').animate({ scrollTop: 0 }, 1000);
+            } 
+        });
+    });
+
+    $("#txtID").keyup(function () {
+        if ($("#txtID").val() != "") {
+            $("#txtID").val($("#txtID").val().replace(/[/\D]/gi, ""));
+        }
+    });
+
+    $('#FormSemanal,#FormRevezamento,#FormCargaSemanal').submit(function (e) {
+        e.preventDefault();
+        e.defaultPrevented = true;
+        Semana = new Array();
+
+        $('.dia').each(function (idx, el) {            
+            Semana.push($(el).val());
+        });       
+
+        $.post($(this).attr('action') + '&Semana=' + Semana.join('&Semana='), $(this).serialize(), function (data) {
+            if (data.status == true) {
+                LoadGridCadastroEscalas();
+                $('#WinGenerica').modal('hide');
+               
+            } else {
+                $('#txtalertaModal').text(data.msg);
+                $('#AlertaModal').removeAttr('hidden', 'hidden');
+            }
+        });
+    });
+
+    $('#Seg').change(function () {
+        valor = $(this);
+        AtualizaHorarios();
+        $('#TotalSeg').text('00:00');
+        $('.Seg').children().remove();
+        $('.Seg').append('<option disabled="disabled" selected="selected"></option>');
+        $('.Seg').append('<option value="0">Folga</option>');
+        var TipoHorario = Horarios.filter(function (item) { return item.Tipo == valor.val() });
+        for (var i = 0; i < TipoHorario.length; i++) {
+            $('.Seg').append('<option value="' + TipoHorario[i].IDHorario + '">' + TipoHorario[i].IDHorario + ' -  ' + TipoHorario[i].Descricao + '</option>');
+        }
+    });
+
+    $('#Ter').change(function () {
+        valor = $(this);
+        AtualizaHorarios();
+        $('#TotalTer').text('00:00')
+        $('.Ter').children().remove();
+        $('.Ter').append('<option disabled="disabled" selected="selected"></option>');
+        $('.Ter').append('<option value="0">Folga</option>');
+        var TipoHorario = Horarios.filter(function (item) { return item.Tipo == valor.val() });
+        for (var i = 0; i < TipoHorario.length; i++) {
+            $('.Ter').append('<option value="' + TipoHorario[i].IDHorario + '">' + TipoHorario[i].IDHorario + ' -  ' + TipoHorario[i].Descricao + '</option>');
+        }
+    });
+
+    $('#Qua').change(function () {
+        valor = $(this);
+        AtualizaHorarios();
+        $('#TotalQua').text('00:00')
+        $('.Qua').children().remove();
+        $('.Qua').append('<option disabled="disabled" selected="selected"></option>');
+        $('.Qua').append('<option value="0">Folga</option>');
+        var TipoHorario = Horarios.filter(function (item) { return item.Tipo == valor.val() });
+        for (var i = 0; i < TipoHorario.length; i++) {
+            $('.Qua').append('<option value="' + TipoHorario[i].IDHorario + '">' + TipoHorario[i].IDHorario + ' -  ' + TipoHorario[i].Descricao + '</option>');
+        }
+    });
+
+    $('#Qui').change(function () {
+        valor = $(this);
+        AtualizaHorarios();
+        $('#TotalQui').text('00:00')
+        $('.Qui').children().remove();
+        $('.Qui').append('<option disabled="disabled" selected="selected"></option>');
+        $('.Qui').append('<option value="0">Folga</option>');
+        var TipoHorario = Horarios.filter(function (item) { return item.Tipo == valor.val() });
+        for (var i = 0; i < TipoHorario.length; i++) {
+            $('.Qui').append('<option value="' + TipoHorario[i].IDHorario + '">' + TipoHorario[i].IDHorario + ' -  ' + TipoHorario[i].Descricao + '</option>');
+        }
+    });
+
+    $('#Sex').change(function () {
+        valor = $(this);
+        AtualizaHorarios();
+        $('#TotalSex').text('00:00')
+        $('.Sex').children().remove();
+        $('.Sex').append('<option disabled="disabled" selected="selected"></option>');
+        $('.Sex').append('<option value="0">Folga</option>');
+        var TipoHorario = Horarios.filter(function (item) { return item.Tipo == valor.val() });
+        for (var i = 0; i < TipoHorario.length; i++) {
+            $('.Sex').append('<option value="' + TipoHorario[i].IDHorario + '">' + TipoHorario[i].IDHorario + ' -  ' + TipoHorario[i].Descricao + '</option>');
+        }
+    });
+
+    $('#Sab').change(function () {
+        valor = $(this);
+        AtualizaHorarios();
+        $('#TotalSab').text('00:00')
+        $('.Sab').children().remove();
+        $('.Sab').append('<option disabled="disabled" selected="selected"></option>');
+        $('.Sab').append('<option value="0">Folga</option>');
+        $('.Sab').append('<option value="-1">Sábado</option>');
+        var TipoHorario = Horarios.filter(function (item) { return item.Tipo == valor.val() });
+        for (var i = 0; i < TipoHorario.length; i++) {
+            $('.Sab').append('<option value="' + TipoHorario[i].IDHorario + '">' + TipoHorario[i].IDHorario + ' -  ' + TipoHorario[i].Descricao + '</option>');
+        }
+    });
+
+    $('#Dom').change(function () {
+        valor = $(this);
+        AtualizaHorarios();
+        $('#TotalDom').text('00:00')
+        $('.Dom').children().remove();
+        $('.Dom').append('<option disabled="disabled" selected="selected"></option>');
+        $('.Dom').append('<option value="0">Folga</option>');
+        $('.Dom').append('<option value="-2">Domingo</option>');
+        var TipoHorario = Horarios.filter(function (item) { return item.Tipo == valor.val() });
+        for (var i = 0; i < TipoHorario.length; i++) {
+            $('.Dom').append('<option value="' + TipoHorario[i].IDHorario + '">' + TipoHorario[i].IDHorario + ' -  ' + TipoHorario[i].Descricao + '</option>');
+        }
+    });
+
+    $('.Seg').change(function () {
+        combo = $(this);
+        var Horario = Horarios.filter(function (item) { return item.IDHorario == combo.val(); });
+        Horario = Horario[0];
+        if (Horario == null) {
+            $('#TotalSeg').text('00:00')
+        } else {
+            $('#TotalSeg').text((Horario.Tipo == 1 ? Horario.TotalJornada : Horario.Carga));
+        }
+
+    });
+
+    $('.Ter').change(function () {
+        combo = $(this);
+        var Horario = Horarios.filter(function (item) { return item.IDHorario == combo.val(); });
+        Horario = Horario[0];
+        if (Horario == null) {
+            $('#TotalTer').text('00:00')
+        } else {
+            $('#TotalTer').text((Horario.Tipo == 1 ? Horario.TotalJornada : Horario.Carga));
+        }
+
+    });
+
+    $('.Qua').change(function () {
+        combo = $(this);
+        var Horario = Horarios.filter(function (item) { return item.IDHorario == combo.val(); });
+        Horario = Horario[0];
+        if (Horario == null) {
+            $('#TotalQua').text('00:00')
+        } else {
+            $('#TotalQua').text((Horario.Tipo == 1 ? Horario.TotalJornada : Horario.Carga));
+        }
+
+    });
+
+    $('.Qui').change(function () {
+        combo = $(this);
+        var Horario = Horarios.filter(function (item) { return item.IDHorario == combo.val(); });
+        Horario = Horario[0];
+        if (Horario == null) {
+            $('#TotalQui').text('00:00')
+        } else {
+            $('#TotalQui').text((Horario.Tipo == 1 ? Horario.TotalJornada : Horario.Carga));
+        }
+
+    });
+
+    $('.Sex').change(function () {
+        combo = $(this);
+        var Horario = Horarios.filter(function (item) { return item.IDHorario == combo.val(); });
+        Horario = Horario[0];
+        if (Horario == null) {
+            $('#TotalSex').text('00:00')
+        } else {
+            $('#TotalSex').text((Horario.Tipo == 1 ? Horario.TotalJornada : Horario.Carga));
+        }
+
+    });
+
+    $('.Sab').change(function () {
+        combo = $(this);
+        var Horario = Horarios.filter(function (item) { return item.IDHorario == combo.val(); });
+        Horario = Horario[0];
+        if (Horario == null) {
+            $('#TotalSab').text('00:00')
+        } else {
+            $('#TotalSab').text((Horario.Tipo == 1 ? Horario.TotalJornada : Horario.Carga));
+        }
+
+    });
+
+    $('.Dom').change(function () {
+        combo = $(this);
+        var Horario = Horarios.filter(function (item) { return item.IDHorario == combo.val(); });
+        Horario = Horario[0];
+        if (Horario == null) {
+            $('#TotalDom').text('00:00');
+        } else {
+            $('#TotalDom').text((Horario.Tipo == 1 ? Horario.TotalJornada : Horario.Carga));
+        }
+
+    });
+
+    $('.dia,.Horr').change(function () {
+        var horas = new Array();
+        $('.dia').each(function (idx, el) {
+            v = $(el).val();
+            Horario = Horarios.filter(function (item) { return item.IDHorario == v });
+            Horario = Horario[0];
+            if (Horario != null) {
+                horas.push((Horario.Tipo == 1 ? Horario.TotalJornada : Horario.Carga));
+            }
+        });
+        horas = Tempo_Minuto(horas);
+
+        $("#TotalGeral").text(SomaHoras_Tempo(horas));
+
+    });
+
+    $('#FechaAlertaModal').click(function () {
+        $(this).parent().attr('hidden', 'hidden');
+    });
+</script>

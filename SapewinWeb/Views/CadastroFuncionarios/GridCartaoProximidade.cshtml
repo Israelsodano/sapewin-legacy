@@ -1,0 +1,49 @@
+﻿@model IEnumerable<SapewinWeb.Models.CartaoProximidade>
+
+@foreach (var Cartao in Model)
+{
+    <tr>
+        <td>@Cartao.DataInicial.ToString().Substring(0, 10)</td>
+        <td>@(Cartao.DataFinal == null ? "Indefinido" : Cartao.DataFinal.Value.ToString().Substring(0,10))</td>
+        <td>@Cartao.NumerodoCartao.PadLeft(20, '0')</td>
+        <td>
+            @if (Cartao.DataFinal == null)
+            {
+                <button class="btn btn-sm text-white btn-info mypopover" data-content="@("<div class=\"form-inline\"><input type=\"date\" id=\"InputBaixa\" style=\"width:150px;margin-right:10px;\" class=\"form-control form-control-sm\" /><button class=\"btn btn-sm btn-dark\" valor=\"" + $"{Cartao.DataInicial.Year.ToString("0000")}-{Cartao.DataInicial.Month.ToString("00")}-{Cartao.DataInicial.Day.ToString("00")}/{(Cartao.DataFinal == null ? ($"/{Cartao.NumerodoCartao}") : ($"{Cartao.DataFinal.Value.Year.ToString("0000")}-{Cartao.DataFinal.Value.Month.ToString("00")}-{Cartao.DataFinal.Value.Day.ToString("00")}/{Cartao.NumerodoCartao}"))}" +"\" onclick=\"btn = $(this); if ($('#InputBaixa').val() != '') { var baixa = btn.attr('valor').split('/'); var ini = new Date(baixa[0]); var fim = new Date($('#InputBaixa').val()).getTime(); if (DateDiff(ini, fim) <= 0) {  baixa[1] = $('#InputBaixa').val(); var str = baixa[0] + '/' + baixa[1] + '/' + baixa[2]; Cartoes = Cartoes.filter(function (x) { return x != btn.attr('valor'); }); Cartoes.push(str); AtualizaGridCartoes(); $('.popover').popover('hide'); } else { $('#txtalertaModal').text('A data de inicio é maior que a final'); $('#AlertaModal').removeAttr('hidden', 'hidden'); } }\">Baixa</button></div>")" title="Data da Baixa no Cartão" data-toggle="popover" type="button"><i class="fa fa-calendar-check-o" aria-hidden="true"></i></button>
+            }
+            <button valor="@($"{Cartao.DataInicial.Year.ToString("0000")}-{Cartao.DataInicial.Month.ToString("00")}-{Cartao.DataInicial.Day.ToString("00")}/{(Cartao.DataFinal == null ? ($"/{Cartao.NumerodoCartao}") : ($"{Cartao.DataFinal.Value.Year.ToString("0000")}-{Cartao.DataFinal.Value.Month.ToString("00")}-{Cartao.DataFinal.Value.Day.ToString("00")}/{Cartao.NumerodoCartao}"))}")" class="btn btn-sm text-white btn-danger btnRemoverCartao" title="Remover" type="button"><i class="fa fa-fw fa-trash-o"></i></button>
+        </td>
+    </tr>    
+}
+
+<script>
+    monitorador();
+    $(document).ready(function () {
+        $('[data-toggle="popover"]').popover({ html: true });
+    });
+
+    var verificapopover = false;
+
+    $(document).on('click', '.popover', function () {
+        verificapopover = false;
+    });
+
+    $(document).on('mouseleave', '.popover', function () {
+        verificapopover = true;
+    });
+
+    $('.mypopover').mouseleave(function () {
+        verificapopover = true;
+    });
+
+    $('.mypopover').click(function () {
+        verificapopover = false;
+        $('.popover').popover('hide');
+    });
+
+    $(document).click(function () {
+        if (verificapopover) {
+            $('.popover').popover('hide');
+        }
+    });
+</script>

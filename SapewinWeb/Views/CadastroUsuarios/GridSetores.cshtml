@@ -1,0 +1,82 @@
+﻿@model IEnumerable<SapewinWeb.Models.Setores>
+
+<table class="table table-sm table-hover table-bordered table-striped" style="margin-bottom:50px;font-size:small">
+    <thead>
+        <tr>
+            <th>Código</th>
+            <th>Descrição</th>
+            <th>
+              
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var Setor in Model)
+        {
+            <tr>
+                <td>@Setor.IDSetor</td>
+                <td>@Setor.Nome</td>
+                <td>
+                    <div class="switch">
+                        <label>
+                            <input checked="checked" class="Setor" IDEmpresa="@Setor.IDEmpresa" IDSetor="@Setor.IDSetor" type="checkbox">
+                            <span class="slider "></span>
+                            <span></span>
+                        </label>
+                    </div>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<script>    
+    monitorador();
+    $('.Setor').each(function (idx, el) {
+        if (!SetoresSelecionados.includes($(el).attr('IDSetor') + '/' + $(el).attr('IDEmpresa'))) {
+            $(el).prop('checked', false);
+        } 
+    });
+
+    if($('.Setor').length == $('.Setor:checked').length && $('.Setor').length > 0){
+        $('#MarcatdsSetor').prop('checked', true);
+    } else {
+        $('#MarcatdsSetor').prop('checked', false);
+    }
+    
+    $('#MarcatdsSetor').click(function () {
+        slide = $(this);
+        SetoresSelecionados = [];
+        if (slide.is(':checked')) {
+            $('.Setor').each(function (idx, el) {
+                $(el).prop('checked', true);
+                SetoresSelecionados.push($(el).attr('IDSetor') + '/' + $(el).attr('IDEmpresa'));
+            });
+        } else {
+            $('.Setor').prop('checked', false);
+        }
+        AtualizaGridFuncionarios()
+    });
+
+    $('.Setor').click(function () {
+        slide = $(this);
+        if (slide.is(':checked')) {
+            SetoresSelecionados.push(slide.attr('IDSetor') + '/' + slide.attr('IDEmpresa'));
+        } else {
+            SetoresSelecionados = SetoresSelecionados.filter(function (i) { return i != slide.attr('IDSetor') + '/' + slide.attr('IDEmpresa') });
+        }
+
+        if ($('.Setor').length == $('.Setor:checked').length && $('.Setor').length > 0) {
+            $('#MarcatdsSetor').prop('checked', true);
+        } else {
+            $('#MarcatdsSetor').prop('checked', false);
+        }
+        AtualizaGridFuncionarios();
+    });    
+
+    function AtualizaGridSetores() {
+        $('#TabSetores').html(' <div class="container-fluid align-items-center text-center align-self-center flex-column d-flex justify-content-center" style="height:500px;" ><i class="fa fa-spinner fa-spin fa-5x fa-fw"></i></div>');
+        $('#TabSetores').load('/CadastroUsuarios/GridSetores/?id=' + cbxEmpresas + '&pesquisa=' + $('#txtPesquisarSetor').val().replace(' ', '+'));
+
+    }   
+
+</script>

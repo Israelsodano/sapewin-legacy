@@ -1,0 +1,92 @@
+﻿@model IEnumerable<SapewinWeb.Models.Horarios>
+@foreach (var Horario in Model)
+{
+    <tr class="HorarioCargaSemanal" IDHorario="@Horario.IDRef">
+        <td>
+            <label style="font-size:small;" class="custom-control custom-checkbox mb-2 mr-sm-2 mb-sm-0">
+                <input type="checkbox" class="custom-control-input CkCargaSemanal" IDHorario="@Horario.IDHorario">
+                <span class="custom-control-indicator"></span>
+                <span class="custom-control-description"></span>
+            </label>
+        </td>
+        <td class="linha" IDHorario="@Horario.IDRef">@Horario.IDHorario.ToString("0000")</td>
+        <td class="linha" IDHorario="@Horario.IDRef">@Horario.Descricao</td>
+        <td class="linha" IDHorario="@Horario.IDRef">@Horario.Carga Horas</td>
+        <td class="linha" IDHorario="@Horario.IDRef">@Horario.DiaInicio.ToString()</td>
+        <td class="linha" IDHorario="@Horario.IDRef">@Horario.HoradeEntrada</td>
+        <td class="linha" IDHorario="@Horario.IDRef">@(Horario.Direto ? "Sim" : "Não")</td>
+        <td>
+            <div class="btn-group btn-group-sm">
+                <button type="button" class="btn btn-sm text-white btn-info btnFolga" IDHorario="@Horario.IDRef" title="Folgas"><i class="fa fa-calendar-check-o" aria-hidden="true"></i></button>
+                <button type="button" class="btn btn-sm text-white btn-danger btnRemoverHorarioCargaSemanal" IDHorario="@Horario.IDRef" title="Remover"><i class="fa fa-fw fa-trash-o"></i></button>
+            </div>
+        </td>
+    </tr>
+}
+<script>
+    monitorador();
+    $('.HorarioCargaSemanal').each(function (idx, el) {
+        if ($(el).attr('IDHorario') == LinhaCargaSemanal) {
+            $(el).addClass('table-active');
+            $(el).children().first().children().first().children().first().prop('checked', true);
+        }
+        console.log('');
+    });
+
+    $('.btnRemoverHorarioCargaSemanal').click(function () {
+        btn = $(this)
+        if (btn.attr('IDHorario') == LinhaCargaSemanal) {
+
+            LinhaCargaSemanal = 0;
+        }
+        $('#TabCargaSemanal').load('/CadastroEscalas/GridHorariosCargaSemanal/?Remover=' + btn.attr('IDHorario'), function (r, s, x) {
+            if (s == 'error') {
+                $('#txtalertaModal').text('Erro: ' + x.status + " : " + x.statusText);
+                $('#AlertaModal').removeAttr('hidden');$('#Mywrapper').animate({ scrollTop: 0 }, 1000);
+            }
+        });
+    });
+
+    $('.btnFolga').click(function () {
+        btn = $(this);
+        $('#TabFolgas').load('/CadastroEscalas/GridFolgas/?id=' + btn.attr('IDHorario'), function (r, s, x) {
+            if (s == 'success') {
+                $('#WinEscalas').modal('show');
+            }
+        });        
+    });
+
+    $('.linha').click(function () {
+        linha = $(this);       
+
+        if (!linha.parent().hasClass('table-active')) {
+            $('.HorarioCargaSemanal').removeClass('table-active');
+            $('.CkCargaSemanal').prop('checked', false);
+            linha.parent().addClass('table-active');
+            linha.parent().children().first().children().first().children().first().prop('checked', true);
+            LinhaCargaSemanal = linha.attr('IDHorario');
+
+        }else{
+            $('.HorarioCargaSemanal').removeClass('table-active');
+            $('.CkCargaSemanal').prop('checked', false);
+            LinhaCargaSemanal = 0;
+        }      
+        
+    });
+
+    $('.CkCargaSemanal').click(function () {
+        ck = $(this);
+        if(ck.is(':checked')){
+            $('.HorarioCargaSemanal').removeClass('table-active');
+            $('.CkCargaSemanal').prop('checked', false);
+            ck.prop('checked', true);
+            ck.parent().parent().parent().addClass('table-active')
+            LinhaCargaSemanal = ck.attr('IDHorario')
+        } else {
+            $('.HorarioCargaSemanal').removeClass('table-active');
+            $('.CkCargaSemanal').prop('checked', false);
+            LinhaCargaSemanal = 0;
+        }
+
+    });
+</script>

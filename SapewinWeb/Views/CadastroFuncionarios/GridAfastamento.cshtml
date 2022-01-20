@@ -1,0 +1,54 @@
+﻿
+@model IEnumerable<SapewinWeb.Models.Afastamentos>
+
+@foreach (var Afastamento in Model)
+{
+    <tr>
+        <td>@Afastamento.DataInicial.ToString().Substring(0, 10)</td>
+        <td>@(Afastamento.DataFinal == null ? "Indefinido" : Afastamento.DataFinal.Value.ToString().Substring(0, 10))</td>
+        <td>@Afastamento.Abreviacao</td>
+        <td>
+            @if (Afastamento.DataFinal == null)
+            {
+                <button class="btn btn-sm text-white btn-info mypopover" data-content="@("<div class=\"form-inline\"><input type=\"date\" id=\"InputBaixa\" style=\"width:150px;margin-right:10px;\" class=\"form-control form-control-sm\" /><button class=\"btn btn-sm btn-dark\" valor=\"" + $"{Afastamento.DataInicial.Year.ToString("0000")}-{Afastamento.DataInicial.Month.ToString("00")}-{Afastamento.DataInicial.Day.ToString("00")}/{(Afastamento.DataFinal == null ? ($"/{Afastamento.Abreviacao}") : ($"{Afastamento.DataFinal.Value.Year.ToString("0000")}-{Afastamento.DataFinal.Value.Month.ToString("00")}-{Afastamento.DataFinal.Value.Day.ToString("00")}/{Afastamento.Abreviacao}"))}" +"\" onclick=\"btn = $(this); if ($('#InputBaixa').val() != '') { var baixa = btn.attr('valor').split('/'); var ini = new Date(baixa[0]); var fim = new Date($('#InputBaixa').val()); if (DateDiff(ini, fim) <= 0) { baixa[1] = $('#InputBaixa').val(); var str = baixa[0] + '/' + baixa[1] + '/' + baixa[2]; Afastamentos = Afastamentos.filter(function (x) { return x != btn.attr('valor'); }); Afastamentos.push(str); AtualizaGridAfastamentos(); $('.popover').popover('hide'); } else { $('#txtalertaModal').text('A data de inicio é maior que a final'); $('#AlertaModal').removeAttr('hidden', 'hidden'); } }\">Baixa</button></div>")" title="Data da Baixa no Afastamento" data-toggle="popover" type="button"><i class="fa fa-calendar-check-o" aria-hidden="true"></i></button>
+            }
+            <button valor="@($"{Afastamento.DataInicial.Year.ToString("0000")}-{Afastamento.DataInicial.Month.ToString("00")}-{Afastamento.DataInicial.Day.ToString("00")}/{(Afastamento.DataFinal == null ? ($"/{Afastamento.Abreviacao}") : ($"{Afastamento.DataFinal.Value.Year.ToString("0000")}-{Afastamento.DataFinal.Value.Month.ToString("00")}-{Afastamento.DataFinal.Value.Day.ToString("00")}/{Afastamento.Abreviacao}"))}")" class="btn btn-sm text-white btn-danger btnRemoverAfastamento" title="Remover" type="button"><i class="fa fa-fw fa-trash-o"></i></button>
+        </td>
+    </tr>
+
+    <script>
+        
+    </script>
+}
+
+<script>
+    monitorador();
+    $(document).ready(function () {
+        $('[data-toggle="popover"]').popover({ html: true });
+    });
+
+    var verificapopover = false;
+
+    $(document).on('click', '.popover', function () {
+        verificapopover = false;
+    });
+
+    $(document).on('mouseleave', '.popover', function () {
+        verificapopover = true;
+    });
+
+    $('.mypopover').mouseleave(function () {
+        verificapopover = true;
+    });
+
+    $('.mypopover').click(function () {
+        verificapopover = false;
+        $('.popover').popover('hide');
+    });
+
+    $(document).click(function () {
+        if (verificapopover) {
+            $('.popover').popover('hide');
+        }
+    });
+</script>

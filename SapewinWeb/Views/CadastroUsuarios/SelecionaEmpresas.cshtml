@@ -1,0 +1,99 @@
+﻿@model IEnumerable<SapewinWeb.Models.Empresas>
+
+<table class="table table-sm table-striped table-hover table-bordered" style="margin-bottom:50px;font-size:small">
+    <thead>
+        <tr>
+            <th>Código</th>
+            <th>Descrição</th>
+            <th>Documento</th>
+            <th>
+                <div class="switch">
+                    <label>
+                        <input id="MarcatdsEmpresa" checked="checked" type="checkbox">
+                        <span class="slider "></span>
+                        <span>Marcar Todos</span>
+                    </label>
+                </div>
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var Empresa in Model)
+        {            <tr>
+                <td>@Empresa.IDEmpresa.ToString("0000")</td>
+                <td>@Empresa.Nome</td>
+                <td>@Empresa.Documento</td>
+                <td>
+                    <div class="switch">
+                        <label>
+                            <input @(ViewBag.Usuario == null ? "checked=\"checked\" " : SapewinWeb.Metodos.ObjUsuario.ComparaIDEmpresa(ViewBag.Usuario.IDLoginsistema, Empresa.IDEmpresa) ? "checked=\"checked\" " : "")class="Empresa" IDEmpresa="@Empresa.IDEmpresa" type="checkbox">
+                            <span class="slider "></span>
+                            <span></span>
+                        </label>
+                    </div>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<script>
+    monitorador();  
+    if (EmpresasSelecionadas.length == 0) {
+
+        $('.Empresa:checked').each(function (idx, el) {
+            EmpresasSelecionadas.push(parseInt($(el).attr('IDEmpresa')));
+        });
+    }
+
+    function PostdeArrays() {
+        $.post('/CadastroUsuarios/RetornaArrays/@(ViewBag.Usuario == null ? "" : $"?id={ViewBag.Usuario.IDLoginsistema}")', { Empresas: EmpresasSelecionadas }, function (data) {
+            if (data.status == true) {
+                SetoresSelecionados = data.Setores;
+                DepartamentosSelecionados = data.Departamentos;
+                FuncionariosSelecionados = data.Funcionarios;
+                FuncionariosNaoslc = data.FuncionariosNaoslc;
+            } else {
+                $('#txtalertaGeral').text(data.msg);
+                $('#AlertaGeral').removeAttr('hidden');$('#Mywrapper').animate({ scrollTop: 0 }, 1000);$('#Alerta').removeAttr('hidden');$('#Mywrapper').animate({ scrollTop: 0 }, 1000);
+            }
+        });
+    }
+
+    PostdeArrays();
+
+    $('#MarcatdsEmpresa').click(function () {
+        slide = $(this);
+        EmpresasSelecionadas = [];
+        if (slide.is(':checked')) {
+            $('.Empresa').each(function (idx, el) {
+                $(el).prop('checked', true);
+                EmpresasSelecionadas.push(parseInt($(el).attr('IDEmpresa')));
+            });
+        } else {
+            $('.Empresa').prop('checked', false);
+        }
+
+        PostdeArrays();
+
+        $('#PainelPermissoes').load('/CadastroUsuarios/Permissoes/@(ViewBag.Usuario != null ? $"?id={ViewBag.Usuario.IDLoginsistema}+Empresas=" : "-Empresas=")'.replace('+', '&').replace('-', '?') + EmpresasSelecionadas.join('&Empresas='));
+    });
+
+    $('.Empresa').click(function () {
+        slide = $(this);
+        if (slide.is(':checked')) {
+            EmpresasSelecionadas.push(parseInt(slide.attr('IDEmpresa')));
+        } else {
+            EmpresasSelecionadas = EmpresasSelecionadas.filter(function (i) { return i != parseInt(slide.attr('IDEmpresa')) });
+        }
+
+        if ($('.Empresa').length == $('.Empresa:checked').length && $('.Empresa').length > 0) {
+            $('#MarcatdsEmpresa').prop('checked', true);
+        } else {
+            $('#MarcatdsEmpresa').prop('checked', false);
+        }
+
+        PostdeArrays();
+
+      $('#PainelPermissoes').load('/CadastroUsuarios/Permissoes/@(ViewBag.Usuario != null ? $"?id={ViewBag.Usuario.IDLoginsistema}+Empresas=" : "-Empresas=")'.replace('+', '&').replace('-', '?') + EmpresasSelecionadas.join('&Empresas='));
+    });
+</script>

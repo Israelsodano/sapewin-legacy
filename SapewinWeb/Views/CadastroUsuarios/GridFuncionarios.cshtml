@@ -1,0 +1,85 @@
+﻿@model IEnumerable<SapewinWeb.Models.Funcionarios>
+
+<table class="table table-sm table-striped table-hover table-bordered" style="margin-bottom:50px;font-size:small">
+    <thead>
+        <tr>
+            <th>Código</th>
+            <th>Nome</th>            
+            <th>
+               
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var Funcionario in Model)
+        {
+            <tr>
+                <td>@Funcionario.IDFuncionario.ToString("0000")</td>
+                <td>@Funcionario.Nome</td>                
+                <td>
+                    <div class="switch">
+                        <label>
+                            <input checked="checked" class="Funcionario" IDEmpresa="@Funcionario.IDEmpresa" IDFuncionario="@Funcionario.IDFuncionario" type="checkbox">
+                            <span class="slider "></span>
+                            <span></span>
+                        </label>
+                    </div>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<script>
+    monitorador();
+    FuncionariosSelecionados = [];
+
+    $('.Funcionario').each(function (idx, el) {       
+        if (FuncionariosNaoslc.includes($(el).attr('IDFuncionario') + '/' + $(el).attr('IDEmpresa'))) {
+            $(el).prop('checked', false);
+        } else {
+            FuncionariosSelecionados.push($(el).attr('IDFuncionario') + '/' + $(el).attr('IDEmpresa'));
+        }
+    });       
+    
+    if ($('.Funcionario').length == $('.Funcionario:checked').length && $('.Funcionario').length > 0) {
+        $('#MarcatdsFuncionario').prop('checked', true);
+    } else {
+        $('#MarcatdsFuncionario').prop('checked', false);
+    }
+
+    $('#MarcatdsFuncionario').click(function () {
+        slide = $(this);
+        FuncionariosSelecionados = [];
+        if (slide.is(':checked')) {
+            $('.Funcionario').each(function (idx, el) {
+                $(el).prop('checked', true);
+                FuncionariosSelecionados.push($(el).attr('IDFuncionario') + '/' + $(el).attr('IDEmpresa'));
+                FuncionariosNaoslc = [];
+            });
+        } else {
+            $('.Funcionario').each(function (idx, el) {
+                $(el).prop('checked', true);
+                FuncionariosNaoslc.push($(el).attr('IDFuncionario') + '/' + $(el).attr('IDEmpresa'));
+            });
+            $('.Funcionario').prop('checked', false);
+        }
+    });
+
+    $('.Funcionario').click(function () {
+        slide = $(this);
+        if(slide.is(':checked')){
+            FuncionariosSelecionados.push(slide.attr('IDFuncionario') + '/' + slide.attr('IDEmpresa'));
+            FuncionariosNaoslc = FuncionariosNaoslc.filter(function(i){ return i != slide.attr('IDFuncionario') + '/' + slide.attr('IDEmpresa')})
+        } else {
+            FuncionariosNaoslc.push(slide.attr('IDFuncionario') + '/' +slide.attr('IDEmpresa'));
+            FuncionariosSelecionados = FuncionariosSelecionados.filter(function (i) { return i != slide.attr('IDFuncionario') + '/' +slide.attr('IDEmpresa') });
+        }
+
+        if ($('.Funcionario').length == $('.Funcionario:checked').length && $('.Funcionario').length > 0) {
+            $('#MarcatdsFuncionario').prop('checked', true);
+        } else {
+            $('#MarcatdsFuncionario').prop('checked', false);
+        }
+    });
+</script>
+

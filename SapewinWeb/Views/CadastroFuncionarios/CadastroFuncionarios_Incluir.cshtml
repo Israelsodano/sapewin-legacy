@@ -1,0 +1,591 @@
+﻿<div class="modal-header" style="margin-bottom:10px;">
+    <h5 class="modal-title"><i class="fa fa-th" aria-hidden="true"></i> Cadastro de Funcionários > Incluir</h5>
+</div>
+
+<div class="alert alert-danger alert-dismissible fade show" hidden="hidden" id="Alerta" role="alert">
+    <button type="button" id="FechaAlerta" class="close" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+    <strong class="txtalerta" id="txtalerta"></strong>
+</div>
+<form id="FormInserirFuncionario" action="/CadastroFuncionarios/CadastroFuncionarios_Incluir_Salvar" method="post">
+    <div class="py-3">
+        <div class="container-fluid" id="TabMenu" style="font-size:small">
+            <div class="py-3">
+                <ul class="nav nav-tabs text-center" style="margin-bottom:15px;">
+                    <li class="nav-item">
+                        <a class="nav-link active" data-toggle="tab" id="Dados" href="#PainelCadastro" role="tab"><span> Cadastro</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-toggle="tab" id="DadosPrincipais" href="#PainelDadosPrincipais" role="tab"><span> Dados Principais</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-toggle="tab" id="DadosAuxiliares" href="#PainelDadosAuxiliares" role="tab"><span> Dados Auxiliares</span></a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="tab-content" style="font-size:small;">
+            <div class="tab-pane active fade show" id="PainelCadastro">
+                <div class="container">
+                    
+                    <div class="row">                     
+                        <div class="col-8">
+                            <div class="form-group">
+                                <label>Código</label>
+                                <input type="text" id="txtID" name="IDFuncionario" maxlength="18" placeholder="Máx. 18 Dígitos" class="form-control form-control-sm">
+                            </div>
+                            <div class="form-group">
+                                <label>Nome</label>
+                                <input type="text" name="Nome" maxlength="50" class="form-control form-control-sm">
+                            </div>
+                            <div class="form-group">
+                                <label>PIS</label>
+                                <input type="text" name="PIS" id="PIS" maxlength="14" class="form-control form-control-sm">
+                            </div>
+                        </div>  
+                        <div class="col-4" style="border-left: 1px solid rgba(0, 0, 0, 0.125);">
+                            <div style="display:table;" class="text-left">
+                                <div class="form-group">
+                                    <img id="FotoFuncionario" src="data:image/png;base64, @ViewBag.ImagemPadrao" style="max-height:200px;" class="img-fluid" alt="Foto do Funcionario">
+                                </div>
+                                <div class="form-group">
+                                    <div class="btn-group" style="width:100%;">
+                                        <button type="button" style="width:100%;" class="btn btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"><i class="fa fa-fw fa-pencil-square-o"></i> Alterar Foto</button>
+                                        <div class="dropdown-menu text-center">
+                                            <input class="form-control-file form-control-sm" id="Arquivo" title="Arquivo" type="file" accept="image/png, image/jpeg" />
+                                            <div role="separator" class="dropdown-divider"></div>
+                                            <button type="button" style="width:90%;" class="btn btn-sm"><i class="fa fa-camera" aria-hidden="true"></i> Camera</button>
+                                        </div>
+                                        <button class="btn btn-sm text-white btn-danger" type="button" id="RemoverFoto" title="Remover"><i class="fa fa-fw fa-trash-o"></i></button>
+                                    </div>
+                                </div>
+                            </div>                           
+                        </div>                     
+                    </div>                  
+                    <div class="form-group">
+                        <label>Adimissão</label>
+                        <div class="d-flex">
+                            <input type="date" class="form-control form-control-sm" name="Admissao" style="margin-right:10px;max-width:300px;" />
+                            <div class="switch" style="margin-right:10px;">
+                                <label>
+                                    <input id="Rescisao" type="checkbox">
+                                    <span class="slider"></span>
+                                    <span>Rescisão</span>
+                                </label>
+                            </div>
+                            <input type="date" hidden="hidden" id="DataRescisao" name="Rescisao" style="max-width:300px;" class="form-control form-control-sm" />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label>Setor</label>
+                                <div class="d-flex">
+                                    <select class="form-control form-control-sm" name="IDSetor" id="SelectSetores" style="margin-right:5px;min-width:350px;">
+                                        @{
+                                            Html.RenderAction("Select", new { Select = SapewinWeb.Controllers.CadastroFuncionariosController.tipos.Setores });
+                                        }
+                                    </select>
+                                    <button class="btn btn-sm btn-info loadTela" Tipo="set" type="button" Evento="/CadastroSetores/CadastroSetores_Abrir/"><i class="fa fa-folder-open" aria-hidden="true"></i></button>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Parâmetro</label>
+                                <div class="d-flex">
+                                    <select class="form-control form-control-sm" name="IDParametro" id="SelectParametros" style="margin-right:5px;min-width:350px;">
+                                        @{
+                                            Html.RenderAction("Select", new { Select = SapewinWeb.Controllers.CadastroFuncionariosController.tipos.Parametros });
+                                        }
+                                    </select>
+                                    <button class="btn btn-sm btn-info loadTela" Tipo="par" type="button" Evento="/CadastroParametros/CadastroParametros_Abrir/"><i class="fa fa-folder-open" aria-hidden="true"></i></button>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Departamento</label>
+                                <div class="d-flex">
+                                    <select class="form-control form-control-sm" name="IDDepartamento" id="SelectDepartamentos" style="margin-right:5px;min-width:350px;">
+                                        @{
+                                            Html.RenderAction("Select", new { Select = SapewinWeb.Controllers.CadastroFuncionariosController.tipos.Departamentos });
+                                        }
+                                    </select>
+                                    <button class="btn btn-sm btn-info loadTela" Tipo="dep" type="button" Evento="/CadastroDepartamentos/CadastroDepartamentos_Abrir/"><i class="fa fa-folder-open" aria-hidden="true"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label>Cargo</label>
+                                <div class="d-flex">
+                                    <select class="form-control form-control-sm" name="IDCargo" id="SelectCargos" style="margin-right:5px;min-width:350px;">
+                                        @{
+                                            Html.RenderAction("Select", new { Select = SapewinWeb.Controllers.CadastroFuncionariosController.tipos.Cargos });
+                                        }
+                                    </select>
+                                    <button class="btn btn-sm btn-info loadTela" Tipo="car" type="button" Evento="/CadastroCargos/CadastroCargos_Abrir/"><i class="fa fa-folder-open" aria-hidden="true"></i></button>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Escala</label>
+                                <div class="d-flex">
+                                    <select class="form-control form-control-sm" name="IDEscala" id="SelectEscalas" style="margin-right:5px;min-width:350px;">
+                                        @{
+                                            Html.RenderAction("Select", new { Select = SapewinWeb.Controllers.CadastroFuncionariosController.tipos.Escalas });
+                                        }
+                                    </select>
+                                    <button class="btn btn-sm btn-info loadTela" Tipo="esc" type="button" Evento="/CadastroEscalas/CadastroEscalas_Abrir/"><i class="fa fa-folder-open" aria-hidden="true"></i></button>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-4">
+                                    <div class="form-group">
+                                        <label>Feriado</label>
+                                        <select class="form-control form-control-sm" name="Feriado">
+                                            <option value="1">Folga</option>
+                                            <option value="2">Trabalha</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-4">
+                                    <label>Intervalo</label>
+                                    <select class="form-control form-control-sm" name="Intervalo" id="TipodeIntervalo">
+                                        <option value="1">Manual</option>
+                                        <option value="2">Pré-Assinalado</option>
+                                    </select>
+                                </div>
+                                <div class="col-4">
+                                    <div>
+                                        <label class="custom-control custom-radio">
+                                            <input name="TipoIntervalo" checked="checked" id="IntervaloFixo" type="radio" class="custom-control-input">
+                                            <span class="custom-control-indicator"></span>
+                                            <span class="custom-control-description"> Fixo</span>
+                                        </label>
+                                    </div>
+                                    <div>
+                                        <label class="custom-control custom-radio">
+                                            <input name="TipoIntervalo" type="radio" id="IntervaloFlexivel" class="custom-control-input">
+                                            <span class="custom-control-indicator"></span>
+                                            <span class="custom-control-description"> Flexível</span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div> 
+
+                </div>
+            </div>
+            <div class="tab-pane fade" id="PainelDadosPrincipais">
+                <div class="container">
+                    <div class="form-group">
+                        <label>ID Folha</label>
+                        <input type="text" name="IDFolha" id="IDFolha" maxlength="18" class="form-control form-control-sm">
+                    </div>
+                    <div class="form-group">
+                        <label>CTPS Num.</label>
+                        <input type="text" name="CTPSNum" id="CTPSNum" maxlength="10" class="form-control form-control-sm">
+                    </div>
+                    <div class="form-group">
+                        <label>Serie</label>
+                        <input type="text" name="Serie" id="Serie" maxlength="6" class="form-control form-control-sm">
+                    </div>
+                    <div class="form-group">
+                        <div class="d-flex">
+                            <button class="btn btn-sm btn-dark" type="button" id="Cartaoprox" style="margin-right:10px;width:142px;">Cartão Proximidade</button>
+                            <input type="text" style="max-width:35%;" id="Cartaoproxtxt" name="Cartaoprox" class="form-control form-control-sm">
+                        </div>
+                    </div> 
+                    <div class="form-group">
+                        <div class="d-flex">
+                            <button type="button" id="Afastamentos" style="width:142px;margin-right:10px;" class="btn btn-sm btn-dark">Afastamentos</button>
+                            <label id="txtAfastamento">Não está afastado hoje</label>
+                        </div>   
+                    </div>
+                    <div class="form-group">
+                        <div class="d-flex">
+                            <button type="button" id="Folgas" style="width:142px;margin-right:10px;" class="btn btn-sm btn-dark">Folgas</button>
+                            <label id="txtFolga">Não está de Folga hoje</label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="d-flex">
+                            <button type="button" id="HorariosOcasionais" style="width:142px;margin-right:10px;" class="btn btn-sm btn-dark">Horários Ocasionais</button>
+                            <label id="txtHorario">Cumprindo horário normal</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-pane fade" id="PainelDadosAuxiliares">
+                <script src="~/scripts/jquery.maskedinput.min.js"></script>
+                <script>
+                    $('#Telefone').mask('(99)9999-9999?9');
+                    $('#CPF').mask('999.999.999-99');
+                </script>
+                <div class="container">
+                    <div class="form-group">
+                        <label>Telefone</label>
+                        <input class="form-control form-control-sm" name="Telefone" placeholder="(__)____-____" id="Telefone" />
+                    </div>
+                    <div class="form-group">
+                        <label>RG</label>
+                        <input class="form-control form-control-sm" maxlength="20" name="RG" />
+                    </div>
+                    <div class="form-group">
+                        <label>CPF</label>
+                        <input class="form-control form-control-sm" name="Cpf" placeholder="___.___.___-__" id="CPF"/>
+                    </div>
+                    <div class="form-group">
+                        <label>Salário</label>
+                        <input class="form-control form-control-sm" maxlength="15" name="Salariostr" />
+                    </div>
+                    <div class="form-group">
+                        <label>Endereço, Nº</label>
+                        <input class="form-control form-control-sm" maxlength="100" name="Endereco" />
+                    </div>
+                    <div class="form-group">
+                        <label>Cidade - Estado</label>
+                        <input class="form-control form-control-sm" maxlength="70" name="Cidade" />
+                    </div>
+                    <div class="form-group">
+                        <label>Observações</label>
+                        <textarea class="form-control form-control-sm" maxlength="300" name="Observacoes"/>                                               
+                    </div>
+                    <div class="form-group">
+                        <button type="button" id="Mensagens" class="btn btn-sm btn-dark">Mensagens no Cartão</button>
+                    </div>                    
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer" style="margin-bottom:60px;">
+        <button type="submit" class="btn btn-outline-success"><i class="fa fa-fw fa-floppy-o"></i> Salvar</button>
+        <button type="button" id="btnCancelar" Evento="/CadastroFuncionarios/CadastroFuncionarios_Abrir/" class="btn btn-outline-danger"><i class="fa fa-fw fa-ban"></i> Cancelar</button>
+    </div>
+</form>
+
+<script>
+    monitorador();
+    var Cartoes = new Array();
+
+    var Folgas = new Array();
+
+    var Afastamentos = new Array();
+
+    var Mensagens = new Array();
+
+    var Horarios = new Array();
+
+    var base64 = '';
+
+    var ModalAberta = "";
+
+    $('#PIS').focusout(function () {
+        var val = $('#PIS').val();
+        val = val.replace(/\D/gi, "");
+        var zeros = '';
+
+        for (var i = 0; i < 12 - val.length; i++) {
+            zeros += '0';
+        }
+        val = zeros + val;
+
+        $('#PIS').val(val);
+    });
+
+    $('#RemoverFoto').click(function () {
+
+        var imagem = "data:image/png;base64, @ViewBag.ImagemPadrao";
+
+        $('#FotoFuncionario').attr('src', imagem);
+
+        base64 = 'none';
+    });
+
+    $('#Arquivo').change(function () {
+        if ($('#Arquivo').val().includes('.jpg') || $('#Arquivo').val().includes('.png') || $('#Arquivo').val().includes('.jpeg')) {
+            console.log("asmalsmalmsla");
+            var arquivo = document.getElementById('Arquivo').files[0];
+            if (arquivo.size > 100000) {
+
+                $('#txtalerta').text('Foto selecionada maior que 100Kbs')
+                $('#Alerta').removeAttr('hidden'); $('#Mywrapper').animate({ scrollTop: 0 }, 1000);
+
+            } else {
+                var blob = new Blob([arquivo]);
+                var reader = new FileReader();
+                reader.readAsArrayBuffer(blob);
+
+                setTimeout(function () {
+
+                    var bytes = new Uint8Array(reader.result);
+
+                    var binary = '';
+
+                    for (var i = 0; i < bytes.length; i++) {
+                        binary += String.fromCharCode(bytes[i]);
+                    }
+
+                    base64 = window.btoa(binary);
+
+                    $('#FotoFuncionario').attr('src', 'data:image/png;base64, ' + base64);
+
+                    $('.dropdown-menu').removeClass('show');
+                }, 100);
+            }
+
+        }
+    });
+
+    $('#Mensagens').click(function () {
+        $('#ModalWin').html('<div class="container align-items-center text-center align-self-center flex-column d-flex justify-content-center" style="height:200px;" ><i class="fa fa-spinner fa-spin fa-5x fa-fw"></i></div>');
+        $('#WinGenerica').modal('show');
+        $('#ModalWin').load('/CadastroFuncionarios/Mensagens/', function (r, s, x) {
+            if (s == "success") {
+                $('#ModalTamanho').removeClass('modal-xlg');
+                $('#ModalTamanho').addClass('modal-lg');
+
+            } else {
+                $('#txtalerta').text('Erro: ' + x.statusText + ' : ' + x.status)
+                $('#Alerta').removeAttr('hidden');$('#Mywrapper').animate({ scrollTop: 0 }, 1000);
+
+            }
+        });
+    });
+
+    $('#Afastamentos').click(function () {
+        $('#ModalWin').html('<div class="container align-items-center text-center align-self-center flex-column d-flex justify-content-center" style="height:200px;" ><i class="fa fa-spinner fa-spin fa-5x fa-fw"></i></div>');
+        $('#WinGenerica').modal('show');
+        $('#ModalWin').load('/CadastroFuncionarios/Afastamentos/', function (r, s, x) {
+            if (s == "success") {
+                $('#ModalTamanho').removeClass('modal-xlg');
+                $('#ModalTamanho').addClass('modal-lg');
+
+            } else {
+                $('#txtalerta').text('Erro: ' + x.statusText + ' : ' + x.status)
+                $('#Alerta').removeAttr('hidden');$('#Mywrapper').animate({ scrollTop: 0 }, 1000);
+
+            }
+        });
+    });
+
+    $('#Folgas').click(function () {
+        $('#ModalWin').html('<div class="container align-items-center text-center align-self-center flex-column d-flex justify-content-center" style="height:200px;" ><i class="fa fa-spinner fa-spin fa-5x fa-fw"></i></div>');
+        $('#WinGenerica').modal('show');
+        $('#ModalWin').load('/CadastroFuncionarios/Folgas/', function (r, s, x) {
+            if (s == "success") {
+                $('#ModalTamanho').removeClass('modal-xlg');
+                $('#ModalTamanho').removeClass('modal-lg');
+
+            } else {
+                $('#txtalerta').text('Erro: ' + x.statusText + ' : ' + x.status)
+                $('#Alerta').removeAttr('hidden');$('#Mywrapper').animate({ scrollTop: 0 }, 1000);
+
+            }
+        });
+    });
+
+    $('#Cartaoprox').click(function () {
+        $('#ModalWin').html('<div class="container align-items-center text-center align-self-center flex-column d-flex justify-content-center" style="height:200px;" ><i class="fa fa-spinner fa-spin fa-5x fa-fw"></i></div>');
+        $('#WinGenerica').modal('show');
+        $('#ModalWin').load('/CadastroFuncionarios/CartaoProximidade/', function (r, s, x) {
+            if (s == "success") {
+                $('#ModalTamanho').removeClass('modal-xlg');
+                $('#ModalTamanho').addClass('modal-lg');
+
+            } else {
+                $('#txtalerta').text('Erro: ' + x.statusText + ' : ' + x.status)
+                $('#Alerta').removeAttr('hidden');$('#Mywrapper').animate({ scrollTop: 0 }, 1000);
+
+            }
+        });
+    });
+
+    $('#HorariosOcasionais').click(function () {
+        $('#ModalWin').html('<div class="container align-items-center text-center align-self-center flex-column d-flex justify-content-center" style="height:200px;" ><i class="fa fa-spinner fa-spin fa-5x fa-fw"></i></div>');
+        $('#WinGenerica').modal('show');
+        $('#ModalWin').load('/CadastroFuncionarios/HorariosOcasionais/', function (r, s, x) {
+            if (s == "success") {
+                $('#ModalTamanho').removeClass('modal-xlg');
+                $('#ModalTamanho').removeClass('modal-lg');
+            } else {
+                $('#txtalerta').text('Erro: ' + x.statusText + ' : ' + x.status)
+                $('#Alerta').removeAttr('hidden');$('#Mywrapper').animate({ scrollTop: 0 }, 1000);
+
+            }
+        });
+    });
+
+    $('#TipodeIntervalo').change(function () {
+        cbx = $(this);
+        if(cbx.val() == 1){
+            $('#IntervaloFlexivel').removeAttr('disabled')
+        } else {
+            $('#IntervaloFlexivel').prop('checked', false);
+            $('#IntervaloFlexivel').attr('disabled', 'disabled');
+            $('#IntervaloFixo').prop('checked', true);
+        }
+    });
+
+    $('.loadTela').click(function () {
+        btn = $(this);
+        $('#ModalWin').html('<div class="container-fluid py-3" id="BodyFuncionario"><div class="container align-items-center text-center align-self-center flex-column d-flex justify-content-center" style="height:500px;" ><i class="fa fa-spinner fa-spin fa-5x fa-fw"></i></div></div>');
+        $('#WinGenerica').modal('show');
+        $('#BodyFuncionario').load($(this).attr('Evento'), function (r, s, h) {
+            if (s == "success") {
+                ModalAberta = btn.attr('Tipo');
+                $('#ModalWin').find('.footermodal').html('<div class="modal-footer"><button type="button" class="btn btn-outline-danger" data-dismiss="modal"><i class="fa fa-fw fa-ban"></i> Cancelar</button></div>')
+                $('#ModalTamanho').removeClass('modal-xlg');
+                $('#ModalTamanho').addClass('modal-lg');
+                $('.indice').parent().removeClass('active');
+                $('.indice.CadastroFuncionarios').parent().addClass('active').addClass('show').parent().addClass('show').parent().children().first().removeClass('collapsed');
+                $('#WinGenerica').modal('show');
+            } else {
+                $('#txtalerta').text('Erro: ' + h.statusText + ' : ' + h.status)
+                $('#Alerta').removeAttr('hidden');$('#Mywrapper').animate({ scrollTop: 0 }, 1000);
+
+            }
+
+        });
+    });
+
+    $('#ModalWin').on('change', '.Seletor', function () {
+        if ($(this).val() == 'oitenta') { visualiza = 80; } else if ($(this).val() == 'vinte') { visualiza = 20; } else if ($(this).val() == 'quarenta') { visualiza = 40; } else { visualiza = 10; }
+        $($(this).attr('Load')).load($(this).attr('Evento') + $('.txtPesquisar').val() + '&Range=' + visualiza + '&Pagina=' + Pagina + '&Order=' + order + "&Condicao=" + $('#Contem').is(':checked'));
+    });
+
+    $('#WinGenerica').on('hidden.bs.modal', function () {
+        if(ModalAberta == 'set'){
+            $('#SelectSetores').load('/CadastroFuncionarios/Select/?Select=1', function (r, s, x) {
+                if (s == 'error') {
+                    $('#txtalerta').text('Erro: ' + x.statusText + ' : ' + x.status);
+                    $('#Alerta').removeAttr('hidden');$('#Mywrapper').animate({ scrollTop: 0 }, 1000);
+
+                }
+            });
+        } else if (ModalAberta == 'par') {
+            $('#SelectParametros').load('/CadastroFuncionarios/Select/?Select=2', function (r, s, x) {
+                if (s == 'error') {
+                    $('#txtalerta').text('Erro: ' + x.statusText + ' : ' + x.status);
+                    $('#Alerta').removeAttr('hidden'); $('#Mywrapper').animate({ scrollTop: 0 }, 1000);
+
+                }
+            });
+        }else if (ModalAberta == 'dep') {
+            $('#SelectDepartamentos').load('/CadastroFuncionarios/Select/?Select=3', function (r, s, x) {
+                if (s == 'error') {
+                    $('#txtalerta').text('Erro: ' + x.statusText + ' : ' + x.status);
+                    $('#Alerta').removeAttr('hidden');$('#Mywrapper').animate({ scrollTop: 0 }, 1000);
+
+                }
+            });
+        }else if(ModalAberta == 'car'){
+            $('#SelectCargos').load('/CadastroFuncionarios/Select/?Select=4', function (r, s, x) {
+                if (s == 'error') {
+                    $('#txtalerta').text('Erro: ' + x.statusText + ' : ' + x.status);
+                    $('#Alerta').removeAttr('hidden');$('#Mywrapper').animate({ scrollTop: 0 }, 1000);
+
+
+                }
+            });
+        }else if(ModalAberta == 'esc'){
+            $('#SelectEscalas').load('/CadastroFuncionarios/Select/?Select=5', function (r, s, x) {
+                if (s == 'error') {
+                    $('#txtalerta').text('Erro: ' + x.statusText + ' : ' + x.status);
+                    $('#Alerta').removeAttr('hidden');$('#Mywrapper').animate({ scrollTop: 0 }, 1000);
+
+
+                }
+            });
+        }
+    });
+
+    $('#ModalWin').on('click', '.btnAlterar,.btnNovo,.btnRemover', function (e) {
+        btn = $(this);
+        $('#ModalWin').load($(this).attr('Evento'), function (r, s, h) {
+            if (s == "success") {
+                $('#ModalTamanho').removeClass('modal-xlg');
+                $('#ModalTamanho').addClass('modal-lg');
+                if (btn.attr('Evento').startsWith('/CadastroParametros/CadastroParametros')) {
+                    $('#ModalTamanho').removeClass('modal-lg');
+                    $('#ModalTamanho').addClass('modal-xlg');
+                }
+                $('.indice').parent().removeClass('active');
+                $('.indice.CadastroFuncionarios').parent().addClass('active').addClass('show').parent().addClass('show').parent().children().first().removeClass('collapsed');
+                $('#WinGenerica').modal('show');
+            } else {
+                $('#txtalerta').text('Erro: ' + h.statusText + ' : ' + h.status)
+                $('#Alerta').removeAttr('hidden');$('#Mywrapper').animate({ scrollTop: 0 }, 1000);
+
+
+            }
+
+        });
+    });
+
+    $("#txtID,#IDFolha").keyup(function () {
+        if ($(this).val() != "") {
+            $(this).val($(this).val().replace(/[/\D]/gi, ""));
+        }
+    });
+
+    $('#Rescisao').click(function () {
+        if($(this).is(':checked')){
+            $('#DataRescisao').removeAttr('hidden');
+        } else {
+            $('#DataRescisao').attr('hidden', 'hidden');
+        }
+    });
+
+    $('#btnCancelar').click(function () {
+        btn = $(this);
+        $('#BodyGeral').fadeOut(200, function () {
+            $('#BodyGeral').fadeIn(100);
+            $('#BodyGeral').html(' <div class="container-fluid align-items-center text-center align-self-center flex-column d-flex justify-content-center" style="height:' + $('#Mywrapper').height() + 'px;" ><i class="fa fa-spinner fa-spin fa-5x fa-fw"></i></div>');
+            $('#BodyGeral').load(btn.attr('Evento'), function (r, s, h) {
+                if (s == 'error') {
+                    $('#txtalertaGeral').text('Erro: ' + h.status + " : " + h.statusText);
+                    $('#AlertaGeral').removeAttr('hidden');$('#Mywrapper').animate({ scrollTop: 0 }, 1000);
+
+                }
+            });
+        });
+    });
+
+    $('#FormInserirFuncionario').submit(function (e) {
+        e.preventDefault();
+        e.defaultPrevented = true;
+        if($('#SelectSetores').val() != 'a' && $('#SelectSetores').val() != null && $('#SelectParametros').val() != 'a' && $('#SelectParametros').val() != null && $('#SelectDepartamentos').val() != 'a' && $('#SelectDepartamentos').val() != null && $('#SelectCargos').val() != 'a' && $('#SelectCargos').val() != null && $('#SelectEscalas').val() != 'a' && $('#SelectEscalas').val() != null){
+
+            $.post($(this).attr('action') + '?' + $(this).serialize(), { IntervaloFixo: $('#IntervaloFixo').is(':checked'), Cartoes: Cartoes, Afastamentos: Afastamentos, Folgas: Folgas, Horarios: Horarios, Mensagens: Mensagens, Imagem: base64 }, function (data) {
+                if (data.status == true) {
+                    $('#BodyGeral').fadeOut(200, function () {
+                        $('#BodyGeral').fadeIn(100);
+                        $('#BodyGeral').html(' <div class="container-fluid align-items-center text-center align-self-center flex-column d-flex justify-content-center" style="height:' + $('#Mywrapper').height() + 'px;" ><i class="fa fa-spinner fa-spin fa-5x fa-fw"></i></div>');
+                        $('#BodyGeral').load('/CadastroFuncionarios/CadastroFuncionarios_Abrir/', function (r, s, h) {
+                            if (s == 'success') {
+                                history.pushState('', '', btn.attr('Evento'));
+                            } else {
+                                $('#txtalertaGeral').text('Erro: ' + h.status + " : " + h.statusText);
+                                $('#AlertaGeral').removeAttr('hidden'); $('#Mywrapper').animate({ scrollTop: 0 }, 1000);
+                            }
+                        });
+                    });
+                } else {
+                    $('#txtalerta').text(data.msg);
+                    $('#Alerta').removeAttr('hidden'); $('#Mywrapper').animate({ scrollTop: 0 }, 1000);
+                }
+            });
+
+        } else {
+            $('#txtalerta').text("Preencha todos Campos obrigatórios");
+            $('#Alerta').removeAttr('hidden'); $('#Mywrapper').animate({ scrollTop: 0 }, 1000);
+        }       
+    });
+
+    $('#FechaAlertaModal').click(function () {
+        $(this).parent().attr('hidden', 'hidden');
+    });    
+</script>
+
+

@@ -1,0 +1,86 @@
+﻿@model SapewinWeb.Models.Empresas
+
+<div class="row">
+    <div class="col-lg-4 col-12" style="margin-bottom:25px;border-right:ridge;">
+        <div class="card-header" style="margin-bottom:10px;background-color: rgba(255, 133, 27, 0.3);"><strong>Setores</strong></div>
+        <div class="input-group input-group-sm" style="margin-bottom:10px;">
+            <input type="text" class="form-control" id="txtPesquisarSetor" style="max-width:55%;" placeholder="Pesquisar">
+            <div class="input-group-btn">
+                <button type="button" class="btn btn-primary dropdown-toggle">
+                    <i class="fa fa-search" aria-hidden="true"></i>
+                </button>
+            </div>
+            <div class="switch" style="margin-left:15px;font-size:small">
+                <label>
+                    <input id="MarcatdsSetor" checked="checked" type="checkbox">
+                    <span class="slider "></span>
+                    <span>Marcar Todos</span>
+                </label>
+            </div>
+        </div>
+        <div id="TabSetores" style="margin-bottom:25px;max-height:500px;overflow:auto;">
+            @if (Model != null)
+            {
+                Html.RenderAction("GridSetores", new { id = Model.IDEmpresa, pesquisa = "" });
+            }
+        </div>        
+    </div>
+    <div class="col-lg-4 col-12" style="margin-bottom:25px;border-right:ridge;">
+        <div class="card-header" style="margin-bottom:10px;background-color: rgba(255, 133, 27, 0.3);"><strong>Departamentos</strong></div>
+        <div class="input-group input-group-sm" style="margin-bottom:10px;">
+            <input type="text" class="form-control" id="txtPesquisarDepartamento" style="max-width:55%;" placeholder="Pesquisar">
+            <div class="input-group-btn">
+                <button type="button" class="btn btn-primary dropdown-toggle">
+                    <i class="fa fa-search" aria-hidden="true"></i>
+                </button>
+            </div>
+            <div class="switch" style="margin-left:15px;font-size:small">
+                <label>
+                    <input id="MarcatdsDepartamento" checked="checked" type="checkbox">
+                    <span class="slider "></span>
+                    <span>Marcar Todos</span>
+                </label>
+            </div>
+        </div>
+        <div id="TabDepartamentos" style="margin-bottom:25px;max-height:500px;overflow:auto;">
+            @if (Model != null)
+            {
+                Html.RenderAction("GridDepartamentos", new { id = Model.IDEmpresa, pesquisa = "" });
+            }
+        </div>       
+    </div>
+    <div class="col-lg-4 col-12" style="margin-bottom:25px;">
+        <div class="card-header" style="margin-bottom:10px;background-color: rgba(255, 133, 27, 0.3);"><strong>Funcionários</strong></div>        
+        <div class="input-group input-group-sm" style="margin-bottom:10px;margin-right:10px;">
+            <input type="text" class="form-control" id="txtPesquisarFuncionario" style="max-width:55%;" placeholder="Pesquisar">
+            <div class="input-group-btn">
+                <button type="button" class="btn btn-primary dropdown-toggle">
+                    <i class="fa fa-search" aria-hidden="true"></i>
+                </button>
+            </div>
+            <div class="switch" style="margin-left:15px;font-size:small;">
+                <label>
+                    <input id="MarcatdsFuncionario" checked="checked" type="checkbox">
+                    <span class="slider "></span>
+                    <span>Marcar Todos</span>
+                </label>
+            </div>
+        </div> 
+        <div id="TabFuncionarios" style="margin-bottom:25px;max-height:500px;overflow:auto;">
+            @if (Model != null)
+            {
+                Html.RenderAction("GridFuncionarios", new { id = Model.IDEmpresa, Setores = ViewBag.Usuario == null ? SapewinWeb.Metodos.ObjUsuario.RetornaIDSetor(Model.Setores.ToList()) : SapewinWeb.Metodos.ObjUsuario.RetornaSetoresdoUsuario(ViewBag.Usuario), Departamentos = ViewBag.Usuario == null ? SapewinWeb.Metodos.ObjUsuario.RetornaIDDepartamento(Model.Departamentos.ToList()) : SapewinWeb.Metodos.ObjUsuario.RetornaDepartamentosdoUsuario(ViewBag.Usuario), pesquisa = "" });
+            }
+        </div>        
+    </div>
+</div>
+
+<script>
+    monitorador();
+    var Time;
+    $('#txtPesquisarSetor').keyup(AtualizaGridSetores);
+
+    $('#txtPesquisarDepartamento').keyup(AtualizaGridDepartamentos);
+
+    $('#txtPesquisarFuncionario').keyup(AtualizaGridFuncionarios);
+</script>

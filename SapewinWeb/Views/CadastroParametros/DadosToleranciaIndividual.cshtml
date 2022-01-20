@@ -1,0 +1,305 @@
+﻿@model SapewinWeb.Models.Parametros
+
+<script>
+        $('.Hrr').mask('99:99');
+</script>
+
+@if (Model == null)
+{
+   
+    <div class="row" style="font-size:small;">
+        <div class="col-12">
+            <div class="card-header" style="margin-bottom:10px;background-color: rgba(255, 133, 27, 0.3);"><strong>Atrasos</strong></div>
+            <div class="form-group">
+                <div class="form-inline">
+                    <div class="form-group">
+                        <label class="custom-control custom-radio">
+                            <input name="TipodeAtraso" checked="checked" id="PeriodoAtrasos" type="radio" class="custom-control-input">
+                            <span class="custom-control-indicator"></span>
+                            <span class="custom-control-description" style="width:50px;">Periodo</span>
+                        </label>
+                    </div>
+                    <div class="form-group" style="margin-right:10px;">
+                        <label style="width:55px;">1º Per. </label>
+                        <input class="form-control form-control-sm Hrr Atraso" name="AtrasoPeriodo1" id="Per1Atraso" style="max-width:60px;" placeholder="__:__" />
+                    </div>
+                    <div class="form-group">
+                        <label style="width:55px;">2º Per. </label>
+                        <input class="form-control form-control-sm Hrr Atraso" name="AtrasoPeriodo2" id="Per2Atraso" style="max-width:60px;" placeholder="__:__" />
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="form-inline">
+                    <div class="form-group">
+                        <label class="custom-control custom-radio">
+                            <input name="TipodeAtraso" id="DiarioAtrasos" type="radio" class="custom-control-input">
+                            <span class="custom-control-indicator"></span>
+                            <span class="custom-control-description" style="width:50px;">Diário</span>
+                        </label>
+                    </div>
+                    <div class="form-group">
+                        <label style="width:55px;">Jornada</label>
+                        <input class="form-control form-control-sm Hrr Atraso" name="AtrasoJornada" disabled="disabled" id="JornadaAtraso" style="max-width:60px;" placeholder="__:__" />
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-12">
+            <div class="card-header" style="margin-bottom:10px;margin-top:20px;background-color: rgba(255, 133, 27, 0.3);"><strong>Saída Antecipada</strong></div>
+            <div class="form-group">
+                <div class="form-inline">
+                    <div class="form-group">
+                        <label class="custom-control custom-radio">
+                            <input name="TipodeSaida" id="PeriodoSaida" checked="checked" type="radio" class="custom-control-input">
+                            <span class="custom-control-indicator"></span>
+                            <span class="custom-control-description" style="width:50px;">Periodo</span>
+                        </label>
+                    </div>
+                    <div class="form-group" style="margin-right:10px;">
+                        <label style="width:55px;">1º Per. </label>
+                        <input class="form-control form-control-sm Hrr Saida" name="SaidaPeriodo1" id="Per1Saida" style="max-width:60px;" placeholder="__:__" />
+                    </div>
+                    <div class="form-group">
+                        <label style="width:55px;">2º Per. </label>
+                        <input class="form-control form-control-sm Hrr Saida" name="SaidaPeriodo2" id="Per2Saida" style="max-width:60px;" placeholder="__:__" />
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="form-inline">
+                    <div class="form-group">
+                        <label class="custom-control custom-radio">
+                            <input name="TipodeSaida" id="DiarioSaida" type="radio" class="custom-control-input">
+                            <span class="custom-control-indicator"></span>
+                            <span class="custom-control-description" style="width:50px;">Diário</span>
+                        </label>
+                    </div>
+                    <div class="form-group">
+                        <label style="width:55px;">Jornada</label>
+                        <input class="form-control form-control-sm Hrr Saida" name="SaidaJornada" disabled="disabled" id="JornadaSaida" style="max-width:60px;" placeholder="__:__" />
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-12">
+            <div class="card-header" style="margin-bottom:10px;margin-top:20px;background-color: rgba(255, 133, 27, 0.3);"><strong>Extra a Partir</strong></div>
+            <div class="form-group">
+                <div class="form-inline">
+                    <div class="form-group">
+                        <label class="custom-control custom-radio">
+                            <input name="TipodeExtra" id="PeriodoExtra" checked="checked" type="radio" class="custom-control-input">
+                            <span class="custom-control-indicator"></span>
+                            <span class="custom-control-description" style="width:50px;">Periodo</span>
+                        </label>
+                    </div>
+                    <div class="form-group" style="margin-right:10px;">
+                        <label style="width:55px;">1º Per. </label>
+                        <input class="form-control form-control-sm Hrr Extra" name="ExtraPeriodo1" id="Per1Extra" style="max-width:60px;" placeholder="__:__" />
+                    </div>
+                    <div class="form-group" style="margin-right:10px;">
+                        <label style="width:55px;">Int. </label>
+                        <input class="form-control form-control-sm Hrr Extra" name="ExtraIntervalo" id="IntExtra" style="max-width:60px;" placeholder="__:__" />
+                    </div>
+                    <div class="form-group">
+                        <label style="width:55px;">2º Per. </label>
+                        <input class="form-control form-control-sm Hrr Extra" name="ExtraPeriodo2" id="Per2Extra" style="max-width:60px;" placeholder="__:__" />
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="form-inline">
+                    <div class="form-group">
+                        <label class="custom-control custom-radio">
+                            <input name="TipodeExtra" id="DiarioExtra" type="radio" class="custom-control-input">
+                            <span class="custom-control-indicator"></span>
+                            <span class="custom-control-description" style="width:50px;">Diário</span>
+                        </label>
+                    </div>
+                    <div class="form-group">
+                        <label style="width:55px;">Jornada</label>
+                        <input class="form-control form-control-sm Hrr Extra" name="ExtraJornada" disabled="disabled" id="JornadaExtra" style="max-width:60px;" placeholder="__:__" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <div class="row" style="font-size:small;">
+        <div class="col-12">
+            <div class="card-header" style="margin-bottom:10px;background-color: rgba(255, 133, 27, 0.3);"><strong>Atrasos</strong></div>
+            <div class="form-group">
+                <div class="form-inline">
+                    <div class="form-group">
+                        <label class="custom-control custom-radio">
+                            <input name="TipodeAtraso" @(Model.TipodeAtraso == SapewinWeb.Models.Parametros.Tipodeatraso.Período ? "checked=\"checked\" " : "")id="PeriodoAtrasos" type="radio" class="custom-control-input">
+                            <span class="custom-control-indicator"></span>
+                            <span class="custom-control-description" style="width:50px;">Periodo</span>
+                        </label>
+                    </div>
+                    <div class="form-group" style="margin-right:10px;">
+                        <label style="width:55px;">1º Per. </label>
+                        <input class="form-control form-control-sm Hrr Atraso" value="@Model.AtrasoTotal1P" @(Model.TipodeAtraso == SapewinWeb.Models.Parametros.Tipodeatraso.Diario ? "disabled=\"disabled\" " : "")name="AtrasoPeriodo1" id="Per1Atraso" style="max-width:60px;" placeholder="__:__" />
+                    </div>
+                    <div class="form-group">
+                        <label style="width:55px;">2º Per. </label>
+                        <input class="form-control form-control-sm Hrr Atraso" value="@Model.AtrasoTotal2P" @(Model.TipodeAtraso == SapewinWeb.Models.Parametros.Tipodeatraso.Diario ? "disabled=\"disabled\" " : "")name="AtrasoPeriodo2" id="Per2Atraso" style="max-width:60px;" placeholder="__:__" />
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="form-inline">
+                    <div class="form-group">
+                        <label class="custom-control custom-radio">
+                            <input name="TipodeAtraso" id="DiarioAtrasos" @(Model.TipodeAtraso == SapewinWeb.Models.Parametros.Tipodeatraso.Diario ? "checked=\"checked\" " : "")type="radio" class="custom-control-input">
+                            <span class="custom-control-indicator"></span>
+                            <span class="custom-control-description" style="width:50px;">Diário</span>
+                        </label>
+                    </div>
+                    <div class="form-group">
+                        <label style="width:55px;">Jornada</label>
+                        <input class="form-control form-control-sm Hrr Atraso" name="AtrasoJornada" value="@Model.AtrasoJornada" @(Model.TipodeAtraso == SapewinWeb.Models.Parametros.Tipodeatraso.Período ? "disabled=\"disabled\" " : "")id="JornadaAtraso" style="max-width:60px;" placeholder="__:__" />
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-12">
+            <div class="card-header" style="margin-bottom:10px;margin-top:20px;background-color: rgba(255, 133, 27, 0.3);"><strong>Saída Antecipada</strong></div>
+            <div class="form-group">
+                <div class="form-inline">
+                    <div class="form-group">
+                        <label class="custom-control custom-radio">
+                            <input name="TipodeSaida" id="PeriodoSaida" @(Model.TipodeSaida == SapewinWeb.Models.Parametros.Tipodesaida.Período ? "checked=\"checked\" " : "")type="radio" class="custom-control-input">
+                            <span class="custom-control-indicator"></span>
+                            <span class="custom-control-description" style="width:50px;">Periodo</span>
+                        </label>
+                    </div>
+                    <div class="form-group" style="margin-right:10px;">
+                        <label style="width:55px;">1º Per. </label>
+                        <input class="form-control form-control-sm Hrr Saida" name="SaidaPeriodo1" value="@Model.SaidaTotal1P" @(Model.TipodeSaida == SapewinWeb.Models.Parametros.Tipodesaida.Diario ? "disabled=\"disabled\" " : "")id="Per1Saida" style="max-width:60px;" placeholder="__:__" />
+                    </div>
+                    <div class="form-group">
+                        <label style="width:55px;">2º Per. </label>
+                        <input class="form-control form-control-sm Hrr Saida" name="SaidaPeriodo2" value="@Model.SaidaTotal2P" @(Model.TipodeSaida == SapewinWeb.Models.Parametros.Tipodesaida.Diario ? "disabled=\"disabled\" " : "")id="Per2Saida" style="max-width:60px;" placeholder="__:__" />
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="form-inline">
+                    <div class="form-group">
+                        <label class="custom-control custom-radio">
+                            <input name="TipodeSaida" id="DiarioSaida" @(Model.TipodeSaida == SapewinWeb.Models.Parametros.Tipodesaida.Diario ? "checked=\"checked\" " : "")type="radio" class="custom-control-input">
+                            <span class="custom-control-indicator"></span>
+                            <span class="custom-control-description" style="width:50px;">Diário</span>
+                        </label>
+                    </div>
+                    <div class="form-group">
+                        <label style="width:55px;">Jornada</label>
+                        <input class="form-control form-control-sm Hrr Saida" name="SaidaJornada" value="@Model.SaidaJornada" @(Model.TipodeSaida == SapewinWeb.Models.Parametros.Tipodesaida.Período ? "disabled=\"disabled\" " : "")id="JornadaSaida" style="max-width:60px;" placeholder="__:__" />
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-12">
+            <div class="card-header" style="margin-bottom:10px;margin-top:20px;background-color: rgba(255, 133, 27, 0.3);"><strong>Extra a Partir</strong></div>
+            <div class="form-group">
+                <div class="form-inline">
+                    <div class="form-group">
+                        <label class="custom-control custom-radio">
+                            <input name="TipodeExtra" id="PeriodoExtra" @(Model.TipoExtra == SapewinWeb.Models.Parametros.Tipoextra.Período ? "checked=\"checked\" " : "")type="radio" class="custom-control-input">
+                            <span class="custom-control-indicator"></span>
+                            <span class="custom-control-description" style="width:50px;">Periodo</span>
+                        </label>
+                    </div>
+                    <div class="form-group" style="margin-right:10px;">
+                        <label style="width:55px;">1º Per. </label>
+                        <input class="form-control form-control-sm Hrr Extra" name="ExtraPeriodo1" value="@Model.ExtraTotal1P" @(Model.TipoExtra == SapewinWeb.Models.Parametros.Tipoextra.Diario ? "disabled=\"disabled\" " : "")id="Per1Extra" style="max-width:60px;" placeholder="__:__" />
+                    </div>
+                    <div class="form-group" style="margin-right:10px;">
+                        <label style="width:55px;">Int. </label>
+                        <input class="form-control form-control-sm Hrr Extra" name="ExtraIntervalo" value="@Model.ExtraTotalIntervalo" @(Model.TipoExtra == SapewinWeb.Models.Parametros.Tipoextra.Diario ? "disabled=\"disabled\" " : "")id="IntExtra" style="max-width:60px;" placeholder="__:__" />
+                    </div>
+                    <div class="form-group">
+                        <label style="width:55px;">2º Per. </label>
+                        <input class="form-control form-control-sm Hrr Extra" name="ExtraPeriodo2" value="@Model.ExtraTotal2P" @(Model.TipoExtra == SapewinWeb.Models.Parametros.Tipoextra.Diario ? "disabled=\"disabled\" " : "")id="Per2Extra" style="max-width:60px;" placeholder="__:__" />
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="form-inline">
+                    <div class="form-group">
+                        <label class="custom-control custom-radio">
+                            <input name="TipodeExtra" id="DiarioExtra" @(Model.TipoExtra == SapewinWeb.Models.Parametros.Tipoextra.Diario ? "checked=\"checked\" " : "")type="radio" class="custom-control-input">
+                            <span class="custom-control-indicator"></span>
+                            <span class="custom-control-description" style="width:50px;">Diário</span>
+                        </label>
+                    </div>
+                    <div class="form-group">
+                        <label style="width:55px;">Jornada</label>
+                        <input class="form-control form-control-sm Hrr Extra" value="@Model.ExtraJornada" name="ExtraJornada" @(Model.TipoExtra == SapewinWeb.Models.Parametros.Tipoextra.Período ? "disabled=\"disabled\" " : "")id="JornadaExtra" style="max-width:60px;" placeholder="__:__" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+<script>
+    monitorador();
+    $('.Hrr').focusout(function () {
+        txt = $(this);
+        if (Tempo_Minuto([txt.val()])[0] >= 1440) {
+            txt.val('');
+        }
+        if (!txt.val().includes('_')) {
+            if (txt.val().split(':')[1] > 59) {
+                txt.val('');
+            }
+        }
+    });
+
+    $('#PeriodoAtrasos').click(function () {
+        $('#Per1Atraso').removeAttr('disabled');
+        $('#Per2Atraso').removeAttr('disabled');
+        $('#JornadaAtraso').attr('disabled', 'disabled');
+        $('.Atraso').val('');
+    });
+
+    $('#DiarioAtrasos').click(function () {
+        $('#Per1Atraso').attr('disabled', 'disabled');
+        $('#Per2Atraso').attr('disabled', 'disabled');
+        $('#JornadaAtraso').removeAttr('disabled');
+        $('.Atraso').val('');
+    });
+
+    $('#PeriodoSaida').click(function () {
+        $('#Per1Saida').removeAttr('disabled');
+        $('#Per2Saida').removeAttr('disabled');
+        $('#JornadaSaida').attr('disabled', 'disabled');
+        $('.Saida').val('');
+    });
+
+    $('#DiarioSaida').click(function () {
+        $('#Per1Saida').attr('disabled', 'disabled');
+        $('#Per2Saida').attr('disabled', 'disabled');
+        $('#JornadaSaida').removeAttr('disabled');
+        $('.Saida').val('');
+    });
+
+    $('#PeriodoExtra').click(function () {
+        $('#Per1Extra').removeAttr('disabled');
+        $('#Per2Extra').removeAttr('disabled');
+        $('#IntExtra').removeAttr('disabled');
+        $('#JornadaExtra').attr('disabled', 'disabled');
+        $('.Extra').val('');
+    });
+
+    $('#DiarioExtra').click(function () {
+        $('#Per1Extra').attr('disabled', 'disabled');
+        $('#IntExtra').attr('disabled', 'disabled');
+        $('#Per2Extra').attr('disabled', 'disabled');
+        $('#JornadaExtra').removeAttr('disabled');
+        $('.Extra').val('');
+    });
+</script>

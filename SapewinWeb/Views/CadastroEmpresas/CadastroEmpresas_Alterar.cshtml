@@ -1,0 +1,90 @@
+﻿@model SapewinWeb.Models.Empresas
+<div class="modal-header" style="margin-bottom:10px;">
+    <h5 class="modal-title"><i class="fa fa-area-chart" aria-hidden="true"></i> Cadastro de Empresas > Alterar</h5>
+</div>
+<div class="alert alert-danger alert-dismissible fade show" hidden="hidden" id="AlertaModal" role="alert">
+    <button type="button" id="FechaAlertaModal" class="close" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+    <strong class="txtalerta" id="txtalertaModal"></strong>
+</div>
+<form id="FormAlterar" action="/CadastroEmpresas/CadastroEmpresas_Alterar_Salvar" method="post">
+    <div class="modal-body">
+                
+        <div class="form-group">
+            <label>Código</label>
+            <input type="text" value="@Model.IDEmpresa" id="txtID" disabled="disabled" class="form-control">
+        </div> 
+        <div class="form-group">
+            <label>Razão Social</label>
+            <input type="text" value="@Model.Nome" id="txtNome" disabled="disabled" class="form-control">
+        </div>
+        <div class="form-group">
+            <label>Documento</label>
+            <input type="text" value="@Model.Documento" id="txtDocumento" disabled="disabled" class="form-control">
+        </div>
+        <div class="form-group">
+            <label>IE</label>
+            <input type="text" value="@Model.IE" id="txtIE" disabled="disabled" class="form-control">
+        </div>
+        <div class="form-group">
+            <label>Endereço</label>
+            <input type="text" value="@Model.Endereco" maxlength="200" id="txtEndereco" name="Endereco" class="form-control">
+        </div>
+        <div class="row">
+            <div class="col-6">
+                <label>ID Folha</label>
+                <input type="text" value="@Model.IDFolha" maxlength="18" id="txtIDFolha" name="IDFolha" class="form-control">
+            </div>
+            <div class="col-6">
+                <label>UF</label>
+                <input type="text" value="@Model.UF" id="txtUF" maxlength="2" name="UF" class="form-control">
+            </div>
+        </div> 
+        <div class="row">           
+            <div class="col-6">
+                <label>Cidade</label>
+                <input type="text" value="@Model.Cidade" id="txtCidade" maxlength="100" name="Cidade" class="form-control">
+            </div>
+            <div class="col-6">
+                <label>Bairro</label>
+                <input type="text" value="@Model.Bairro" id="txtBairro" name="Bairro" maxlength="100" class="form-control">
+            </div>                       
+        </div> 
+        <div class="row">
+            <div class="col-6">
+                <label>Cep</label>
+                <input type="text" value="@Model.Cep" id="txtCep" maxlength="8" name="Cep" class="form-control">
+            </div>
+            <div class="col-6">
+                <label>CEI</label>
+                <input type="text" value="@Model.CEI" id="txtCEI" maxlength="45" name="CEI" class="form-control">
+            </div>
+        </div>          
+    </div>
+    <div class="modal-footer">
+        <button type="submit" class="btn btn-outline-success"><i class="fa fa-fw fa-floppy-o"></i> Salvar</button>
+        <button type="button" class="btn btn-outline-danger" data-dismiss="modal"><i class="fa fa-fw fa-ban"></i> Cancelar</button>
+    </div>
+</form>
+<script>
+    monitorador();
+    $('#FormAlterar').submit(function (e) {
+        e.preventDefault();
+        e.defaultPrevented = true;
+        $.post($(this).attr('action') + '/?id=@Model.IDEmpresa', $(this).serialize(), function (data) {
+            if (data.status == true) {
+                $('#TabEmpresas').load('/CadastroEmpresas/CadastroEmpresas_Abrir_Grid');
+                $('#WinGenerica').modal('hide');
+               
+            } else {
+                $('#txtalertaModal').text(data.msg);
+                $('#AlertaModal').removeAttr('hidden', 'hidden');
+            }
+        });
+    });
+
+    $('#FechaAlertaModal').click(function () {
+        $(this).parent().attr('hidden', 'hidden');
+    });
+</script>

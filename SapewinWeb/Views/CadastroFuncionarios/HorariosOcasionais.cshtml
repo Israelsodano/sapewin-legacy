@@ -1,0 +1,107 @@
+﻿@model IEnumerable<SapewinWeb.Models.Horarios>
+<div class="modal-header" style="margin-bottom:10px;">
+    <h5 class="modal-title"><i class="fa fa-th" aria-hidden="true"></i> Horários Ocasionais</h5>
+</div>
+<div class="alert alert-danger alert-dismissible fade show" hidden="hidden" id="AlertaModal" role="alert">
+    <button type="button" id="FechaAlertaModal" class="close" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+    <strong class="txtalerta" id="txtalertaModal"></strong>
+</div>
+<div class="modal-body" style="font-size:small;">
+    <div class="form-group">
+        <label>Data</label>        
+        <input class="form-control form-control-sm" type="date" style="margin-right:10px;" id="dataInicio" />       
+    </div>
+    <div class="form-group">
+        <div class="d-flex">
+            <select class="form-control form-control-sm" id="cbxHorarios" style="margin-right:10px;">
+                <option value="a" selected="selected" disabled="disabled"></option>
+                @foreach (var Horario in Model)
+                {
+                    <option value="@Horario.IDHorario">@Horario.IDHorario.ToString("0000") - @Horario.Descricao</option>
+                }
+            </select>
+            <button class="btn btn-sm btn-dark" id="AddHorario"><i class="fa fa-fw fa-plus"></i></button>
+        </div>
+        
+    </div>
+
+    <table class="table table-sm table-bordered">
+        <thead>
+            <tr>
+                <th>Data</th>
+                <th>Horário</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody id="tabHorarios"></tbody>
+    </table>
+    <script>
+
+        function AtualizaGridHorarios() {
+            $('#tabHorarios').load('/CadastroFuncionarios/GridHorarios/?Array=' + Horarios.join('&Array='), function (r, s, x) {
+                if (s == 'success') {
+                    $('#dataInicio').val('');
+                    $('#cbxHorarios').val('a');
+                    $('#AlertaModal').attr('hidden', 'hidden');
+
+                    var horario = Horarios.filter(function (x) {
+
+                        var hoje = String(new Date().getFullYear()).padStart(4, '0') + '-' + String(new Date().getMonth() + 1).padStart(2, '0') + '-' + String(new Date().getDate()).padStart(2, '0');
+
+                        return x.split('/')[0] == hoje;
+                    });
+                    console.log(horario);
+                    if (horario.length > 0) {
+                        $.post('/CadastroFuncionarios/RetornaHorariotxt/', { id: parseInt(horario[0].split('/')[1]) }, function (data) {
+                            $('#txtHorario').text(data.horario);
+                        });                        
+                    } else {
+                        $('#txtHorario').text("Cumprindo horário normal");
+                    }
+
+                } else {
+                    Horarios = [];
+                    $('#txtalertaModal').text('Erro: ' + x.statusText + ' : ' + x.status);
+                    $('#AlertaModal').removeAttr('hidden', 'hidden');
+                }
+            });
+        }
+        AtualizaGridHorarios();
+    </script>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-outline-info" data-dismiss="modal"><i class="fa fa-undo" aria-hidden="true"></i> Voltar</button>
+</div>
+<script src="~/scripts/Index.js"></script>
+<script>
+    monitorador();
+    $('#AddHorario').click(function () {
+        var Horario = "";
+        if ($('#dataInicio').val() != '' && ($('#cbxHorarios').val() != 'a') && $('#cbxHorarios').val() != null) {            
+            Horario = $('#dataInicio').val() + '/' + $('#cbxHorarios').val();
+            if (Horarios.filter(function (x) { return x.split('/')[0] == Horario.split('/')[0]; }).length == 0) {
+                Horarios.push(Horario);
+                AtualizaGridHorarios();
+            } else {
+                $('#txtalertaModal').text('Já existe um Horario cadastrado para o mesmo período');
+                $('#AlertaModal').removeAttr('hidden', 'hidden');
+            }
+
+        } else {
+            $('#txtalertaModal').text('Preencha todos os campos');
+            $('#AlertaModal').removeAttr('hidden', 'hidden');
+        }
+    });
+
+    $('#FechaAlertaModal').click(function () {
+        $(this).parent().attr('hidden', 'hidden');
+    });
+
+    $('#tabHorarios').on('click', '.btnRemoverHorario', function () {
+        btn = $(this);
+        Horarios = Horarios.filter(function (itens) { return itens != btn.attr('valor') });
+        AtualizaGridHorarios();
+    });
+</script>

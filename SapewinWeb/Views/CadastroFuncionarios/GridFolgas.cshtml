@@ -1,0 +1,11 @@
+﻿@model IEnumerable<SapewinWeb.Models.Folgas>
+
+@foreach (var Folga in Model)
+{
+    <tr>
+        <td>@Folga.Data.ToString().Substring(0, 10)</td>       
+        <td>           
+            <button valor="@Folga.Data.Year.ToString("0000")-@Folga.Data.Month.ToString("00")-@Folga.Data.Day.ToString("00")" class="btn btn-sm text-white btn-danger btnRemoverFolga" title="Remover" type="button"><i class="fa fa-fw fa-trash-o"></i></button>
+        </td>
+    </tr>
+}

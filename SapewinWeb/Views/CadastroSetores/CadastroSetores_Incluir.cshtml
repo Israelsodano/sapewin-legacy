@@ -1,0 +1,53 @@
+﻿<div class="modal-header" style="margin-bottom:10px;">
+    <h5 class="modal-title"><i class="fa fa-th" aria-hidden="true"></i> Cadastro de Setores > Incluir</h5>
+</div>
+<div class="alert alert-danger alert-dismissible fade show" hidden="hidden" id="AlertaModal" role="alert">
+    <button type="button" id="FechaAlertaModal" class="close" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+    <strong class="txtalerta" id="txtalertaModal"></strong>
+</div>
+<form id="FormInserirSetor" action="/CadastroSetores/CadastroSetores_Incluir_Salvar" method="post">
+    <div class="modal-body">
+              
+        <div class="form-group" style="width:20%;">
+            <label>Código</label>           
+            <input type="text" id="txtID" name="IDSetor" maxlength="18" placeholder="Máx. 18 Dígitos" class="form-control">                                    
+        </div>   
+        <div class="form-group">
+            <label>Descrição</label>
+            <input type="text" name="Nome" maxlength="50" class="form-control">
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="submit" class="btn btn-outline-success"><i class="fa fa-fw fa-floppy-o"></i> Salvar</button>
+        <button type="button" class="btn btn-outline-danger" data-dismiss="modal"><i class="fa fa-fw fa-ban"></i> Cancelar</button>
+    </div>
+</form>
+<script>
+    monitorador();
+    $("#txtID").keyup(function () {
+        if ($("#txtID").val() != "") {
+            $("#txtID").val($("#txtID").val().replace(/[/\D]/gi, ""));
+        }
+    });
+
+    $('#FormInserirSetor').submit(function (e) {
+        e.preventDefault();
+        e.defaultPrevented = true;
+        $.post($(this).attr('action'), $(this).serialize(), function (data) {
+            if (data.status == true) {
+                LoadGridCadastroSetores ();
+                $('#WinGenerica').modal('hide');
+               
+            } else {
+                $('#txtalertaModal').text(data.msg);
+                $('#AlertaModal').removeAttr('hidden', 'hidden');
+            }
+        });
+    });
+
+    $('#FechaAlertaModal').click(function () {
+        $(this).parent().attr('hidden', 'hidden');
+    });
+</script>

@@ -1,0 +1,152 @@
+﻿@model Login.Models.LoginSistema
+
+<script src="~/scripts/jquery.maskedinput.min.js"></script>
+<script>
+    $('#Telefone').mask('(99)9999-9999?9')
+</script>
+<div class="card-header" style="margin-bottom:10px;background-color: rgba(255, 133, 27, 0.3);"><i class="fa fa-th" aria-hidden="true"></i> <strong>Cadastro de Usuários > Alterar</strong></div>
+<div class="py-3">
+    <div class="container-fluid" id="TabMenu" style="font-size:small">
+        <div class="py-3">
+            <ul class="nav nav-tabs text-center" style="margin-bottom:15px;">
+                <li class="nav-item">
+                    <a class="nav-link active Tipos" data-toggle="tab" id="Dados" href="#PainelDados" role="tab"><span> Dados do Usuário</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link Tipos Personalizado" @(Model.Personalizado ? "" : "hidden=\"hidden\" ")data-toggle="tab" id="Empresas" href="#PainelEmpresas" role="tab"><span> Selecionar Empresas</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link Tipos Personalizado" @(Model.Personalizado ? "" : "hidden=\"hidden\" ")data-toggle="tab" id="Permissoes" href="#PainelPermissoes" role="tab"><span> Permissões</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link Tipos Personalizado" @(Model.Personalizado ? "" : "hidden=\"hidden\" ")data-toggle="tab" id="PermissoesdeTelas" href="#PainelPermissoesdeTelas" role="tab"><span> Permissões de Telas</span></a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="tab-content" style="font-size:small">
+        <div class="tab-pane fade active show" id="PainelDados">
+            <div class="container">
+                <form method="post" action="/CadastroUsuarios/CadastroUsuarios_Alterar_Salvar/?id=@Model.IDLoginsistema&" id="FormAlterar">
+                    <div class="form-group">
+                        <span>Nome</span>
+                        <input class="form-control form-control-sm" value="@Model.Nome" type="text" name="Nome" />
+                    </div>
+                    <div class="form-group">
+                        <span>Login</span>
+                        <input class="form-control form-control-sm" value="@Model.Login" type="text" name="Login" />
+                    </div>
+                    <div class="form-group">
+                        <span>Email</span>
+                        <input class="form-control form-control-sm" value="@Model.Email" type="email" name="Email" />
+                    </div>
+                    <div class="form-group">
+                        <span>Confirmar Email</span>
+                        <input class="form-control form-control-sm" value="@Model.Email" type="email" name="ConfEmail" />
+                    </div>
+                    <div class="form-group">
+                        <span>Telefone <span class="text-danger">Opcional*</span></span>
+                        <input class="form-control form-control-sm" value="@Model.Telefone" placeholder="(__)____-____" type="tel" id="Telefone" name="Telefone" />
+                    </div>
+                    <div class="form-group">
+                        <span>Privilégio</span>
+                        <div class="d-flex">
+                            <select class="form-control-sm" id="Privilegio" name="Privilegio">                                
+                                <option @(Model.Tipo == 1 ? "selected=\"selected\" " : "")value="1">Administrador</option>
+                                <option @(Model.Tipo == 2 ? "selected=\"selected\" "  : "")value="2">Supervisor</option>
+                                <option @(Model.Tipo == 3 ? "selected=\"selected\" "  : "")value="3">Usuário</option>
+                                <option @(Model.Tipo == 4 ? "selected=\"selected\" "  : "")value="4">Colaborador</option>
+                            </select>
+                            <div class="switch" style="margin-left:10px;">
+                                <label>
+                                    <input @(Model.Personalizado ? "checked=\"checked\" " : "")id="Personalizado" type="checkbox">
+                                    <span class="slider "></span>
+                                    <span>Personalizado</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="tab-pane fade" id="PainelEmpresas">
+            @if (Model.Personalizado)
+            {
+                Html.RenderAction("SelecionaEmpresas", new { id = Model.IDLoginsistema});
+            }
+        </div>
+        <div class="tab-pane fade" id="PainelPermissoes">
+            @if (Model.Personalizado)
+            {
+                Html.RenderAction("Permissoes", new { Empresas = SapewinWeb.Metodos.ObjUsuario.RetornaIDEmpresas(Model.IDLoginsistema), id = Model.IDLoginsistema });
+            }
+        </div>
+        <div class="tab-pane fade" id="PainelPermissoesdeTelas">
+            @if (Model.Personalizado)
+            {
+                Html.RenderAction("GridsPermissoesdeTelas");
+            }
+        </div>
+    </div>
+    <div class="modal-footer" style="margin-bottom:50px;">
+        <button type="button" id="salvarUsuario" class="btn btn-outline-success"><i class="fa fa-fw fa-floppy-o"></i> Salvar</button>
+        <button type="button" class="btn btn-outline-danger" onclick="RetornaPadrao();"><i class="fa fa-fw fa-ban"></i> Cancelar</button>
+    </div>
+</div>
+
+<script>
+    monitorador();
+    $('#salvarUsuario').click(function () {
+
+        if ($('#Privilegio').val() != "a") {
+            PermissoesSelecionadas = new Array();
+
+            $('.FuncaodeTela:checked').each(function (idx, el) {
+                PermissoesSelecionadas.push($(el).attr('IDFuncaoTela'));
+            });
+
+            $.post($('#FormAlterar').attr('action') + $('#FormAlterar').serialize(), { Empresas: EmpresasSelecionadas, Setores: SetoresSelecionados, Departamentos: DepartamentosSelecionados, Funcionarios: FuncionariosSelecionados, PermissoesdeTelas: PermissoesSelecionadas, Personalizado: $('#Personalizado').is(':checked') }, function (data) {
+                if (data.status == true) {
+                    RetornaPadrao();
+                } else {
+                    $('#txtalertaGeral').text(data.msg);
+                    $('#AlertaGeral').removeAttr('hidden');$('#Mywrapper').animate({ scrollTop: 0 }, 1000);$('#Alerta').removeAttr('hidden');$('#Mywrapper').animate({ scrollTop: 0 }, 1000);
+                }
+            });
+        } else {
+           $('#txtalertaGeral').text("Selecione um tipo de Privilégio");
+            $('#AlertaGeral').removeAttr('hidden');$('#Mywrapper').animate({ scrollTop: 0 }, 1000);$('#Alerta').removeAttr('hidden');$('#Mywrapper').animate({ scrollTop: 0 }, 1000);
+        }
+    });
+
+    $('#Personalizado').click(function () {        
+        if ($(this).is(':checked')) {
+            $('#PainelEmpresas').load('/CadastroUsuarios/SelecionaEmpresas/?id=@Model.IDLoginsistema', function (r, s1, x) {
+                if (s1 == 'success') {
+                    $('#PainelPermissoes').load('/CadastroUsuarios/Permissoes/?id=@Model.IDLoginsistema&Empresas=' + EmpresasSelecionadas.join('&Empresas='), function (r, s2, x) {
+                        if (s2 == 'success') {
+                            $('#PainelPermissoesdeTelas').load('/CadastroUsuarios/GridsPermissoesdeTelas/?id=@Model.IDLoginsistema', function (r, s3, x) {
+                                if (s3 == 'success') {
+                                    $('.Personalizado').removeAttr('hidden');
+                                }
+                            });
+
+                        }
+                    });
+                }
+            });
+
+        } else {
+
+            cbxEmpresas = 0;
+            SetoresSelecionados = new Array();
+            DepartamentosSelecionados = new Array();
+            FuncionariosSelecionados = new Array();
+            FuncionariosNaoslc = new Array();
+            EmpresasSelecionadas = new Array();
+
+            $('.Personalizado').attr('hidden', 'hidden');
+
+        }
+    });
+</script>

@@ -1,0 +1,124 @@
+﻿
+@model IEnumerable<SapewinWeb.Models.Escalas>
+<div class="card-header" style="margin-bottom:10px;background-color: rgba(255, 133, 27, 0.3);"><i class="fa fa-th" aria-hidden="true"></i> <strong>Cadastro de Escalas</strong></div>
+<div class="alert alert-danger alert-dismissible fade show" hidden="hidden" id="Alerta" role="alert">
+    <button type="button" id="FechaAlerta" class="close" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+    <strong class="txtalerta" id="txtalerta"></strong>
+</div>
+<div class="btn-group" style="margin-top:10px;">
+    @if (ViewBag.PermissoesIndices != null && ViewBag.PermissoesIndices.Contains("CadastroEscalas-Incluir"))
+    {
+        <button class="btn btn-sm btn-dark btnNovo" Evento="/CadastroEscalas/CadastroEscalas_Incluir" title="Novo"><i class="fa fa-plus-square-o" aria-hidden="true"></i> Novo</button>
+    }
+    <button class="btn btn-sm btn-primary" id="ImprimirEscala" title="Imprimir"><i class="fa fa-print" aria-hidden="true"></i> Imprimir</button>
+    @if (ViewBag.PermissoesIndices != null && ViewBag.PermissoesIndices.Contains("CadastroEscalas-Remover"))
+    {
+        <button class="btn btn-sm text-white btn-danger" id="btnRemoverSelecao" title="Apagar"><i class="fa fa-fw fa-trash-o"></i> Apagar</button>
+    }
+</div>
+<div class="row" style="margin-top:10px;">
+    <div class="col-lg-4 col-md-7 col-sm-7 col-12">
+        <div class="input-group input-group-sm">
+            <input type="text" class="form-control txtPesquisar" value="" placeholder="Pesquisar">
+            <div class="input-group-btn">
+                <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <i class="fa fa-search" aria-hidden="true"></i>
+                </button>
+                <div class="dropdown-menu dropdown-menu-right">
+                    <label class="custom-control custom-checkbox" style="margin-left:20px">
+                        <input type="checkbox" checked="checked" id="Contem" class="custom-control-input">
+                        <span class="custom-control-indicator"></span>
+                        <span class="custom-control-description"></span>
+                        <span>Contem</span>
+                    </label>
+                    <div role="separator" class="dropdown-divider"></div>
+                    <label class="custom-control custom-checkbox" style="margin-left:20px">
+                        <input type="checkbox" id="NaoContem" class="custom-control-input">
+                        <span class="custom-control-indicator"></span>
+                        <span class="custom-control-description"></span>
+                        <span>Não Contem</span>
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-8">
+        <div class="row">
+            <div class="input-group" style="margin:0px 5px 5px 5px;font-size:small">
+                <select class="form-control-sm Seletor" Evento="/CadastroEscalas/CadastroEscalas_Abrir_Grid/?pesquisa=" Load="#TabCadastroEscalas" style="margin-left:5px;margin-right:5px;">
+                    <option selected="selected" value="dez">10</option>
+                    <option value="vinte">20</option>
+                    <option value="quarenta">40</option>
+                    <option value="oitenta">80</option>
+                </select>
+                <span style="margin-top:5px;">Por Pagina</span>
+            </div>
+        </div>
+    </div>
+    <script>
+        Pagina = 0;
+        order = 'codigo-up';
+        ids = new Array();
+    </script>
+    <div class="col-md-12">
+        <div class="py-3" id="TabCadastroEscalas">
+            @RenderPage("CadastroEscalas_Abrir_Grid.cshtml")
+        </div>
+    </div>
+</div>
+<div class="footermodal">
+
+</div>
+<script>
+    monitorador();
+    visualiza = 10;
+    $('.indice').parent().removeClass('active');
+    $('.indice.CadastroEscalas').parent().addClass('active').addClass('show').parent().addClass('show').parent().children().first().removeClass('collapsed');
+
+    var Time;
+    $('.txtPesquisar').keyup(function () {
+        Time = 500;
+        Pagina = 0;
+        setTimeout(LoadGridCadastroEscalas , Time);
+    });
+
+    $('#FechaAlerta').click(function () {
+        $(this).parent().attr('hidden', 'hidden');
+    });
+
+    $('#Contem').click(function () {
+        if($(this).is(':checked')){
+            $('#NaoContem').prop('checked', false);
+        } else {
+            $('#NaoContem').prop('checked', true);
+        }
+        LoadGridCadastroEscalas();
+    });
+
+    $('#NaoContem').click(function () {
+        if ($(this).is(':checked')) {
+            $('#Contem').prop('checked', false);
+        } else {
+            $('#Contem').prop('checked', true);
+        }
+        LoadGridCadastroEscalas();
+    });
+
+    $('#btnRemoverSelecao').click(function (e) {
+        e.preventDefault();
+        e.defaultPrevented = true;
+        if (ids.length > 0) {
+            $('#ModalWin').load('/CadastroEscalas/CadastroEscalas_Remover_Selecao/?id=' + ids.join('&id='), function (r, s, h) {
+                if (s == "success") {
+                    $('#ModalTamanho').addClass('modal-lg');
+                    $('#WinGenerica').modal('show');
+                } else {
+                    $('#txtalerta').text('Erro: ' + h.statusText + ' : ' + h.status)
+                    $('#Alerta').removeAttr('hidden');$('#Mywrapper').animate({ scrollTop: 0 }, 1000);
+                }
+            });
+        }
+    });
+</script>

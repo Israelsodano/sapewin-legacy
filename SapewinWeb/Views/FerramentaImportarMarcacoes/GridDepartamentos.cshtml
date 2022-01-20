@@ -1,0 +1,88 @@
+﻿@model SapewinWeb.Controllers.FerramentaImportarMarcacoesController.TipodeGrid
+<div class="modal-header" style="margin-bottom:10px;">
+    <h5 class="modal-title"><i class="fa fa-th" aria-hidden="true"></i> Busca Departamentos</h5>
+</div>
+<div class="alert alert-danger alert-dismissible fade show" hidden="hidden" id="AlertaModal" role="alert">
+    <button type="button" id="FechaAlertaModal" class="close" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+    <strong class="txtalerta" id="txtalertaModal"></strong>
+</div>
+
+<div class="modal-body">
+    <div class="form-group">
+        <div class="d-flex">
+            <input type="text" class="form-control form-control-sm" id="txtPesquisarDepartamento" style="max-width:55%;margin-right:5px;" placeholder="Pesquisar">
+            <button type="button" class="btn btn-sm btn-info"><i class="fa fa-search" aria-hidden="true"></i></button>
+        </div>
+    </div>
+    <table class="table table-sm table-bordered table-hover">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nome</th>
+            </tr>
+        </thead>
+        <tbody id="TabDepartamentos">
+            @{
+                Html.RenderAction("TabDepartamentos", new { Tipo = Model, pesquisa = "" });
+            }
+        </tbody>
+    </table>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-outline-danger" data-dismiss="modal"><i class="fa fa-fw fa-ban"></i> Cancelar</button>
+</div>
+
+<script>
+    monitorador();
+
+    $('.DepLinha').dblclick(function () {
+        linha = $(this);
+
+        if(parseInt('@Convert.ToInt32(Model)') == 1)
+        {
+            if ($('#DepartamentoFim').val() != '') {
+                if (parseInt($('#DepartamentoFim').val()) < parseInt(linha.attr('valor'))) {
+                    $('#txtalertaModal').text('ID final é menor que o selecionado');
+                    $('#AlertaModal').removeAttr('hidden');
+                } else {
+                    $('#DepartamentoIni').val(linha.attr('valor').padStart(10, '0'));
+                    $('#WinGenerica').modal('hide');
+                }
+            } else {
+                $('#DepartamentoIni').val(linha.attr('valor').padStart(10, '0'));
+                $('#WinGenerica').modal('hide');
+            }
+        } else {
+            if ($('#DepartamentoIni').val() != '') {
+
+                if (parseInt($('#DepartamentoIni').val()) > parseInt(linha.attr('valor'))) {
+                    $('#txtalertaModal').text('ID inicial é maior que o selecionado');
+                    $('#AlertaModal').removeAttr('hidden');
+                } else {
+                    $('#DepartamentoFim').val(linha.attr('valor').padStart(10, '0'));
+                    $('#WinGenerica').modal('hide');
+                }
+            } else {
+                $('#DepartamentoFim').val(linha.attr('valor').padStart(10, '0'));
+                $('#WinGenerica').modal('hide');
+            }
+        } 
+    });
+
+    $('#txtPesquisarDepartamento').keyup(function () {
+        $('#TabDepartamentos').load('/FerramentaImportarMarcacoes/TabDepartamentos/?Tipo=@Convert.ToInt32(Model)&pesquisa=' + $(this).val().replace(' ', '+'), function (r, s, x) {
+            if (s == 'error') {
+                $('#txtalertaModal').text('Erro: ' + x.status + ' : ' + x.statusText);
+                $('#AlertaModal').removeAttr('hidden');
+            }
+        });
+    });
+
+    $('#FechaAlertaModal').click(function () {
+        $(this).parent().attr('hidden', 'hidden');
+    });
+</script>
+
+

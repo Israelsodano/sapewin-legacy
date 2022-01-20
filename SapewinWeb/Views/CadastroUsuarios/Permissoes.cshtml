@@ -1,0 +1,16 @@
+﻿@model IEnumerable<SapewinWeb.Models.Empresas>
+<div class="container-fluid" style="border-bottom: 1px solid rgba(0, 0, 0, 0.125);">
+    <div class="form-group">
+        <label><strong>Selecione a Empresa</strong></label>
+        <select class="form-control form-control-sm cbxEmpresas" onchange="@($"select = $(this); cbxEmpresas = select.val(); $('#TabPermissoes').html(' <div class=\"container-fluid align-items-center text-center align-self-center flex-column d-flex justify-content-center\" style=\"height:500px;\" ><i class=\"fa fa-spinner fa-spin fa-5x fa-fw\"></i></div>'); $('#TabPermissoes').load('/CadastroUsuarios/GridsPermissoes/?id=' + select.val(){((ViewBag.Usuario == null) ? ("") : ($" + '&usuario=' + {ViewBag.Usuario}") )});")" style="max-width:40%;font-weight:bold">
+            <option selected="selected" disabled="disabled"></option>
+            @foreach (var Empresa in Model)
+            {
+                <option style="font-weight:bold;" value="@Empresa.IDEmpresa">@Empresa.IDEmpresa - @Empresa.Nome</option>
+            }
+        </select>
+    </div>
+</div>
+<div class="container-fluid" id="TabPermissoes" style="margin-top:15px;">
+   
+</div>

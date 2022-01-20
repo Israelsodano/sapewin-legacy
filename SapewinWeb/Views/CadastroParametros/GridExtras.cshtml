@@ -1,0 +1,15 @@
+﻿@model IEnumerable<SapewinWeb.Metodos.ObjExtras>
+
+@foreach (var Extra in Model)
+{
+    <tr>
+        <td style="width:40%"><span style="margin-left:10px;">@Extra.Horas</span></td>
+        <td style="width:24%"><span style="max-width:60px;margin-left:10px;">@Extra.Percent.ToString("000")</span></td>
+        <td style="width:24%"><span style="max-width:60px;margin-left:10px;">@(Extra.Adicional.HasValue ? Extra.Adicional.Value.ToString("000") : "")</span></td>
+        <td class="text-center">
+            <button Array="@Extra.Horas/@Extra.Percent/@Extra.Adicional/@(Convert.ToInt32(Extra.Tipo))" type="button" class="btn btn-sm btn-danger btnRemover@(Extra.Tipo.ToString())"><i class="fa fa-fw fa-trash-o"></i></button>
+        </td>
+    </tr>
+}
+   
+     

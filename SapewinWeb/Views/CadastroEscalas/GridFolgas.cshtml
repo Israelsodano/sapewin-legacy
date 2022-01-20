@@ -1,0 +1,71 @@
+﻿@model SapewinWeb.Metodos.ObjHorariosCargaSemanal
+<tr>
+    <td>Segunda</td>
+    <td>
+        <label style="font-size:small;" class="custom-control custom-checkbox mb-2 mr-sm-2 mb-sm-0" IDRef="@Model.IDRef">
+            <input type="checkbox" @(Model.Dias != null ? Model.Dias.Contains(1) ? "checked=\"checked\" " : "" : "")class="custom-control-input folga">
+            <span class="custom-control-indicator"></span>
+            <span class="custom-control-description"></span>
+        </label>
+    </td>
+</tr>
+<tr>
+    <td>Terça</td>
+    <td>
+        <label style="font-size:small;" class="custom-control custom-checkbox mb-2 mr-sm-2 mb-sm-0">
+            <input type="checkbox" @(Model.Dias != null ?  Model.Dias.Contains(2) ? "checked=\"checked\" " : "" : "")class="custom-control-input folga">
+            <span class="custom-control-indicator"></span>
+            <span class="custom-control-description"></span>
+        </label>
+    </td>
+</tr>
+<tr>
+    <td>Quarta</td>
+    <td>
+        <label style="font-size:small;" class="custom-control custom-checkbox mb-2 mr-sm-2 mb-sm-0">
+            <input type="checkbox" @(Model.Dias != null ?  Model.Dias.Contains(3) ? "checked=\"checked\" " : "" : "")class="custom-control-input folga">
+            <span class="custom-control-indicator"></span>
+            <span class="custom-control-description"></span>
+        </label>
+    </td>
+</tr>
+<tr>
+    <td>Quinta</td>
+    <td>
+        <label style="font-size:small;" class="custom-control custom-checkbox mb-2 mr-sm-2 mb-sm-0">
+            <input type="checkbox" @(Model.Dias != null ?  Model.Dias.Contains(4) ? "checked=\"checked\" " : "" : "")class="custom-control-input folga">
+            <span class="custom-control-indicator"></span>
+            <span class="custom-control-description"></span>
+        </label>
+    </td>
+</tr>
+<tr>
+    <td>Sexta</td>
+    <td>
+        <label style="font-size:small;" class="custom-control custom-checkbox mb-2 mr-sm-2 mb-sm-0">
+            <input type="checkbox" @(Model.Dias != null ?  Model.Dias.Contains(5) ? "checked=\"checked\" " : "" : "")class="custom-control-input folga">
+            <span class="custom-control-indicator"></span>
+            <span class="custom-control-description"></span>
+        </label>
+    </td>
+</tr>
+<tr>
+    <td>Sabado</td>
+    <td>
+        <label style="font-size:small;" class="custom-control custom-checkbox mb-2 mr-sm-2 mb-sm-0">
+            <input type="checkbox" @(Model.Dias != null ?  Model.Dias.Contains(6) ? "checked=\"checked\" " : "" : "")class="custom-control-input folga">
+            <span class="custom-control-indicator"></span>
+            <span class="custom-control-description"></span>
+        </label>
+    </td>
+</tr>
+<tr>
+    <td>Domingo</td>
+    <td>
+        <label style="font-size:small;" class="custom-control custom-checkbox mb-2 mr-sm-2 mb-sm-0">
+            <input type="checkbox" @(Model.Dias != null ?  Model.Dias.Contains(7) ? "checked=\"checked\" " : "" : "")class="custom-control-input folga">
+            <span class="custom-control-indicator"></span>
+            <span class="custom-control-description"></span>
+        </label>
+    </td>
+</tr>

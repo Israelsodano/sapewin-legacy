@@ -1,0 +1,78 @@
+﻿@model IEnumerable<SapewinWeb.Models.Empresas>
+<div class="modal-header" style="margin-bottom:10px;">
+    <h5 class="modal-title"><i class="fa fa-th" aria-hidden="true"></i> Seleção de Empresa</h5>
+</div>
+<div class="alert alert-danger alert-dismissible fade show" hidden="hidden" id="AlertaModal" role="alert">
+    <button type="button" id="FechaAlertaModal" class="close" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+    <strong class="txtalerta" id="txtalertaModal"></strong>
+</div>
+<div class="col-lg-4 col-md-7 col-sm-7 col-12">
+    <div class="input-group">
+        <input type="text" class="form-control txtPesquisar" value="" placeholder="Pesquisar">
+        <div class="input-group-btn">
+            <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="fa fa-search" aria-hidden="true"></i>
+            </button>
+            <div class="dropdown-menu dropdown-menu-right">
+                <label class="custom-control custom-checkbox" style="margin-left:20px">
+                    <input type="checkbox" checked="checked" id="Contem" class="custom-control-input">
+                    <span class="custom-control-indicator"></span>
+                    <span class="custom-control-description"></span>
+                    <span>Contem</span>
+                </label>
+                <div role="separator" class="dropdown-divider"></div>
+                <label class="custom-control custom-checkbox" style="margin-left:20px">
+                    <input type="checkbox" id="NaoContem" class="custom-control-input">
+                    <span class="custom-control-indicator"></span>
+                    <span class="custom-control-description"></span>
+                    <span>Não Contem</span>
+                </label>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="col-md-12">
+    <div class="py-3" id="TabEmpresas">
+        <script>
+            Pagina = 0;
+            order = 'codigo-up';
+        </script> 
+        @RenderPage("SelecionaEmpresa_Grid.cshtml")
+    </div>
+</div>
+<div class="modal-footer">    
+    <button type="button" class="btn btn-outline-danger" data-dismiss="modal"><i class="fa fa-fw fa-ban"></i> Cancelar</button>
+</div>
+<script>
+    monitorador();
+    var Time;
+    $('.txtPesquisar').keyup(function () {
+        Time = 500;
+        Pagina = 0;
+        setTimeout(LoadGridSelecionaEmpresa, Time);
+    });
+
+    $('#FechaAlertaModal').click(function () {
+        $(this).parent().attr('hidden', 'hidden');
+    });
+
+    $('#Contem').click(function () {
+        if ($(this).is(':checked')) {
+            $('#NaoContem').prop('checked', false);
+        } else {
+            $('#NaoContem').prop('checked', true);
+        }
+        LoadGridSelecionaEmpresa();
+    });
+
+    $('#NaoContem').click(function () {
+        if ($(this).is(':checked')) {
+            $('#Contem').prop('checked', false);
+        } else {
+            $('#Contem').prop('checked', true);
+        }
+        LoadGridSelecionaEmpresa();
+    });   
+</script>

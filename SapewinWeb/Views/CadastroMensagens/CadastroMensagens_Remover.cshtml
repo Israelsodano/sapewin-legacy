@@ -1,0 +1,42 @@
+﻿@model SapewinWeb.Models.Mensagem
+<div class="modal-header" style="margin-bottom:10px;">
+    <h5 class="modal-title"><i class="fa fa-th" aria-hidden="true"></i> Cadastro de Mensagem > Remover</h5>
+</div>
+<div class="alert alert-danger alert-dismissible fade show" hidden="hidden" id="AlertaModal" role="alert">
+    <button type="button" id="FechaAlertaModal" class="close" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+    <strong class="txtalerta" id="txtalertaModal"></strong>
+</div>
+<form id="FormRemoverMensagem" action="/CadastroMensagens/CadastroMensagens_Remover_Salvar/?id=@Model.IDMensagem" method="post">
+    <div class="modal-body">
+        
+        <div class="form-group"> <span> Tem certeza que deseja <strong>remover</strong> o Mensagem <strong>@Model.IDMensagem.ToString("0000") - @Model.Nome</strong>?</span></div>
+    </div>
+    <div class="modal-footer">
+        <button type="submit" class="btn btn-outline-success">Sim</button>
+        <button type="button" class="btn btn-outline-danger" data-dismiss="modal">Não</button>
+    </div>
+</form>
+<script>
+    monitorador();
+    $('#FormRemoverMensagem').submit(function (e) {
+        e.preventDefault();
+        e.defaultPrevented = true;
+        $.post($(this).attr('action'), $(this).serialize(),function (data) {
+            if (data.status == true) {
+                LoadGridCadastroMensagens ();
+                $('#WinGenerica').modal('hide');
+               
+            } else {
+                $('#txtalertaModal').text(data.msg);
+                $('#AlertaModal').removeAttr('hidden', 'hidden');
+            }
+        });
+    });
+
+    $('#FechaAlertaModal').click(function () {
+        $(this).parent().attr('hidden', 'hidden')
+    });
+</script>
+

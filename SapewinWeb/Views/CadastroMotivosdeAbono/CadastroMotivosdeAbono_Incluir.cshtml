@@ -1,0 +1,116 @@
+﻿
+<div class="modal-header" style="margin-bottom:10px;">
+    <h5 class="modal-title"><i class="fa fa-th" aria-hidden="true"></i> Cadastro de Motivos de Abono > Incluir</h5>
+</div>
+<div class="alert alert-danger alert-dismissible fade show" hidden="hidden" id="AlertaModal" role="alert">
+    <button type="button" id="FechaAlertaModal" class="close" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+    <strong class="txtalerta" id="txtalertaModal"></strong>
+</div>
+<form id="FormInserir" action="/CadastroMotivosdeAbono/CadastroMotivosdeAbono_Incluir_Salvar/?Tipo=" method="post">
+    <div class="modal-body">
+              
+        <div class="form-row justify-content-between">
+            <div>
+                <div class="form-group" style="margin-left:5px;">
+                    <label>Abreviação</label>
+                    <div class="form-inline">
+                        <input type="text" id="txtAbr" name="Abreviacao" maxlength="5" placeholder="Máx. 5 Dígitos" class="form-control">
+                        <label style="margin-left:10px;" class="custom-control custom-checkbox mb-2 mr-sm-2 mb-sm-0">
+                            <input type="checkbox" id="Favorito" class="custom-control-input">
+                            <span class="custom-control-indicator"></span>
+                            <span class="custom-control-description">Favorito</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group" style="margin-left:5px;">
+                    <label>Ev. Dia</label>
+                    <input type="text" name="EventDia" maxlength="10" style="width:100px" class="form-control">
+                </div>
+                <div class="form-group" style="margin-left:5px;">
+                    <label>Ev. Hora</label>
+                    <input type="text" name="EventHora" maxlength="10" style="width:100px" class="form-control">
+                </div>
+            </div>
+        </div>       
+        <div class="form-group">
+            <label>Descrição</label>
+            <input type="text" name="Nome" maxlength="50" class="form-control">
+        </div>
+    </div>
+    <div id="Tipos">
+        <div class="form-group" style="margin-left:15px;">
+            <label class="custom-control custom-radio mb-2 mr-sm-2 mb-sm-0">
+                <input type="radio" checked="checked" Tipo="A" class="custom-control-input Tipo">
+                <span class="custom-control-indicator"></span>
+                <span class="custom-control-description">Abona horas(Horas pagas)</span>
+            </label>
+        </div>
+        <div class="form-group" style="margin-left:15px;">
+            <label class="custom-control custom-radio mb-2 mr-sm-2 mb-sm-0">
+                <input type="radio" Tipo="B" class="custom-control-input Tipo">
+                <span class="custom-control-indicator"></span>
+                <span class="custom-control-description">Abona horas(Horas trabalhadas)</span>
+            </label>
+        </div>
+        <div class="form-group" style="margin-left:15px;">
+            <label class="custom-control custom-radio mb-2 mr-sm-2 mb-sm-0">
+                <input type="radio" Tipo="C" class="custom-control-input Tipo">
+                <span class="custom-control-indicator"></span>
+                <span class="custom-control-description">Desconta o evento</span>
+            </label>
+        </div>
+        <div class="form-group" style="margin-left:15px;">
+            <label class="custom-control custom-radio mb-2 mr-sm-2 mb-sm-0">
+                <input type="radio" Tipo="D" class="custom-control-input Tipo">
+                <span class="custom-control-indicator"></span>
+                <span class="custom-control-description">Altera a abreviação sem pagar ou decontar evento</span>
+            </label>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="submit" class="btn btn-outline-success"><i class="fa fa-fw fa-floppy-o"></i> Salvar</button>
+        <button type="button" class="btn btn-outline-danger" data-dismiss="modal"><i class="fa fa-fw fa-ban"></i> Cancelar</button>
+    </div>
+</form>
+<script>
+    monitorador();
+    $("#txtID").keyup(function () {
+        if ($("#txtID").val() != "") {
+            $("#txtID").val($("#txtID").val().replace(/[/\D]/gi, ""));
+        }
+    });
+
+    $("#txtAbr").keyup(function () {
+        $(this).val($(this).val().toUpperCase());
+    });    
+
+    $('.Tipo').click(function () {
+        radio = $(this);
+        $('#Tipos').children().find('.Tipo').prop('checked', false);
+        radio.prop('checked', true);
+    });
+
+    $('#FormInserir').submit(function (e) {
+        e.preventDefault();
+        e.defaultPrevented = true;
+        $.post($(this).attr('action') + $('#Tipos').children().find('.Tipo:checked').attr('Tipo') + '&Favorito=' + $('#Favorito').is(':checked'), $(this).serialize(), function (data) {
+            if (data.status == true) {
+                LoadGridCadastroMotivosdeAbono();
+                $('#WinGenerica').modal('hide');
+               
+            } else {
+                $('#txtalertaModal').text(data.msg);
+                $('#AlertaModal').removeAttr('hidden', 'hidden');
+            }
+        });
+    });
+
+    $('#FechaAlertaModal').click(function () {
+        $(this).parent().attr('hidden', 'hidden');
+    });
+</script>
+

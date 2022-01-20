@@ -1,0 +1,93 @@
+﻿<div class="modal-header" style="margin-bottom:10px;">
+    <h5 class="modal-title"><i class="fa fa-th" aria-hidden="true"></i> Cadastro de Folgas</h5>
+</div>
+<div class="alert alert-danger alert-dismissible fade show" hidden="hidden" id="AlertaModal" role="alert">
+    <button type="button" id="FechaAlertaModal" class="close" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+    <strong class="txtalerta" id="txtalertaModal"></strong>
+</div>
+<div class="modal-body" style="font-size:small;">
+    <div class="form-group">
+        <label>Data</label>
+        <div class="d-flex">
+            <input class="form-control form-control-sm" type="date" style="margin-right:10px;" id="dataInicio" />
+            <button class="btn btn-sm btn-dark" id="AddFolga"><i class="fa fa-fw fa-plus"></i></button>
+        </div>
+    </div>
+    <table class="table table-sm table-bordered">
+        <thead>
+            <tr>
+                <th>Data</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody id="tabFolgas"></tbody>
+    </table>
+    <script>
+
+        function AtualizaGridFolgas() {
+            $('#tabFolgas').load('/CadastroFuncionarios/GridFolgas/?Array=' + Folgas.join('&Array='), function (r, s, x) {
+                if (s == 'success') {
+                    $('#dataInicio').val('');
+                    $('#AlertaModal').attr('hidden', 'hidden');
+
+                    var folga = Folgas.filter(function (x) {
+
+                        var hoje = String(new Date().getFullYear()).padStart(4, '0') + '-' + String(new Date().getMonth() + 1).padStart(2, '0') + '-' + String(new Date().getDate()).padStart(2, '0');
+
+                        return x == hoje;
+                    });
+                    console.log(folga);
+                    if (folga.length > 0) {                        
+                        $('#txtFolga').text("Está de Folga hoje");
+                    } else {
+                        $('#txtFolga').text("Não está de Folga hoje");
+                    }
+
+                } else {
+                    Folgas = [];
+                    $('#txtalertaModal').text('Erro: ' + x.statusText + ' : ' + x.status);
+                    $('#AlertaModal').removeAttr('hidden', 'hidden');
+                }
+            });
+        }
+
+        AtualizaGridFolgas();
+    </script>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-outline-info" data-dismiss="modal"><i class="fa fa-undo" aria-hidden="true"></i> Voltar</button>
+</div>
+<script src="~/scripts/Index.js"></script>
+<script>
+    monitorador();
+
+    $('#AddFolga').click(function () {
+        var Folga = "";
+        if ($('#dataInicio').val() != '') {
+            Folga = $('#dataInicio').val();
+            if (!Folgas.includes(Folga)) {
+                Folgas.push(Folga);
+                AtualizaGridFolgas();
+            } else {
+                $('#txtalertaModal').text('Já existe uma folga cadastrado para o mesmo período');
+                $('#AlertaModal').removeAttr('hidden', 'hidden');
+            }
+
+        } else {
+            $('#txtalertaModal').text('Preencha todos os campos');
+            $('#AlertaModal').removeAttr('hidden', 'hidden');
+        }
+    });
+
+    $('#FechaAlertaModal').click(function () {
+        $(this).parent().attr('hidden', 'hidden');
+    });
+
+    $('#tabFolgas').on('click', '.btnRemoverFolga', function () {
+        btn = $(this);
+        Folgas = Folgas.filter(function (itens) { return itens != btn.attr('valor') });
+        AtualizaGridFolgas();
+    });
+</script>

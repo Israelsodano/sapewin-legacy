@@ -1,0 +1,45 @@
+﻿@model SapewinWeb.Models.Cargos
+<div class="modal-header" style="margin-bottom:10px;">
+    <h5 class="modal-title"><i class="fa fa-th" aria-hidden="true"></i> Cadastro de Cargos > Alterar</h5>
+</div>
+<div class="alert alert-danger alert-dismissible fade show" hidden="hidden" id="AlertaModal" role="alert">
+    <button type="button" id="FechaAlertaModal" class="close" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+    <strong class="txtalerta" id="txtalertaModal"></strong>
+</div>
+<form id="FormAlterarCargo" action="/CadastroCargos/CadastroCargos_Alterar_Salvar/?id=" method="post">
+    <div class="modal-body">
+        
+        <div class="form-group">
+            <label>Código</label>
+            <input type="text" maxlength="9" style="width:20%;" disabled="disabled" value="@Model.IDCargo.ToString("0000000000")" class="form-control">
+        </div>
+        <div class="form-group">
+            <label>Descrição</label>
+            <input type="text" value="@Model.Nome" maxlength="50" name="Nome" class="form-control">
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="submit" class="btn btn-outline-success"><i class="fa fa-fw fa-floppy-o"></i> Salvar</button>
+        <button type="button" class="btn btn-outline-danger" data-dismiss="modal"><i class="fa fa-fw fa-ban"></i> Cancelar</button>
+    </div>
+</form>
+<script>
+    monitorador();
+
+    $('#FormAlterarCargo').submit(function (e) {
+        e.preventDefault();
+        e.defaultPrevented = true;
+        $.post($(this).attr('action')+'@Model.IDCargo', $(this).serialize(), function (data) {
+            if (data.status == true) {
+                LoadGridCadastroCargos();
+                $('#WinGenerica').modal('hide');
+               
+            } else {
+                $('#txtalertaModal').text(data.msg);
+                $('#AlertaModal').removeAttr('hidden', 'hidden');
+            }
+        });
+    });
+</script>

@@ -1,0 +1,578 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\Microsoft.Net.Compilers.2.4.0\build\Microsoft.Net.Compilers.props" Condition="Exists('..\packages\Microsoft.Net.Compilers.2.4.0\build\Microsoft.Net.Compilers.props')" />
+  <Import Project="..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props" Condition="Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" />
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{583F1A1F-3027-4A3A-9A63-1E9E432E91E6}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>SapewinWeb</RootNamespace>
+    <AssemblyName>SapewinWeb</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <UseIISExpress>true</UseIISExpress>
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+    <UseGlobalApplicationHostFile />
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+    <Use64BitIISExpress />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="HtmlRenderer, Version=1.5.0.5, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\HtmlRenderer.Core.1.5.0.5\lib\net45\HtmlRenderer.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="HtmlRenderer.PdfSharp, Version=1.5.0.6, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\HtmlRenderer.PdfSharp.1.5.0.6\lib\net45\HtmlRenderer.PdfSharp.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="HtmlRenderer.WinForms, Version=1.5.0.6, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\HtmlRenderer.WinForms.1.5.0.6\lib\net45\HtmlRenderer.WinForms.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.AI.Agent.Intercept, Version=1.2.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ApplicationInsights.Agent.Intercept.1.2.1\lib\net45\Microsoft.AI.Agent.Intercept.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.AI.DependencyCollector, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ApplicationInsights.DependencyCollector.2.0.0\lib\net45\Microsoft.AI.DependencyCollector.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.AI.PerfCounterCollector, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ApplicationInsights.PerfCounterCollector.2.0.0\lib\net45\Microsoft.AI.PerfCounterCollector.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.AI.ServerTelemetryChannel, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ApplicationInsights.WindowsServer.TelemetryChannel.2.0.0\lib\net45\Microsoft.AI.ServerTelemetryChannel.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.AI.Web, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ApplicationInsights.Web.2.0.0\lib\net45\Microsoft.AI.Web.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.AI.WindowsServer, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ApplicationInsights.WindowsServer.2.0.0\lib\net45\Microsoft.AI.WindowsServer.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.ApplicationInsights, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ApplicationInsights.2.0.0\lib\net45\Microsoft.ApplicationInsights.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.EntityFrameworkCore, Version=1.1.3.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.EntityFrameworkCore.1.1.3\lib\net451\Microsoft.EntityFrameworkCore.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.EntityFrameworkCore.Relational, Version=1.1.3.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.EntityFrameworkCore.Relational.1.1.3\lib\net451\Microsoft.EntityFrameworkCore.Relational.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.EntityFrameworkCore.SqlServer, Version=1.1.3.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.EntityFrameworkCore.SqlServer.1.1.3\lib\net451\Microsoft.EntityFrameworkCore.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Caching.Abstractions, Version=1.1.1.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.Caching.Abstractions.1.1.1\lib\netstandard1.0\Microsoft.Extensions.Caching.Abstractions.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Caching.Memory, Version=1.1.1.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.Caching.Memory.1.1.1\lib\net451\Microsoft.Extensions.Caching.Memory.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.DependencyInjection, Version=1.1.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.DependencyInjection.1.1.0\lib\netstandard1.1\Microsoft.Extensions.DependencyInjection.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.DependencyInjection.Abstractions, Version=1.1.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.DependencyInjection.Abstractions.1.1.0\lib\netstandard1.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Logging, Version=1.1.1.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.Logging.1.1.1\lib\netstandard1.1\Microsoft.Extensions.Logging.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Logging.Abstractions, Version=1.1.1.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.Logging.Abstractions.1.1.1\lib\netstandard1.1\Microsoft.Extensions.Logging.Abstractions.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Options, Version=1.1.1.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.Options.1.1.1\lib\netstandard1.0\Microsoft.Extensions.Options.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Primitives, Version=1.1.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.Primitives.1.1.0\lib\netstandard1.0\Microsoft.Extensions.Primitives.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+    <Reference Include="MySqlConnector, Version=0.19.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MySqlConnector.0.19.2\lib\net451\MySqlConnector.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="PdfSharp, Version=1.32.3057.0, Culture=neutral, PublicKeyToken=f94615aa0424f9eb, processorArchitecture=MSIL">
+      <HintPath>..\packages\PDFsharp.1.32.3057.0\lib\net20\PdfSharp.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="PdfSharp.Charting, Version=1.32.3057.0, Culture=neutral, PublicKeyToken=f94615aa0424f9eb, processorArchitecture=MSIL">
+      <HintPath>..\packages\PDFsharp.1.32.3057.0\lib\net20\PdfSharp.Charting.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Pomelo.EntityFrameworkCore.MySql, Version=1.1.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Pomelo.EntityFrameworkCore.MySql.1.1.2\lib\net451\Pomelo.EntityFrameworkCore.MySql.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Pomelo.JsonObject, Version=1.1.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Pomelo.JsonObject.1.1.1\lib\net451\Pomelo.JsonObject.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Remotion.Linq, Version=2.1.0.0, Culture=neutral, PublicKeyToken=fee00910d6e5f53b, processorArchitecture=MSIL">
+      <HintPath>..\packages\Remotion.Linq.2.1.1\lib\net45\Remotion.Linq.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Buffers, Version=4.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Buffers.4.0.0\lib\netstandard1.1\System.Buffers.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Collections.Immutable, Version=1.2.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\System.Collections.Immutable.1.3.0\lib\portable-net45+win8+wp8+wpa81\System.Collections.Immutable.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.ComponentModel.Composition" />
+    <Reference Include="System.Data.Entity" />
+    <Reference Include="System.Diagnostics.DiagnosticSource, Version=4.0.1.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Diagnostics.DiagnosticSource.4.3.1\lib\portable-net45+win8+wpa81\System.Diagnostics.DiagnosticSource.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Interactive.Async, Version=3.0.0.0, Culture=neutral, PublicKeyToken=94bc3704cddfc263, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Interactive.Async.3.0.0\lib\net45\System.Interactive.Async.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.IO.Compression" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.Runtime.Caching" />
+    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=4.0.2.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.4.3.0\lib\netstandard1.0\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Runtime.DurableInstancing" />
+    <Reference Include="System.Runtime.InteropServices.RuntimeInformation, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Runtime.InteropServices.RuntimeInformation.4.3.0\lib\net45\System.Runtime.InteropServices.RuntimeInformation.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Runtime.Remoting" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Runtime.Serialization.Formatters.Soap" />
+    <Reference Include="System.Threading.Tasks.Extensions, Version=4.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Threading.Tasks.Extensions.4.0.0\lib\portable-net45+win8+wp8+wpa81\System.Threading.Tasks.Extensions.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Transactions" />
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.EnterpriseServices" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="System.Web.Razor">
+      <HintPath>..\packages\Microsoft.AspNet.Razor.3.2.3\lib\net45\System.Web.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Webpages">
+      <HintPath>..\packages\Microsoft.AspNet.Webpages.3.2.3\lib\net45\System.Web.Webpages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Webpages.Deployment">
+      <HintPath>..\packages\Microsoft.AspNet.Webpages.3.2.3\lib\net45\System.Web.Webpages.Deployment.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Webpages.Razor">
+      <HintPath>..\packages\Microsoft.AspNet.Webpages.3.2.3\lib\net45\System.Web.Webpages.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Helpers">
+      <HintPath>..\packages\Microsoft.AspNet.Webpages.3.2.3\lib\net45\System.Web.Helpers.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Web.Infrastructure">
+      <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Mvc">
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.5.2.3\lib\net45\System.Web.Mvc.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Contents\bootstrap.css" />
+    <Content Include="Contents\font-awesome.css" />
+    <Content Include="Contents\Principal.css" />
+    <Content Include="Contents\sb-admin.css" />
+    <Content Include="Contents\SlideComponet.css" />
+    <Content Include="Content\fancybox\blank.gif" />
+    <Content Include="Content\fancybox\fancybox_buttons.png" />
+    <Content Include="Content\fancybox\fancybox_loading%402x.gif" />
+    <Content Include="Content\fancybox\fancybox_loading.gif" />
+    <Content Include="Content\fancybox\fancybox_overlay.png" />
+    <Content Include="Content\fancybox\fancybox_sprite%402x.png" />
+    <Content Include="Content\fancybox\fancybox_sprite.png" />
+    <Content Include="Content\jquery.fancybox-buttons.css" />
+    <Content Include="Content\jquery.fancybox-thumbs.css" />
+    <Content Include="Content\jquery.fancybox.css" />
+    <Content Include="Fotos\FotoPadrao.png" />
+    <Content Include="Global.asax" />
+    <Content Include="scripts\bootstrap.bundle.min.js" />
+    <Content Include="scripts\bootstrap.min.js" />
+    <Content Include="scripts\Index.js" />
+    <Content Include="scripts\jquery.easing.min.js" />
+    <Content Include="scripts\jquery.fancybox-buttons.js" />
+    <Content Include="scripts\jquery.fancybox-media.js" />
+    <Content Include="scripts\jquery.fancybox-thumbs.js" />
+    <Content Include="scripts\jquery.fancybox.js" />
+    <Content Include="scripts\jquery.fancybox.pack.js" />
+    <Content Include="scripts\jquery.maskedinput.min.js" />
+    <Content Include="scripts\jquery.min.js" />
+    <Content Include="scripts\jquery.mousewheel-3.0.6.pack.js" />
+    <Content Include="scripts\sb-admin.js" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\CadastroCargosController.cs" />
+    <Compile Include="Controllers\CadastroDepartamentosController.cs" />
+    <Compile Include="Controllers\CadastroEmpresasController.cs" />
+    <Compile Include="Controllers\CadastroEscalasController.cs" />
+    <Compile Include="Controllers\CadastroFeriadosEspecificosController.cs" />
+    <Compile Include="Controllers\CadastroFeriadosGeraisController.cs" />
+    <Compile Include="Controllers\CadastroFuncionariosController.cs" />
+    <Compile Include="Controllers\CadastroHorariosController.cs" />
+    <Compile Include="Controllers\CadastroMensagensController.cs" />
+    <Compile Include="Controllers\CadastroMotivosdeAbonoController.cs" />
+    <Compile Include="Controllers\CadastroParametrosController.cs" />
+    <Compile Include="Controllers\CadastroSetoresController.cs" />
+    <Compile Include="Controllers\CadastroTesteController.cs" />
+    <Compile Include="Controllers\CadastroUsuariosController.cs" />
+    <Compile Include="Controllers\FerramentaImportarMarcacoesController.cs" />
+    <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\RelatoriosGeraisController.cs" />
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="Metodos\CalculosdeHora.cs" />
+    <Compile Include="Metodos\Criptografia.cs" />
+    <Compile Include="Metodos\LogGeral.cs" />
+    <Compile Include="Metodos\ObjExtras.cs" />
+    <Compile Include="Metodos\ObjFuncionario.cs" />
+    <Compile Include="Metodos\ObjHorarios.cs" />
+    <Compile Include="Metodos\ObjImportarMarcacoes.cs" />
+    <Compile Include="Metodos\ObjIntervalosAuxiliares.cs" />
+    <Compile Include="Metodos\ObjUsuario.cs" />
+    <Compile Include="Metodos\RealTime.cs" />
+    <Compile Include="Metodos\Sincroniza\ContextoLogin\Clientes.cs" />
+    <Compile Include="Metodos\Sincroniza\ContextoLogin\Funcoes.cs" />
+    <Compile Include="Metodos\Sincroniza\ContextoLogin\FuncoesDeTelas.cs" />
+    <Compile Include="Metodos\Sincroniza\ContextoLogin\LoginFabRevenda.cs" />
+    <Compile Include="Metodos\Sincroniza\ContextoLogin\LoginModel.cs" />
+    <Compile Include="Metodos\Sincroniza\ContextoLogin\Loginsistema.cs" />
+    <Compile Include="Metodos\Sincroniza\ContextoLogin\Logsistema.cs" />
+    <Compile Include="Metodos\Sincroniza\ContextoLogin\Produtos.cs" />
+    <Compile Include="Metodos\Sincroniza\ContextoLogin\ProdutosCliente.cs" />
+    <Compile Include="Metodos\Sincroniza\ContextoLogin\ProdutosRevenda.cs" />
+    <Compile Include="Metodos\Sincroniza\ContextoLogin\Revendas.cs" />
+    <Compile Include="Metodos\Sincroniza\ContextoLogin\Servidores.cs" />
+    <Compile Include="Metodos\Sincroniza\ContextoLogin\ServidoresRevenda.cs" />
+    <Compile Include="Metodos\Sincroniza\ContextoLogin\Telas.cs" />
+    <Compile Include="Metodos\Sincroniza\DpaRep\DparepContext.cs" />
+    <Compile Include="Metodos\Sincroniza\DpaRep\Empresas.cs" />
+    <Compile Include="Metodos\Sincroniza\DpaRep\Funcoes.cs" />
+    <Compile Include="Metodos\Sincroniza\DpaRep\FuncoesdeTelas.cs" />
+    <Compile Include="Metodos\Sincroniza\DpaRep\PermissoesdeTelas.cs" />
+    <Compile Include="Metodos\Sincroniza\DpaRep\Telas.cs" />
+    <Compile Include="Metodos\Sincroniza\Painel\Funcoes.cs" />
+    <Compile Include="Metodos\Sincroniza\Painel\FuncoesDeTelas.cs" />
+    <Compile Include="Metodos\Sincroniza\Painel\PainelContext.cs" />
+    <Compile Include="Metodos\Sincroniza\Painel\Telas.cs" />
+    <Compile Include="Metodos\Sincroniza\Sapewin\Empresas.cs" />
+    <Compile Include="Metodos\Sincroniza\Sapewin\Funcoes.cs" />
+    <Compile Include="Metodos\Sincroniza\Sapewin\FuncoesdeTelas.cs" />
+    <Compile Include="Metodos\Sincroniza\Sapewin\PermissoesdeTelas.cs" />
+    <Compile Include="Metodos\Sincroniza\Sapewin\SapewinContext.cs" />
+    <Compile Include="Metodos\Sincroniza\Sapewin\Telas.cs" />
+    <Compile Include="Metodos\Sincroniza\Sincroniza.cs" />
+    <Compile Include="Metodos\ValidaDocumentos.cs" />
+    <Compile Include="Metodos\VerificaLoad.cs" />
+    <Compile Include="Metodos\VerificaLogin.cs" />
+    <Compile Include="Models\Afastamentos.cs" />
+    <Compile Include="Models\Cargos.cs" />
+    <Compile Include="Models\CartaoProximidade.cs" />
+    <Compile Include="Models\Departamentos.cs" />
+    <Compile Include="Models\Empresas.cs" />
+    <Compile Include="Models\Escalas.cs" />
+    <Compile Include="Models\EscalasHorarios.cs" />
+    <Compile Include="Models\FeriadosEspecificos.cs" />
+    <Compile Include="Models\FeriadosGerais.cs" />
+    <Compile Include="Models\Folgas.cs" />
+    <Compile Include="Models\Funcionarios.cs" />
+    <Compile Include="Models\Funcoes.cs" />
+    <Compile Include="Models\FuncoesdeTelas.cs" />
+    <Compile Include="Models\GrupodeFeriados.cs" />
+    <Compile Include="Models\Horarios.cs" />
+    <Compile Include="Models\HorariosOcasionais.cs" />
+    <Compile Include="Models\IntervalosAuxiliares.cs" />
+    <Compile Include="Models\LogSistema.cs" />
+    <Compile Include="Models\Mensagem.cs" />
+    <Compile Include="Models\MensagensFuncionarios.cs" />
+    <Compile Include="Models\MotivosdeAbono.cs" />
+    <Compile Include="Models\MyContext.cs" />
+    <Compile Include="Models\Parametros.cs" />
+    <Compile Include="Models\EscalonamentodeHoraExtra.cs" />
+    <Compile Include="Models\PermissoesdeDepartamentos.cs" />
+    <Compile Include="Models\PermissoesdeEmpresas.cs" />
+    <Compile Include="Models\PermissoesdeFuncionarios.cs" />
+    <Compile Include="Models\PermissoesdeSetores.cs" />
+    <Compile Include="Models\PermissoesdeTelas.cs" />
+    <Compile Include="Models\Setores.cs" />
+    <Compile Include="Models\Telas.cs" />
+    <Compile Include="Models\Teste.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\web.config" />
+    <Content Include="packages.config" />
+    <Content Include="ApplicationInsights.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="Views\_ViewStart.cshtml" />
+    <Content Include="Views\Shared\_Layout.cshtml" />
+    <Content Include="fonts\fontawesome-webfont.eot" />
+    <Content Include="fonts\fontawesome-webfont.svg" />
+    <Content Include="fonts\fontawesome-webfont.ttf" />
+    <Content Include="fonts\fontawesome-webfont.woff" />
+    <Content Include="fonts\fontawesome-webfont.woff2" />
+    <Content Include="fonts\FontAwesome.otf" />
+    <None Include="Properties\PublishProfiles\Sapewin.pubxml" />
+    <Content Include="Views\CadastroEmpresas\CadastroEmpresas_Abrir.cshtml" />
+    <Content Include="Views\Home\_Nav.cshtml" />
+    <Content Include="Views\CadastroEmpresas\CadastroEmpresas_Alterar.cshtml" />
+    <Content Include="Views\CadastroEmpresas\CadastroEmpresas_Abrir_Grid.cshtml" />
+    <Content Include="Views\CadastroSetores\CadastroSetores_Abrir.cshtml" />
+    <Content Include="Views\CadastroSetores\CadastroSetores_Abrir_Grid.cshtml" />
+    <Content Include="Views\CadastroSetores\CadastroSetores_Incluir.cshtml" />
+    <Content Include="Views\CadastroSetores\CadastroSetores_Alterar.cshtml" />
+    <Content Include="Views\CadastroSetores\CadastroSetores_Remover.cshtml" />
+    <Content Include="Views\Home\SelecionaEmpresa.cshtml" />
+    <Content Include="Views\Home\SelecionaEmpresa_Grid.cshtml" />
+    <Content Include="Views\CadastroDepartamentos\CadastroDepartamentos_Abrir.cshtml" />
+    <Content Include="Views\CadastroDepartamentos\CadastroDepartamentos_Abrir_Grid.cshtml" />
+    <Content Include="Views\CadastroDepartamentos\CadastroDepartamentos_Incluir.cshtml" />
+    <Content Include="Views\CadastroDepartamentos\CadastroDepartamentos_Alterar.cshtml" />
+    <Content Include="Views\CadastroDepartamentos\CadastroDepartamentos_Remover.cshtml" />
+    <Content Include="Views\CadastroCargos\CadastroCargos_Abrir.cshtml" />
+    <Content Include="Views\CadastroCargos\CadastroCargos_Abrir_Grid.cshtml" />
+    <Content Include="Views\CadastroCargos\CadastroCargos_Incluir.cshtml" />
+    <Content Include="Views\CadastroCargos\CadastroCargos_Alterar.cshtml" />
+    <Content Include="Views\CadastroCargos\CadastroCargos_Remover.cshtml" />
+    <Content Include="Views\Home\Home.cshtml" />
+    <Content Include="Views\CadastroParametros\CadastroParametros_Abrir.cshtml" />
+    <Content Include="Views\CadastroFeriadosGerais\CadastroFeriadosGerais_Abrir.cshtml" />
+    <Content Include="Views\CadastroFeriadosGerais\CadastroFeriadosGerais_Abrir_Grid.cshtml" />
+    <Content Include="Views\CadastroFeriadosGerais\CadastroFeriadosGerais_Incluir.cshtml" />
+    <Content Include="Views\CadastroFeriadosGerais\CadastroFeriadosGerais_Alterar.cshtml" />
+    <Content Include="Views\CadastroFeriadosGerais\CadastroFeriadosGerais_Remover.cshtml" />
+    <Content Include="Views\CadastroFeriadosEspecificos\CadastroFeriadosEspecificos_Abrir.cshtml" />
+    <Content Include="Views\CadastroFeriadosEspecificos\CadastroFeriadosEspecificos_Abrir_Grid.cshtml" />
+    <Content Include="Views\CadastroFeriadosEspecificos\CadastroFeriadosEspecificos_Incluir.cshtml" />
+    <Content Include="Views\CadastroFeriadosEspecificos\TabFeriados.cshtml" />
+    <Content Include="Views\CadastroFeriadosEspecificos\CadastroFeriadosEspecificos_Alterar.cshtml" />
+    <Content Include="Views\CadastroFeriadosEspecificos\CadastroFeriadosEspecificos_Remover.cshtml" />
+    <Content Include="Views\CadastroMotivosdeAbono\CadastroMotivosdeAbono_Abrir.cshtml" />
+    <Content Include="Views\CadastroMotivosdeAbono\CadastroMotivosdeAbono_Abrir_Grid.cshtml" />
+    <Content Include="Views\CadastroMotivosdeAbono\CadastroMotivosdeAbono_Incluir.cshtml" />
+    <Content Include="Views\CadastroMotivosdeAbono\CadastroMotivosdeAbono_Alterar.cshtml" />
+    <Content Include="Views\CadastroMotivosdeAbono\CadastroMotivosdeAbono_Remover.cshtml" />
+    <Content Include="Views\CadastroMotivosdeAbono\CadastroMotivosdeAbono_Remover_Selecao.cshtml" />
+    <Content Include="Views\CadastroMotivosdeAbono\CadastroMotivosdeAbono_Incluir_Padroes.cshtml" />
+    <Content Include="Views\CadastroCargos\CadastroCargos_Remover_Selecao.cshtml" />
+    <Content Include="Views\CadastroDepartamentos\CadastroDepartamentos_Remover_Selecao.cshtml" />
+    <Content Include="Views\CadastroFeriadosEspecificos\CadastroFeriadosEspecificos_Remover_Selecao.cshtml" />
+    <Content Include="Views\CadastroFeriadosGerais\CadastroFeriadosGerais_Remover_Selecao.cshtml" />
+    <Content Include="Views\CadastroFeriadosGerais\CadastroFeriadosGerais_Incluir_Padroes.cshtml" />
+    <Content Include="Views\CadastroSetores\CadastroSetores_Remover_Selecao.cshtml" />
+    <Content Include="Views\CadastroHorarios\CadastroHorarios_Abrir.cshtml" />
+    <Content Include="Views\CadastroHorarios\CadastroHorarios_Abrir_Grid.cshtml" />
+    <Content Include="Views\CadastroHorarios\CadastroHorarios_Incluir.cshtml" />
+    <Content Include="Views\Home\Manutencao.cshtml" />
+    <Content Include="Views\CadastroHorarios\CadastroHorarios_Alterar.cshtml" />
+    <Content Include="Views\CadastroHorarios\CadastroHorarios_Remover.cshtml" />
+    <Content Include="Views\CadastroHorarios\CadastroHorarios_Remover_Selecao.cshtml" />
+    <Content Include="Views\CadastroEscalas\CadastroEscalas_Abrir.cshtml" />
+    <Content Include="Views\CadastroEscalas\CadastroEscalas_Abrir_Grid.cshtml" />
+    <Content Include="Views\CadastroEscalas\CadastroEscalas_Incluir.cshtml" />
+    <Content Include="Views\CadastroHorarios\GridIntervalos.cshtml" />
+    <Content Include="Views\CadastroEscalas\GridHorarios.cshtml" />
+    <Content Include="Views\CadastroEscalas\CadastroEscalas_Alterar.cshtml" />
+    <Content Include="Views\CadastroEscalas\GridHorariosCargaSemanal.cshtml" />
+    <Content Include="Views\CadastroEscalas\GridFolgas.cshtml" />
+    <Content Include="Views\CadastroEscalas\CadastroEscalas_Remover.cshtml" />
+    <Content Include="Views\CadastroEscalas\CadastroEscalas_Remover_Selecao.cshtml" />
+    <Content Include="Views\CadastroUsuarios\CadastroUsuarios_Abrir.cshtml" />
+    <Content Include="Views\CadastroUsuarios\CadastroUsuarios_Abrir_Grid.cshtml" />
+    <Content Include="Views\CadastroUsuarios\CadastroUsuarios_Incluir.cshtml" />
+    <Content Include="Views\CadastroUsuarios\SelecionaEmpresas.cshtml" />
+    <Content Include="Views\CadastroUsuarios\Permissoes.cshtml" />
+    <Content Include="Views\CadastroUsuarios\GridsPermissoes.cshtml" />
+    <Content Include="Views\CadastroUsuarios\GridSetores.cshtml" />
+    <Content Include="Views\CadastroUsuarios\GridDepartamentos.cshtml" />
+    <Content Include="Views\CadastroUsuarios\GridFuncionarios.cshtml" />
+    <Content Include="Views\CadastroUsuarios\GridsPermissoesdeTelas.cshtml" />
+    <Content Include="Views\CadastroUsuarios\GridCadastros.cshtml" />
+    <Content Include="Views\CadastroUsuarios\GridFerramentas.cshtml" />
+    <Content Include="Views\CadastroUsuarios\GridUtils.cshtml" />
+    <Content Include="Views\CadastroUsuarios\GridRelatorios.cshtml" />
+    <Content Include="Views\CadastroUsuarios\CadastroUsuarios_Alterar.cshtml" />
+    <Content Include="Views\CadastroUsuarios\CadastroUsuarios_Remover.cshtml" />
+    <Content Include="Views\CadastroUsuarios\CadastroUsuarios_Remover_Selecao.cshtml" />
+    <Content Include="Views\CadastroParametros\CadastroParametros_Abrir_Grid.cshtml" />
+    <Content Include="Views\CadastroParametros\CadastroParametros_Incluir.cshtml" />
+    <Content Include="Views\CadastroParametros\DadosToleranciaIndividual.cshtml" />
+    <Content Include="Views\CadastroParametros\DadosToleranciaGeral.cshtml" />
+    <Content Include="Views\CadastroParametros\GridExtras.cshtml" />
+    <Content Include="Views\CadastroParametros\CadastroParametros_Alterar.cshtml" />
+    <Content Include="Views\CadastroParametros\CadastroParametros_Remover.cshtml" />
+    <Content Include="Views\CadastroParametros\CadastroParametros_Remover_Selecao.cshtml" />
+    <Content Include="Views\RelatoriosGerais\GerarPDFCargos.cshtml" />
+    <Content Include="Views\CadastroFuncionarios\CadastroFuncionarios_Abrir.cshtml" />
+    <Content Include="Views\CadastroFuncionarios\CadastroFuncionarios_Abrir_Grid.cshtml" />
+    <Content Include="Views\CadastroFuncionarios\CadastroFuncionarios_Incluir.cshtml" />
+    <Content Include="Views\CadastroFuncionarios\Select.cshtml" />
+    <Content Include="Views\CadastroFuncionarios\CartaoProximidade.cshtml" />
+    <Content Include="Views\CadastroFuncionarios\GridCartaoProximidade.cshtml" />
+    <Content Include="Views\CadastroMensagens\CadastroMensagens_Abrir.cshtml" />
+    <Content Include="Views\CadastroMensagens\CadastroMensagens_Abrir_Grid.cshtml" />
+    <Content Include="Views\CadastroMensagens\CadastroMensagens_Alterar.cshtml" />
+    <Content Include="Views\CadastroMensagens\CadastroMensagens_Incluir.cshtml" />
+    <Content Include="Views\CadastroMensagens\CadastroMensagens_Remover.cshtml" />
+    <Content Include="Views\CadastroMensagens\CadastroMensagens_Remover_Selecao.cshtml" />
+    <Content Include="Views\CadastroFuncionarios\Mensagens.cshtml" />
+    <Content Include="Views\CadastroFuncionarios\GridMensagens.cshtml" />
+    <Content Include="Views\CadastroFuncionarios\Afastamentos.cshtml" />
+    <Content Include="Views\CadastroFuncionarios\GridAfastamento.cshtml" />
+    <Content Include="Views\CadastroFuncionarios\Folgas.cshtml" />
+    <Content Include="Views\CadastroFuncionarios\GridFolgas.cshtml" />
+    <Content Include="Views\CadastroFuncionarios\HorariosOcasionais.cshtml" />
+    <Content Include="Views\CadastroFuncionarios\GridHorarios.cshtml" />
+    <Content Include="Views\CadastroFuncionarios\CadastroFuncionarios_Alterar.cshtml" />
+    <Content Include="Views\CadastroFuncionarios\CadastroFuncionarios_Remover.cshtml" />
+    <Content Include="Views\CadastroFuncionarios\CadastroFuncionarios_Remover_Selecao.cshtml" />
+    <Content Include="Views\RelatoriosGerais\GerarPDFEmpresas.cshtml" />
+    <Content Include="Views\FerramentaImportarMarcacoes\FerramentaImportarMarcacoes_Abrir.cshtml" />
+    <Content Include="Views\FerramentaImportarMarcacoes\UltimoProcessamento.cshtml" />
+    <Content Include="Views\FerramentaImportarMarcacoes\GridFuncionarios.cshtml" />
+    <Content Include="Views\FerramentaImportarMarcacoes\GridSetores.cshtml" />
+    <Content Include="Views\FerramentaImportarMarcacoes\GridDepartamentos.cshtml" />
+    <Content Include="Views\FerramentaImportarMarcacoes\TabFuncionarios.cshtml" />
+    <Content Include="Views\FerramentaImportarMarcacoes\TabSetores.cshtml" />
+    <Content Include="Views\FerramentaImportarMarcacoes\TabDepartamentos.cshtml" />
+    <Content Include="Views\CadastroTeste\CadastroTeste_Abrir.cshtml" />
+    <Content Include="Views\CadastroTeste\CadastroTeste_Abrir_Grid.cshtml" />
+    <None Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+    <None Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="App_Data\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\NewPainelModel\NewPainelModel.csproj">
+      <Project>{d584cd6c-6720-4e76-808b-5144690c1cc0}</Project>
+      <Name>NewPainelModel</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>True</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>49851</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost:49851/</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.Net.Compilers.2.4.0\build\Microsoft.Net.Compilers.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Net.Compilers.2.4.0\build\Microsoft.Net.Compilers.props'))" />
+  </Target>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

@@ -1,0 +1,46 @@
+﻿@model SapewinWeb.Controllers.CadastroFuncionariosController.tipos
+
+@if (Model == SapewinWeb.Controllers.CadastroFuncionariosController.tipos.Setores)
+{
+    <option value="a" selected="selected" disabled="disabled"></option>
+    foreach (var Setor in SapewinWeb.Metodos.ObjFuncionario.RetornaSetores())
+    {
+        <option value="@Setor.IDSetor">@Setor.IDSetor.ToString("0000000000") - @Setor.Nome</option>
+    }
+}
+
+@if (Model == SapewinWeb.Controllers.CadastroFuncionariosController.tipos.Parametros)
+{
+    <option value="a" selected="selected" disabled="disabled"></option>
+    foreach (var Parametro in SapewinWeb.Metodos.ObjFuncionario.RetornaParametros())
+    {
+        <option value="@Parametro.IDParametro">@Parametro.IDParametro.ToString("0000") - @Parametro.Nome</option>
+    }
+}
+
+@if (Model == SapewinWeb.Controllers.CadastroFuncionariosController.tipos.Departamentos)
+{
+    <option value="a" selected="selected" disabled="disabled"></option>
+    foreach (var Departamento in SapewinWeb.Metodos.ObjFuncionario.RetornaDepartamentos())
+    {
+        <option value="@Departamento.IDDepartamento">@Departamento.IDDepartamento.ToString("0000000000") - @Departamento.Nome</option>
+    }
+}
+
+@if (Model == SapewinWeb.Controllers.CadastroFuncionariosController.tipos.Cargos)
+{
+    <option value="a" selected="selected" disabled="disabled"></option>
+    foreach (var Cargo in SapewinWeb.Metodos.ObjFuncionario.RetornaCargos())
+    {
+        <option value="@Cargo.IDCargo">@Cargo.IDCargo.ToString("0000") - @Cargo.Nome</option>
+    }
+}
+
+@if (Model == SapewinWeb.Controllers.CadastroFuncionariosController.tipos.Escalas)
+{
+    <option value="a" selected="selected" disabled="disabled"></option>
+    foreach (var Escala in SapewinWeb.Metodos.ObjFuncionario.RetornaEscalas())
+    {
+        <option value="@Escala.IDEscala">@Escala.IDEscala.ToString("0000") - @Escala.Descricao</option>
+    }
+}

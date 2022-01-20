@@ -1,0 +1,103 @@
+﻿@model IEnumerable<SapewinWeb.Models.Telas>
+
+<ul class="navbar-nav navbar-sidenav" id="CadastroAccordion" style="font-size:small;">   
+
+    @foreach (var Telacad in Model)
+    {
+        <li class="nav-item" data-placement="right" title="@Telacad.Nome.Replace("Cadastro", "").Replace("Feriados", "Feriados ").Replace("de", " de ")">
+            <div class="form-inline">
+                <label style="margin-left:5px;" class="custom-control custom-checkbox mb-2 mr-sm-2 mb-sm-0">
+                    <input type="checkbox" checked="checked" Funcs="@($".Func{Telacad.Nome}")" id="@($"CkTelacad{Telacad.Nome}")" class="custom-control-input CkTelacad Tela">
+                    <span class="custom-control-indicator"></span>
+                    <span class="custom-control-description"></span>
+                </label>
+                <a class="nav-link nav-link-collapse collapsed Telacad" data-toggle="collapse" href="#@Telacad.Nome" data-parent="#CadastroAccordion">
+                    <span class="nav-link-text">
+                        @Telacad.Nome.Replace("Cadastro", "").Replace("Feriados", "Feriados ").Replace("de", " de ")
+                        <i class="fa fa-angle-right iconTelacad" style="margin-left:5px;"></i>
+                    </span>
+                </a>
+            </div>
+            <ul style="list-style:none;" class="sidenav-second-level collapse" id="@Telacad.Nome">
+                @foreach (var Funcaocad in SapewinWeb.Metodos.ObjUsuario.RetornaFuncoes(Telacad.FuncoesdeTelas.ToList()))
+                {
+                    <li>
+                        <label class="custom-control custom-checkbox mb-2 mr-sm-2 mb-sm-0">
+                            <input type="checkbox" checked="checked" IDFunc="@Funcaocad.IDFuncao" IDFuncaoTela="@Telacad.Nome-@Funcaocad.Nome" Telacad="@($"#CkTelacad{Telacad.Nome}")" class="custom-control-input FuncaodeTela Funcaocad @($"Func{Telacad.Nome}")">
+                            <span class="custom-control-indicator"></span>
+                            <span class="custom-control-description">@Funcaocad.Nome</span>
+                        </label>
+                    </li>
+                }                           
+            </ul>
+        </li>
+    }
+    
+</ul>
+<script>
+    monitorador();
+    $('.Telacad').click(function () {
+        Telacad = $(this);                                                                                                                                                                                                                                                                                                                                                                                                                                                                  
+        if (!Telacad.hasClass('collapsed')) {
+            Telacad.children().first().children().first().removeClass('fa-angle-down');
+            Telacad.children().first().children().first().addClass('fa-angle-right');
+        } else {
+            $('.iconTelacad').removeClass('fa-angle-down');
+            $('.iconTelacad').addClass('fa-angle-right');
+            Telacad.children().first().children().first().removeClass('fa-angle-right');
+            Telacad.children().first().children().first().addClass('fa-angle-down');
+        }        
+    });
+
+    $('.CkTelacad').click(function () {
+        ck = $(this);        
+        if(ck.is(':checked')){
+            $(ck.attr('Funcs')).prop('checked', true);
+        } else {
+            $(ck.attr('Funcs')).prop('checked', false);
+        }
+
+        if ($('.Funcaocad').length == $('.Funcaocad:checked').length) {
+            $('.MarcatdsCad').prop('checked', true);
+        } else {
+            $('.MarcatdsCad').prop('checked', false);
+        }
+    });
+
+    $('.Funcaocad').click(function () {
+        func = $(this);
+        
+        funcoesgeraiscad = new Array();
+
+        funcoescheckadascad = new Array();
+
+
+        $('.Funcaocad').each(function (idx, el) {
+            if ($(el).attr('Telacad') == func.attr('Telacad')) {
+                funcoesgeraiscad.push($(el).attr('Telacad'));
+                if($(el).is(':checked')){
+                    funcoescheckadascad.push($(el).attr('Telacad'));
+                }
+            }
+        });
+
+        if (funcoesgeraiscad.length == funcoescheckadascad.length) {
+            $(func.attr('Telacad')).prop('indeterminate', false);
+            $(func.attr('Telacad')).prop('checked', true);
+        } else if (funcoescheckadascad.length == 0) {
+            $(func.attr('Telacad')).prop('indeterminate', false);
+            $(func.attr('Telacad')).prop('checked', false);
+        }
+        else {
+            $(func.attr('Telacad')).prop('indeterminate', true);
+        }
+
+        if ($('.Funcaocad').length == $('.Funcaocad:checked').length) {
+            $('.MarcatdsCad').prop('checked', true);
+        } else {
+            $('.MarcatdsCad').prop('checked', false);
+        }
+    });
+</script>
+
+

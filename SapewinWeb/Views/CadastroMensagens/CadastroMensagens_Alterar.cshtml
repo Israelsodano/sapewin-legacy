@@ -1,0 +1,48 @@
+﻿@model SapewinWeb.Models.Mensagem
+<div class="modal-header" style="margin-bottom:10px;">
+    <h5 class="modal-title"><i class="fa fa-th" aria-hidden="true"></i> Cadastro de Mensagens > Alterar</h5>
+</div>
+<div class="alert alert-danger alert-dismissible fade show" hidden="hidden" id="AlertaModal" role="alert">
+    <button type="button" id="FechaAlertaModal" class="close" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+    <strong class="txtalerta" id="txtalertaModal"></strong>
+</div>
+<form id="FormAlterarCargo" action="/CadastroMensagens/CadastroMensagens_Alterar_Salvar/?id=" method="post">
+    <div class="modal-body">
+        
+        <div class="form-group">
+            <label>Código</label>
+            <input type="text" maxlength="9" style="width:20%;" disabled="disabled" value="@Model.IDMensagem.ToString("0000")" class="form-control form-control-sm">
+        </div>
+        <div class="form-group">
+            <label>Descrição</label>
+            <input type="text" value="@Model.Nome" maxlength="50" name="Nome" class="form-control form-control-sm">
+        </div>
+        <div class="form-group">
+            <label>Mensagem</label>
+            <textarea class="form-control form-control-sm" name="Msg">@Model.Conteudo</textarea>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="submit" class="btn btn-outline-success"><i class="fa fa-fw fa-floppy-o"></i> Salvar</button>
+        <button type="button" class="btn btn-outline-danger" data-dismiss="modal"><i class="fa fa-fw fa-ban"></i> Cancelar</button>
+    </div>
+</form>
+<script>
+    monitorador();
+    $('#FormAlterarCargo').submit(function (e) {
+        e.preventDefault();
+        e.defaultPrevented = true;
+        $.post($(this).attr('action')+'@Model.IDMensagem', $(this).serialize(), function (data) {
+            if (data.status == true) {
+                LoadGridCadastroMensagens();
+                $('#WinGenerica').modal('hide');
+               
+            } else {
+                $('#txtalertaModal').text(data.msg);
+                $('#AlertaModal').removeAttr('hidden', 'hidden');
+            }
+        });
+    });
+</script>

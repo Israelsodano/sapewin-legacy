@@ -1,0 +1,208 @@
+﻿<link href="~/Contents/sb-admin.css" rel="stylesheet" />
+<script src="~/scripts/sb-admin.js"></script>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" style="position:absolute" id="mainNav">
+    <button class="navbar-toggler align-content-around" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation"> <span class="navbar-toggler-icon"></span> </button>
+    @*<a style="font-size:medium;" class="navbar-brand" href="#"> Sapewin Web</a>*@  
+    <ul class="navbar-nav ml-auto">
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="modal" href="#" data-target="#exampleModal"> <span style="color:#FF851B;">Sapewin</span> - Software de Ponto</a>
+        </li>
+    </ul>  
+    <div class="collapse navbar-collapse" id="navbarResponsive">
+        <ul class="navbar-nav navbar-sidenav" id="exampleAccordion" style="overflow-y:hidden;"> 
+            <li class="nav-item" data-placement="right" style="margin-bottom:-15px;">
+                <a style="font-size:11px;" class="nav-link" data-toggle="tooltip" data-parent="#exampleAccordion"><strong class="nav-link-text"> Empresa </strong> </a>
+            </li>           
+            <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Empresas">
+                <a  style="font-size:11px;"  class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#Empresas" data-parent="#exampleAccordion"><i class="fa fa-building" aria-hidden="true"></i> <span id="EmpresaSelecioada" class="nav-link-text"> @Session["Empresa"].ToString()</span> </a>
+                <ul class="sidenav-second-level collapse" id="Empresas">
+                    <li>
+                        <a  style="font-size:11px;"  id="AlteraEmpresaSelecionada" data-toggle="tooltip" Evento="/Home/SelecionaEmpresa" title="Empresas" href="#">Selecionar Empresa</a>
+                    </li>
+                    @*@foreach (var Empresas in ViewBag.Empresas)
+                    {
+                        <li IDEmpresa="@Empresas.IDEmpresa.ToString("0000")">
+                            <a <a style="font-size:11px;"  class="Empresa" data-toggle="tooltip" Evento="/Home/SelecionaEmpresa/?id=@Empresas.IDEmpresa" title="Empresas" href="#">@Empresas.IDEmpresa.ToString("0000") - @Empresas.Nome</a>
+                        </li>
+                    }*@                    
+                </ul>
+            </li>
+              <li class="nav-item dropdown-divider" style="border-top: 1px solid #818182;"></li>        
+            <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Cadastros">
+                <a style="font-size:11px;" class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#Cadastro" data-parent="#exampleAccordion"> <i class="fa fa-address-book" aria-hidden="true"></i> <span class="nav-link-text"> Cadastros</span> </a>
+               <ul class="sidenav-second-level collapse" id="Cadastro">
+                 
+                    <li>
+                        <a  style="font-size:11px;"  class="indice CadastroEmpresas" Evento="/CadastroEmpresas/CadastroEmpresas_Abrir" data-toggle="tooltip" title="Empresas" href=""> Empresas</a>
+                    </li>
+                    
+                    <li class="divider"></li>
+                    
+                    <li>
+                        <a style="font-size:11px;"  class="indice CadastroSetores" Evento="/CadastroSetores/CadastroSetores_Abrir" data-toggle="tooltip" title="Setores" href="#"> Setores</a>
+                    </li>
+                   
+                        <li>
+                            <a style="font-size:11px;"  class="indice CadastroDepartamentos" Evento="/CadastroDepartamentos/CadastroDepartamentos_Abrir" data-toggle="tooltip" title="Setores" href="#"> Departamentos</a>
+                        </li>
+                    }
+                   
+                       <li>
+                           <a  style="font-size:11px;"  class="indice CadastroCargos" Evento="/CadastroCargos/CadastroCargos_Abrir" data-toggle="tooltip" title="Cargos" href="#"> Cargos</a>
+                       </li>
+                   
+
+                  
+                    <li>
+                        <a style="font-size:11px;" class="indice CadastroParametros" Evento="/CadastroParametros/CadastroParametros_Abrir" data-toggle="tooltip" title="Parametros" href="#"> Parametros</a>
+                    </li>
+                                   
+                  
+                       <li>
+                           <a style="font-size:11px;" class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#Feriados" data-parent="#Cadastro"><span class="nav-link-text"> Feriados</span> </a>
+                           <ul class="sidenav-third-level collapse" id="Feriados">
+                               
+                                   <li>
+                                       <a style="font-size:11px;" class="indice CadastroFeriadosGerais" Evento="/CadastroFeriadosGerais/CadastroFeriadosGerais_Abrir" data-toggle="tooltip" title="Setores" href="#"> Feriados Gerais</a>
+                                   </li>
+                               
+                                   <li>
+                                       <a style="font-size:11px;" class="indice CadastroFeriadosEspecificos" Evento="/CadastroFeriadosEspecificos/CadastroFeriadosEspecificos_Abrir" data-toggle="tooltip" title="Setores" href="#"> Feriados Especificos</a>
+                                   </li>
+                               
+                           </ul>
+                       </li>
+                   
+                   
+                       <li>
+                           <a style="font-size:11px;" class="indice CadastroHorarios" Evento="/CadastroHorarios/CadastroHorarios_Abrir" data-toggle="tooltip" title="Setores" href="#"> Horários</a>
+                       </li>
+                   
+                        <li>
+                            <a style="font-size:11px;" class="indice CadastroEscalas" Evento="/CadastroEscalas/CadastroEscalas_Abrir" data-toggle="tooltip" title="Escalas" href="#"> Escalas</a>
+                        </li>
+                                     
+                   <li>
+                       <a style="font-size:11px;" class="indice CadastroRefeitorios" Evento="/Home/Manutencao" data-toggle="tooltip" title="Refeitórios" href="#"> Refeitórios</a>
+                   </li>   
+                  
+                       <li>
+                           <a style="font-size:11px;" class="indice CadastroMotivosdeAbono" Evento="/CadastroMotivosdeAbono/CadastroMotivosdeAbono_Abrir" data-toggle="tooltip" title="Setores" href="#"> Motivos de Abono</a>
+                       </li>
+                   
+                       <li>
+                           <a style="font-size:11px;" class="indice CadastroUsuarios" Evento="/CadastroUsuarios/CadastroUsuarios_Abrir" data-toggle="tooltip" title="Usuarios" href="#"> Usuários</a>
+                       </li>
+                  
+                       <li>
+                           <a style="font-size:11px;" class="indice CadastroFuncionarios" Evento="/CadastroFuncionarios/CadastroFuncionarios_Abrir" data-toggle="tooltip" title="Funcionarios" href="#"> Funcionarios</a>
+                       </li>
+                 
+                       <li>
+                           <a style="font-size:11px;" class="indice CadastroMensagens" Evento="/CadastroMensagens/CadastroMensagens_Abrir" data-toggle="tooltip" title="Mensagens" href="#"> Mensagens no Cartão</a>
+                       </li>
+                   
+                   <li>
+                       <a style="font-size:11px;" class="indice CadastroColetivo" Evento="/Home/Manutencao" data-toggle="tooltip" title="Parametros" href="#"> Cadastro coletivo</a>
+                   </li>              
+                   <li>
+                       <a style="font-size:11px;" class="indice CrachasdeAcesso" Evento="/Home/Manutencao" data-toggle="tooltip" title="Parametros" href="#"> Crachás de acesso</a>
+                   </li>
+                   <li>
+                       <a style="font-size:11px;" class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#Equipamentos" data-parent="#Cadastro"><span class="nav-link-text"> Equipamentos</span> </a>
+                       <ul class="sidenav-third-level collapse" id="Equipamentos">
+                           <li>
+                               <a style="font-size:11px;" class="indice EquipamentosPonto" Evento="/Home/Manutencao" data-toggle="tooltip" title="Parametros" href="#"> Ponto</a>
+                           </li>
+                           <li>
+                               <a style="font-size:11px;" class="indice EquipamentosAcesso" Evento="/Home/Manutencao" data-toggle="tooltip" title="Parametros" href="#"> Acesso</a>
+                           </li>
+                           <li>
+                               <a style="font-size:11px;" class="indice EquipamentosRefeitorio" Evento="/Home/Manutencao" data-toggle="tooltip" title="Parametros" href="#"> Refeitório</a>
+                           </li>
+                       </ul>
+                   </li>
+                   <li>
+                       <a style="font-size:11px;" class="indice CadastroSenhas" Evento="/Home/Manutencao" data-toggle="tooltip" title="Senhas" href="#"> Senhas</a>
+                   </li>
+                   <li>
+                       <a style="font-size:11px;" class="indice CadastroBancodeDados" Evento="/Home/Manutencao" data-toggle="tooltip" title="Parametros" href="#"> Banco de Dados</a>
+                   </li>
+                </ul>
+            </li>
+
+            <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Ferramentas">
+                <a style="font-size:11px;"  class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#Ferramentas" data-parent="#exampleAccordion"> <i class="fa fa-wrench" aria-hidden="true"></i> <span class="nav-link-text"> Ferramentas</span> </a>
+                <ul class="sidenav-second-level collapse" id="Ferramentas">                   
+                   
+                        <li>
+                            <a style="font-size:11px;" class="indice FerramentaImportarMarcacoes" Evento="/FerramentaImportarMarcacoes/FerramentaImportarMarcacoes_Abrir" data-toggle="tooltip" title="Importar Marcações" href="#"> Importar Marcações</a>
+                        </li>
+                   
+                    <li>
+                        <a style="font-size:11px;"  class="indice FerramentaAbonoIndv" Evento="/Home/Manutencao" data-toggle="tooltip" title="Abono Individual" href="#"> Abono Individual</a>
+                    </li>                    
+                </ul>
+            </li>
+
+            <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Relatórios">
+                <a style="font-size:11px;"  class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#Relatorios" data-parent="#exampleAccordion"> <i class="fa fa-file-pdf-o" aria-hidden="true"></i> <span class="nav-link-text"> Relatórios</span> </a>
+                <ul class="sidenav-second-level collapse" id="Relatorios">
+                    <li>
+                        <a style="font-size:11px;"  class="indice RelatorioFuncionarios" Evento="/Home/Manutencao" data-toggle="tooltip" title="Funcionários" href="#"> Funcionários</a>
+                    </li>
+
+                    <li>
+                        <a style="font-size:11px;"  class="indice RelatorioSetores" Evento="/Home/Manutencao" data-toggle="tooltip" title="Setores" href="#"> Setores</a>
+                    </li>
+                    <li>
+                        <a style="font-size:11px;" class="indice RelatorioDepartamentos" Evento="/Home/Manutencao" data-toggle="tooltip" title="Setores" href="#"> Departamentos</a>
+                    </li>
+
+                </ul>
+            </li>
+
+            <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Útil">
+                <a style="font-size:11px;"  class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#Util" data-parent="#exampleAccordion"> <i class="fa fa-briefcase" aria-hidden="true"></i> <span class="nav-link-text"> Útil</span> </a>
+                <ul class="sidenav-second-level collapse" id="Util">
+                    <li>
+                        <a style="font-size:11px;"  class="indice UtilCalculadora" Evento="/Home/Manutencao" data-toggle="tooltip" title="Calculadora de Horas" href="#"> Calculadora de Horas</a>
+                    </li>                    
+                </ul>
+            </li>
+
+            <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Ajuda">
+                <a style="font-size:11px;"  class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#Ajuda" data-parent="#exampleAccordion"> <i class="fa fa-info-circle" aria-hidden="true"></i> <span class="nav-link-text"> Ajuda</span> </a>
+                <ul class="sidenav-second-level collapse" id="Ajuda">
+                    <li>
+                        <a style="font-size:11px;"  class="indice Ajuda" Evento="/Home/Manutencao" data-toggle="tooltip" title="Suporte Remoto" href="#"> Suporte Remoto</a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+        <ul class="navbar-nav sidenav-toggler">
+            <li class="nav-item">
+                <a class="nav-link text-center" id="sidenavToggler"> <i class="fa fa-fw fa-angle-left"></i> </a>
+            </li>
+        </ul>
+        <ul class="navbar-nav ml-auto align-bottom">            
+            <li class="nav-item">
+                <a class="nav-link" href="http://192.168.0.20/Home/Sair"> <i class="fa fa-fw fa-sign-out"></i>Logout</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+<script src="~/scripts/sb-admin.js"></script>
+<script> 
+
+    $('#AlteraEmpresaSelecionada').click(function (e) {
+        e.preventDefault();
+        e.defaultPrevented = true;
+        $('#ModalWin').load($(this).attr('Evento'), function (r, s, x) {
+            if (s == 'success') {                
+                $('#ModalTamanho').addClass('modal-lg');
+                $('#WinGenerica').modal('show');
+            }
+        })
+    });   
+</script>

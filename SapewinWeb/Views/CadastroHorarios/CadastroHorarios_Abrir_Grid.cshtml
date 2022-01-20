@@ -1,0 +1,205 @@
+﻿@model IEnumerable<SapewinWeb.Models.Horarios>
+<table class="table table-sm table-striped table-hover table-bordered" style="margin-bottom:50px;">
+    <thead>
+        <tr>
+            <th style="font-size:small;width:40px;">
+                <label style="margin-left:10px;" class="custom-control custom-checkbox mb-2 mr-sm-2 mb-sm-0">
+                    <input type="checkbox" id="Marcatds" class="custom-control-input">
+                    <span class="custom-control-indicator"></span>
+                    <span class="custom-control-description"></span>
+                </label>
+            </th>
+            <th><a style="font-size:small;" class="ordenador" order="codigo" href="#"><span>Código <i class="fa fa-caret-up" aria-hidden="true"></i></span> </a> </th>
+            <th style="width:70%;font-size:small;"><a class="ordenador" order="descricao" href="#"><span>Descrição <i class="fa fa-caret-up" aria-hidden="true"></i></span></a></th>
+            <th style="font-size:small;"><a class="ordenador" order="tipo" href="#"><span>Tipo <i class="fa fa-caret-up" aria-hidden="true"></i></span></a></th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody id="Tb">
+        @foreach (var Horarios in Model)
+        {
+            <tr class="Tr" style="cursor:pointer;font-size:small;" Evento="/CadastroHorarios/CadastroHorarios_Alterar/?id=@Horarios.IDHorario">
+                <td>
+                    <label style="margin-left:10px;" class="custom-control custom-checkbox mb-2 mr-sm-2 mb-sm-0">
+                        <input type="checkbox" valor="@Horarios.IDHorario" class="custom-control-input Ck">
+                        <span class="custom-control-indicator"></span>
+                        <span class="custom-control-description"></span>
+                    </label>
+                </td>
+                <td class="linha">@Horarios.IDHorario.ToString("0000000000")</td>
+                <td class="linha">@Horarios.Descricao</td>
+                <td class="linha">@Horarios.Tipo.ToString()</td>
+                <td class="text-right">
+                    <div class="btn-group" style="margin-right:43px;">
+                       @if (ViewBag.PermissoesIndices != null && ViewBag.PermissoesIndices.Contains("CadastroHorarios-Alterar"))
+                        {
+                            <button class="btn btn-sm text-white btn-dark btnAlterar" Evento="/CadastroHorarios/CadastroHorarios_Alterar/?id=@Horarios.IDHorario" data-toggle="tooltip" data-placement="top" title="Alterar"><i class="fa fa-fw fa-pencil-square-o"></i></button>
+                        }
+                        else
+                        {
+                            <button class="btn btn-sm text-white btn-dark" disabled="disabled" data-toggle="tooltip" data-placement="top" title="Alterar"><i class="fa fa-fw fa-pencil-square-o"></i></button>
+                        }
+                        @if (ViewBag.PermissoesIndices != null && ViewBag.PermissoesIndices.Contains("CadastroHorarios-Remover"))
+                        {
+                            <button class="btn btn-sm text-white btn-danger btnRemover" Evento="/CadastroHorarios/CadastroHorarios_Remover/?id=@Horarios.IDHorario" data-toggle="tooltip" data-placement="top" title="Remover"><i class="fa fa-fw fa-trash-o"></i></button>
+                        }
+                        else
+                        {
+                            <button class="btn btn-sm text-white btn-danger" disabled="disabled" data-toggle="tooltip" data-placement="top" title="Remover"><i class="fa fa-fw fa-trash-o"></i></button>
+                        }
+                    </div>
+                </td>
+            </tr>
+        }
+    </tbody>
+    <tfoot>
+        <tr>
+            <th colspan="5">
+                <div class="card-header">
+                    <div class="row justify-content-between">
+                        <span style="font-weight:normal;font-size:small">@ViewBag.Total</span>
+                        <div class="col-6 text-right Painelbtn">
+                            <div class="form-inline text-right" style="display:inline-flex;width:200px;">
+                                <button class="btn btn-sm btnPrimeiro" style="cursor:pointer" primeiro="primeiro"><i class="fa fa-angle-double-left" aria-hidden="true"></i></button>
+                                <button class="btn btn-sm btnAnterior" style="cursor:pointer" anterior="anterior"><i class="fa fa-caret-left" aria-hidden="true"></i></button>
+                                <input type="number" class="Paginacao form-control form-control-sm text-center" style="width:40%;" value="" />
+                                <button class="btn btn-sm btnProximo" style="cursor:pointer" proximo="proximo"><i class="fa fa-caret-right" aria-hidden="true"></i></button>
+                                <button class="btn btn-sm btnUltimo" style="cursor:pointer" ultimo="ultimo"><i class="fa fa-angle-double-right" aria-hidden="true"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </th>
+        </tr>
+    </tfoot>
+</table>
+<script>  
+    monitorador();
+    $('.Ck').each(function (ind, el) {
+        if (ids.includes($(el).attr('valor'))) {
+            $(el).prop('checked', true);
+            $(el).parent().parent().parent().addClass('table-active');
+        }
+    });
+
+    if (($('.Ck').length == $('.Ck:checked').length) && $('.Ck').length > 0) {
+        $('#Marcatds').prop('checked', true);
+    }
+
+    if (parseInt('@ViewBag.Paginas') < Pagina) {
+        Pagina = parseInt('@ViewBag.Paginas') - 1;
+        $('.Paginacao').val(eval(Pagina + 1));
+    } else {
+        $('.Paginacao').val(eval(Pagina + 1));
+    }
+    Ordenador();
+
+    //$('.linha').dblclick(function (e) {
+    //    e.preventDefault();
+    //    e.defaultPrevented = true;
+    //    $('#ModalWin').load($(this).parent().attr('Evento'), function (r, s, h) {
+    //        if (s == "success") {
+    //            $('#ModalTamanho').addClass('modal-lg');
+    //            $('#WinGenerica').modal('show');
+    //        } else {
+    //            $('#txtalerta').text('Erro: ' + h.statusText + ' : ' + h.status)
+    //            $('#Alerta').removeAttr('hidden');$('#Mywrapper').animate({ scrollTop: 0 }, 1000);
+    //        }
+    //    });
+    //});
+
+    $('.Ck').click(function () {
+        Ck = $(this);
+        if (!Ck.is(':checked')) {
+            Ck.parent().parent().parent().removeClass('table-active');
+            ids = ids.filter(function (item) { return item != Ck.attr('valor') });
+            $('#Marcatds').prop('checked', false);
+        } else {
+            Ck.parent().parent().parent().addClass('table-active');
+            ids.push(Ck.attr('valor'));
+            if ($('.Ck').length == $('.Ck:checked').length) {
+                $('#Marcatds').prop('checked', true);
+            }
+        }
+    });
+
+    $('#Marcatds').click(function () {
+        if ($(this).is(':checked')) {
+            $('.Tr').addClass('table-active');
+            $('.Ck').prop('checked', true);
+            $('.Ck').each(function (ind, el) {
+                ids.push($(el).attr('valor'))
+            });
+        } else {
+            $('.Tr').removeClass('table-active');
+            $('.Ck').prop('checked', false);
+            ids = [];
+        }
+    });
+
+    $('.Painelbtn').on('click', '.btnProximo,.btnAnterior,.btnUltimo,.btnPrimeiro', function () {
+        if ($(this).attr('proximo') == 'proximo') {
+            if (Pagina < parseInt('@ViewBag.Paginas') - 1) {
+                Pagina++;
+            } else {
+                Pagina = parseInt('@ViewBag.Paginas') - 1;
+            }
+            LoadGridCadastroHorarios();
+        } else if ($(this).attr('anterior') == 'anterior') {
+            if (Pagina > 0) {
+                Pagina--;
+            } else {
+                Pagina = 0;
+            }
+            LoadGridCadastroHorarios();
+        } else if ($(this).attr('primeiro') == 'primeiro') {
+            Pagina = 0;
+            LoadGridCadastroHorarios();
+        } else if ($(this).attr('ultimo') == 'ultimo') {
+            Pagina = parseInt('@ViewBag.Paginas') - 1;
+            LoadGridCadastroHorarios();
+        }
+    });
+
+    $('.ordenador').click(function () {
+        if ($(this).children().children().hasClass('fa-caret-up')) {
+            order = $(this).attr('order') + "-down";
+        } else if ($(this).children().children().hasClass('fa-caret-down')) {
+            order = $(this).attr('order') + "-up";
+        }
+        LoadGridCadastroHorarios();
+    });
+
+    $('.Paginacao').keydown(function (key) {
+        $('.Paginacao').val($('.Paginacao').val().replace(/[/\D]/gi, ""));
+        if (key.keyCode == 13) {
+            if ($('.Paginacao').val() <= 0) {
+                Pagina = 0;
+            } else {
+                Pagina = $('.Paginacao').val() > parseInt('@ViewBag.Paginas') - 1 ? parseInt('@ViewBag.Paginas') - 1 : $('.Paginacao').val() - 1;
+            }
+            LoadGridCadastroHorarios();
+        }
+    });
+
+    $('.Paginacao').change(function () {
+        if ($('.Paginacao').val() <= 0) {
+            Pagina = 0;
+            $('.Paginacao').val(1);
+        } else {
+            Pagina = $('.Paginacao').val() > parseInt('@ViewBag.Paginas') - 1 ? parseInt('@ViewBag.Paginas') - 1 : $('.Paginacao').val() - 1;
+        }
+        LoadGridCadastroHorarios()
+    });
+
+    $('.Paginacao').focusout(function () {
+        $('.Paginacao').val($('.Paginacao').val().replace(/[/\D]/gi, ""));
+        if ($('.Paginacao').val() <= 0) {
+            Pagina = 0;
+        } else {
+            Pagina = $('.Paginacao').val() > parseInt('@ViewBag.Paginas') - 1 ? parseInt('@ViewBag.Paginas') - 1 : $('.Paginacao').val() - 1;
+        }
+        LoadGridCadastroHorarios()
+    });
+</script>
+

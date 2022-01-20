@@ -1,0 +1,310 @@
+﻿<div class="card-header" style="margin-bottom:10px;background-color: rgba(255, 133, 27, 0.3);"><i class="fa fa-th" aria-hidden="true"></i> <strong> Importar Marcações</strong></div>
+<div class="alert alert-danger alert-dismissible fade show" hidden="hidden" id="Alerta" role="alert">
+    <button type="button" id="FechaAlerta" class="close" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+    <strong class="txtalerta" id="txtalerta"></strong>
+</div>
+
+<div class="py-3">
+    <div class="card-header" style="margin-bottom:10px;background-color: rgba(255, 133, 27, 0.3);"><strong> Ultimo Processamento</strong></div>
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-6 col-12">
+                @{
+                    Html.RenderAction("UltimoProcessamento", "FerramentaImportarMarcacoes");
+                }
+            </div>
+        </div>
+    </div>
+
+    <div class="card-header" style="margin-bottom:10px;background-color: rgba(255, 133, 27, 0.3);"><strong> Seleção de Importação</strong></div>
+
+    <div class="container-fluid">
+        <div class="row" style="font-size:small;">
+            <div class="col-lg-6 col-12">
+                <div class="form-group">
+                    <label>Modo</label>
+                    <div class="d-flex">
+                        <select class="form-control form-control-sm" style="margin-right:10px;">
+                            @{
+                                var permissoes = SapewinWeb.Metodos.ObjImportarMarcacoes.RetornaPermissoesUsuario();
+
+                                if (permissoes.Contains(SapewinWeb.Metodos.ObjImportarMarcacoes.PermssoesImportacoes.Normal))
+                                {
+                                    <option value="1">Normal</option>
+                                }
+
+                                if (permissoes.Contains(SapewinWeb.Metodos.ObjImportarMarcacoes.PermssoesImportacoes.Recalcular))
+                                {
+                                    <option value="2">Recalcular</option>
+                                }
+
+                                if (permissoes.Contains(SapewinWeb.Metodos.ObjImportarMarcacoes.PermssoesImportacoes.Reanalisar))
+                                {
+                                    <option value="3">Reanalisar</option>
+                                }
+                            }
+                        </select>
+                        <div class="switch">
+                            <label>
+                                <input id="FiltroAvancado" type="checkbox">
+                                <span class="slider "></span>
+                                <span></span>
+                            </label>
+                        </div>
+                    </div>                    
+                </div>
+                <table class="table table-sm">
+                    <thead>
+                        <tr class="text-center">
+                            <th></th>
+                            <th>Inicio</th>
+                            <th>Fim</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="width:80px;">
+                                <label style="margin-top:7px;">
+                                    <strong>Funcionarios</strong>
+                                </label>
+
+                            </td>
+                            <td>
+                                <div class="d-flex">
+                                    <input style="margin-right:5px;" class="form-control form-control-sm Ids" type="text" id="FuncionarioIni" />
+                                    <button class="btn btn-sm btn-dark" id="btnFuncionarioIni"><i class="fa fa-search" aria-hidden="true"></i></button>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="d-flex">
+                                    <input style="margin-right:5px;" class="form-control form-control-sm Ids" type="text" id="FuncionarioFim" />
+                                    <button class="btn btn-sm btn-dark" id="btnFuncionarioFim"><i class="fa fa-search" aria-hidden="true"></i></button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="width:80px;">
+                                <label style="margin-top:7px;">
+                                    <strong>Setores</strong>
+                                </label>
+
+                            </td>
+                            <td>
+                                <div class="d-flex">
+                                    <input style="margin-right:5px;" class="form-control form-control-sm Ids" type="text" id="SetorIni" />
+                                    <button class="btn btn-sm btn-dark" id="btnSetorIni"><i class="fa fa-search" aria-hidden="true"></i></button>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="d-flex">
+                                    <input style="margin-right:5px;" class="form-control form-control-sm Ids" type="text" id="SetorFim" />
+                                    <button class="btn btn-sm btn-dark" id="btnSetorFim"><i class="fa fa-search" aria-hidden="true"></i></button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="width:80px;">
+                                <label style="margin-top:7px;">
+                                    <strong>Departamentos</strong>
+                                </label>
+                            </td>
+                            <td>
+                                <div class="d-flex">
+                                    <input style="margin-right:5px;" class="form-control form-control-sm Ids" type="text" id="DepartamentoIni" />
+                                    <button class="btn btn-sm btn-dark" id="btnDepartamentoIni"><i class="fa fa-search" aria-hidden="true"></i></button>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="d-flex">
+                                    <input style="margin-right:5px;" class="form-control form-control-sm Ids" type="text" id="DepartamentoFim" />
+                                    <button class="btn btn-sm btn-dark" id="btnDepartamentoFim"><i class="fa fa-search" aria-hidden="true"></i></button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="width:80px;">
+                                <label style="margin-top:7px;">
+                                    <strong>Periodo</strong>
+                                </label>
+                            </td>
+                            <td>
+                                <div class="d-flex">
+                                    <input class="form-control form-control-sm" type="date" id="PeriodoIni" />
+                                </div>
+                            </td>
+                            <td>
+                                <div class="d-flex">
+                                    <input class="form-control form-control-sm" type="date" id="PeriodoFim" />
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="form-group">
+                    <div class="d-flex">
+                        <label style="margin-top:7px;">Selecionar Arquivo de importação REP.</label>
+                        <input class="form-control-file form-control-sm" type="file" accept="text/plain" id="ArquivoAfd" />
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label style="margin-left:10px;" class="custom-control custom-checkbox mb-2 mr-sm-2 mb-sm-0">
+                        <input type="checkbox" class="custom-control-input">
+                        <span class="custom-control-indicator"></span>
+                        <span class="custom-control-description">Importar todas as Empresas</span>
+                    </label>
+                </div>
+                <div class="form-group">
+                    <label style="margin-left:10px;" class="custom-control custom-checkbox mb-2 mr-sm-2 mb-sm-0">
+                        <input type="checkbox" class="custom-control-input">
+                        <span class="custom-control-indicator"></span>
+                        <span class="custom-control-description">Periodo Automático</span>
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal-footer" style="margin-bottom:50px;">
+    <button type="button" class="btn btn-outline-success"><i class="fa fa-cogs" aria-hidden="true"></i> Processar</button>
+    <button type="button" class="btn btn-outline-danger"><i class="fa fa-fw fa-ban"></i> Cancelar</button>
+</div>
+<script>
+    monitorador();
+    $(".Ids").keyup(function () {
+        if ($(this).val() != "") {
+            $(this).val($(this).val().replace(/[/\D]/gi, ""));
+        }
+    });
+
+    $('#FiltroAvancado').click(function () {
+        slide = $(this);
+        if(slide.is(':checked')){
+
+        }
+    });
+
+    $('#btnFuncionarioIni').click(function () {
+        $('#ModalWin').load('/FerramentaImportarMarcacoes/GridFuncionarios/?Tipo=1', function (r, s, x) {
+            if(s == 'success'){
+                $('#ModalTamanho').removeClass('modal-xlg');
+                $('#ModalTamanho').addClass('modal-lg');
+                $('#WinGenerica').modal('show');
+            } else {
+                $('#txtalerta').text('Erro: ' + x.status + " : " + x.statusText);
+                $('#Alerta').removeAttr('hidden');
+            }
+        });
+    });
+
+    $('#btnFuncionarioFim').click(function () {
+        $('#ModalWin').load('/FerramentaImportarMarcacoes/GridFuncionarios/?Tipo=2', function (r, s, x) {
+            if (s == 'success') {
+                $('#ModalTamanho').removeClass('modal-xlg');
+                $('#ModalTamanho').addClass('modal-lg');
+                $('#WinGenerica').modal('show');
+            } else {
+                $('#txtalerta').text('Erro: ' + x.status + " : " + x.statusText);
+                $('#Alerta').removeAttr('hidden');
+            }
+        });
+    });
+
+    $('#btnSetorIni').click(function () {
+        $('#ModalWin').load('/FerramentaImportarMarcacoes/GridSetores/?Tipo=1', function (r, s, x) {
+            if (s == 'success') {
+                $('#ModalTamanho').removeClass('modal-xlg');
+                $('#ModalTamanho').addClass('modal-lg');
+                $('#WinGenerica').modal('show');
+            } else {
+                $('#txtalerta').text('Erro: ' + x.status + " : " + x.statusText);
+                $('#Alerta').removeAttr('hidden');
+            }
+        });
+    });
+
+    $('#btnSetorFim').click(function () {
+        $('#ModalWin').load('/FerramentaImportarMarcacoes/GridSetores/?Tipo=2', function (r, s, x) {
+            if (s == 'success') {
+                $('#ModalTamanho').removeClass('modal-xlg');
+                $('#ModalTamanho').addClass('modal-lg');
+                $('#WinGenerica').modal('show');
+            } else {
+                $('#txtalerta').text('Erro: ' + x.status + " : " + x.statusText);
+                $('#Alerta').removeAttr('hidden');
+            }
+        });
+    });
+
+    $('#btnDepartamentoIni').click(function () {
+        $('#ModalWin').load('/FerramentaImportarMarcacoes/GridDepartamentos/?Tipo=1', function (r, s, x) {
+            if (s == 'success') {
+                $('#ModalTamanho').removeClass('modal-xlg');
+                $('#ModalTamanho').addClass('modal-lg');
+                $('#WinGenerica').modal('show');
+            } else {
+                $('#txtalerta').text('Erro: ' + x.status + " : " + x.statusText);
+                $('#Alerta').removeAttr('hidden');
+            }
+        });
+    });
+
+    $('#btnDepartamentoFim').click(function () {
+        $('#ModalWin').load('/FerramentaImportarMarcacoes/GridDepartamentos/?Tipo=2', function (r, s, x) {
+            if (s == 'success') {
+                $('#ModalTamanho').removeClass('modal-xlg');
+                $('#ModalTamanho').addClass('modal-lg');
+                $('#WinGenerica').modal('show');
+            } else {
+                $('#txtalerta').text('Erro: ' + x.status + " : " + x.statusText);
+                $('#Alerta').removeAttr('hidden');
+            }
+        });
+    });
+
+    $('#PeriodoIni,#PeriodoFim').focusout(function () {        
+        if ($('#PeriodoIni').val() != '' && $('#PeriodoFim').val() != '') {
+            var ini = new Date($('#PeriodoIni').val()).getTime();
+            var Fim = new Date($('#PeriodoFim').val()).getTime();
+
+            if (ini > Fim) {
+                $('#PeriodoIni').val('');
+                $('#PeriodoFim').val('');
+            }
+        }
+    });
+
+    $('#FuncionarioIni,#FuncionarioFim').focusout(function () {
+        if ($('#FuncionarioIni').val() != '' && $('#FuncionarioFim').val() != '') {
+            if (parseInt($('#FuncionarioFim').val()) < parseInt($('#FuncionarioIni').val())) {
+                $('#FuncionarioIni').val('');
+                $('#FuncionarioFim').val('');
+            }
+        }
+    });
+
+    $('#SetorIni,#SetorFim').focusout(function () {
+        if ($('#SetorIni').val() != '' && $('#SetorFim').val() != '') {
+            if (parseInt($('#SetorFim').val()) < parseInt($('#SetorIni').val())) {
+                $('#SetorIni').val('');
+                $('#SetorFim').val('');
+            }
+        }
+    });
+
+    $('#DepartamentoIni,#DepartamentoFim').focusout(function () {
+        if ($('#DepartamentoIni').val() != '' && $('#DepartamentoFim').val() != '') {
+            if (parseInt($('#DepartamentoFim').val()) < parseInt($('#DepartamentoIni').val())) {
+                $('#DepartamentoIni').val('');
+                $('#DepartamentoFim').val('');
+            }
+        }
+    });
+
+    $('#FechaAlerta').click(function () {
+        $(this).parent().attr('hidden', 'hidden');
+    });
+</script>

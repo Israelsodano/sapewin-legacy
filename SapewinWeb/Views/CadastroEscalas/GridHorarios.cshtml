@@ -1,0 +1,58 @@
+﻿@model IEnumerable<SapewinWeb.Models.Horarios>
+    @foreach (var Horario in Model)
+    {
+        <tr class="Horarios" IDRef="@Horario.IDRef">
+            <td>
+                <label style="margin-left:10px;" class="custom-control custom-checkbox mb-2 mr-sm-2 mb-sm-0">
+                    <input type="checkbox" IDRef="@Horario.IDRef" class="custom-control-input CkHorario">
+                    <span class="custom-control-indicator"></span>
+                    <span class="custom-control-description"></span>
+                </label>
+            </td>
+            <td class="linhaHorario">@Horario.Dias</td>
+            <td class="linhaHorario">@Horario.Descricao</td>
+            <td>
+                <button type="button" class="btn btn-sm text-white btn-danger btnRemoverHorario" IDHorario="@Horario.IDRef" title="Remover"><i class="fa fa-fw fa-trash-o"></i></button>
+            </td>
+        </tr>
+    }
+<script>
+    monitorador();
+    $('.Horarios').each(function (idx, el) {
+        if ($(el).attr('IDRef') == LinhadeHorario) {
+            $(el).addClass('table-active');
+            $(el).children().first().children().first().children().first().prop('checked', true);
+        }
+    });
+
+    $('.linhaHorario').click(function () {
+        linha = $(this);        
+        if(linha.parent().hasClass('table-active')){
+            $('.Horarios').removeClass('table-active');
+            $('.CkHorario').prop('checked', false);
+            LinhadeHorario = 0;
+        }else{
+
+            $('.Horarios').removeClass('table-active');
+            $('.CkHorario').prop('checked', false);
+            linha.parent().addClass('table-active');
+            linha.parent().children().first().children().first().children().first().prop('checked', true);
+            LinhadeHorario = linha.parent().attr('IDRef');
+        }       
+    });
+
+    $('#TabHorarios').on('click', '.CkHorario', function () {
+        ck = $(this);
+        if(ck.is(':checked')){
+            $('.Horarios').removeClass('table-active');
+            $('.CkHorario').prop('checked', false);
+            ck.prop('checked', true);
+            ck.parent().parent().parent().addClass('table-active');
+            LinhadeHorario = ck.attr('IDRef');
+        } else {
+            $('.Horarios').removeClass('table-active');
+            $('.CkHorario').prop('checked', false);
+            LinhadeHorario = 0;
+        }
+    });
+</script>

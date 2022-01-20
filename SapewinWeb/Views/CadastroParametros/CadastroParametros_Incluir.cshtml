@@ -1,0 +1,1123 @@
+﻿<script src="~/scripts/jquery.maskedinput.min.js"></script>
+<script>
+    $('.Hrrr').mask('999:99');
+    $('.Hrr').mask('99:99');
+    $('.Min').mask('99.9');
+    $('.perc').mask('9?99');
+</script>
+<div class="modal-header" style="margin-bottom:10px;">
+    <h5 class="modal-title"><i class="fa fa-th" aria-hidden="true"></i> Cadastro de Parametros > Incluir</h5>
+</div>
+<div class="alert alert-danger alert-dismissible fade show" hidden="hidden" id="AlertaModal" role="alert">
+    <button type="button" id="FechaAlertaModal" class="close" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+    <strong class="txtalerta" id="txtalertaModal"></strong>
+</div>
+<form id="FormInserirParametro" Evento="/CadastroParametros/CadastroParametros_Incluir_Salvar">
+    <div class="modal-body">
+        
+
+        <div class="form-group">
+            <label>Descrição</label>
+            <input type="text" name="Nome" maxlength="50" class="form-control">
+        </div>
+
+        <ul class="nav nav-tabs" style="margin-top:15px; margin-bottom:15px;font-size:small;">
+            <li class="nav-item">
+                <a class="nav-link active btntab" data-toggle="tab" id="Tolerancias" href="#PainelTolerancias" role="tab"><span> Tolerâncias</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link btntab" data-toggle="tab" id="AdicionalNoturno" href="#PainelAdicionalNoturno" role="tab"><span> Adicional Noturno</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link btntab" data-toggle="tab" id="HorasExtra" href="#PainelHorasExtra" role="tab"><span> Horas Extra</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link btntab" data-toggle="tab" id="DsrHoras" href="#PainelDsrHoras" role="tab"><span> DSR/Horas</span></a>
+            </li>
+        </ul>
+        <div class="tab-content" style="font-size:small;">
+            <div class="tab-pane fade active show Tab" id="PainelTolerancias" role="tabpanel">
+                <div class="form-check-inline" style="border-bottom: 1px solid rgba(0, 0, 0, 0.125);">
+                    <label class="custom-control custom-radio">
+                        <input checked="checked" name="TipodeTolerancia" id="TipodeTolerancia" Tipo="Individual" Evento="/CadastroParametros/DadosToleranciaIndividual/" type="radio" class="custom-control-input TipodeTolerancia">
+                        <span class="custom-control-indicator"></span>
+                        <span class="custom-control-description">Tolerâncias Individuais</span>
+                    </label>
+                    <label class="custom-control custom-radio">
+                        <input name="TipodeTolerancia" type="radio" Tipo="Geral" Evento="/CadastroParametros/DadosToleranciaGeral/" class="custom-control-input TipodeTolerancia">
+                        <span class="custom-control-indicator"></span>
+                        <span class="custom-control-description">Tolerâncias Gerais</span>
+                    </label>
+                </div>
+                <div id="TipodeToleranciaSelecionado">
+                    @{
+                        Html.RenderAction("DadosToleranciaIndividual", "CadastroParametros");
+                    }
+                </div>
+            </div>
+            <div class="tab-pane fade Tab" id="PainelAdicionalNoturno" role="tabpanel">
+                
+                <label class="custom-control custom-checkbox">
+                    <input type="checkbox" id="PagaHrExtraemAdicionalNt" class="custom-control-input">
+                    <span class="custom-control-indicator"></span>
+                    <span class="custom-control-description">Paga Hora Extra em Adicional Noturno</span>
+                </label>                  
+                            
+                <div class="row">
+                    <div class="col-12">
+                        <div class="row">
+                            <div class="col-4">
+                                <div class="form-group">
+                                    <label>Inicio Adic. Not.</label>
+                                    <input class="form-control form-control-sm Hrr" name="AdicionalNoturnoInicio" id="InicioAdic" style="max-width:60px;" placeholder="__:__" />
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <div class="form-group">
+                                    <label>Fim Adic. Not.</label>
+                                    <div class="form-dflex-lg">
+                                        <input class="form-control form-control-sm Hrr" name="AdicionalNoturnoFim" id="FimAdic" style="max-width:60px;margin-right:10px;" placeholder="__:__" />
+                                        <label class="custom-control custom-checkbox" style="margin-top:7px;">
+                                            <input type="checkbox" id="AdcnFinaldoexpediente" class="custom-control-input">
+                                            <span class="custom-control-indicator"></span>
+                                            <span class="custom-control-description">Ou até o fim do Expediente</span>
+                                        </label>
+                                    </div>                                    
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <div class="form-group">
+                                    <label>Calc Adic.</label>
+                                    <input class="form-control form-control-sm Min" name="AdicionalNoturnoCalculo" id="CalcAdic" style="max-width:60px;" placeholder="__._" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group py-2">
+                    <div class="switch">
+                        <label>
+                            <input id="AdcionalAvancado" type="checkbox">
+                            <span class="slider "></span>
+                            <span>Avançado</span>
+                        </label>
+                    </div>
+                </div>
+                <div class="tab-pane fade Tab" id="PainelAvançado" hidden="hidden" role="tabpanel">
+                    <div class="card-header" style="margin-bottom:10px;margin-top:20px;background-color: rgba(255, 133, 27, 0.3);"><strong>Opções</strong></div>
+                    <div class="form-group">
+                        <div class="switch">
+                            <label>
+                                <input id="CalcHrextRealAdcNotAcHrNorAdcNot" type="checkbox">
+                                <span class="slider "></span>
+                                <span>Calcula hora extra realizada em Adicional Noturno acrescida com as horas normais em Adicional Noturno.</span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="switch">
+                            <label>
+                                <input id="CalcHrExtRelAdcNotAcHrExNor" type="checkbox">
+                                <span class="slider "></span>
+                                <span>Calcula hora extra realizada em Adicional Noturno acrescida com as horas extra normais.</span>
+                            </label>
+                        </div>
+
+                    </div>
+                    <div class="form-group">
+                        <div class="switch">
+                            <label>
+                                <input id="PgHrAboCmAdcNot" type="checkbox">
+                                <span class="slider "></span>
+                                <span>Em caso de horas abonadas em período de Adicional Noturno, paga-se o Adicional Noturno</span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="card-header" style="margin-bottom:10px;margin-top:20px;background-color: rgba(255, 133, 27, 0.3);"><strong>Calculo de Horário Reduzido</strong></div>
+                    <div class="form-group">
+                        <div class="form-inline">
+                            <div class="form-group" style="margin-right:10px;">
+                                <label style="width:60px;">A cada</label>
+                                <input class="form-control form-control-sm Hrr DsrSabado" name="Acada" style="max-width:60px;" placeholder="__:__" />
+                                <label class="text-right" style="width:60px;">Horas</label>
+                            </div>
+                            <div class="form-group" style="margin-right:10px;">
+                                <label style="width:60px;">Adiciona</label>
+                                <input class="form-control form-control-sm Min DsrSabado" name="AddHrr" style="max-width:60px;" placeholder="__,_" />
+                                <label class="text-right" style="width:60px;">Minutos</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-pane fade Tab" id="PainelHorasExtra" role="tabpanel">
+                <div class="row">
+                    <div class="col-12 col-lg-12">
+                        <div class="card-header" style="margin-bottom:10px;margin-top:20px;background-color: rgba(255, 133, 27, 0.3);"><strong>Tipo de Tabela</strong></div>
+                        <div class="form-check-inline">
+                            <label class="custom-control custom-radio">
+                                <input name="TipodeTabela" valor="1" type="radio" class="custom-control-input TipodeTabela">
+                                <span class="custom-control-indicator"></span>
+                                <span class="custom-control-description" style="width:50px;">Diário</span>
+                            </label>
+                            <label class="custom-control custom-radio">
+                                <input name="TipodeTabela" type="radio" valor="2" class="custom-control-input TipodeTabela">
+                                <span class="custom-control-indicator"></span>
+                                <span class="custom-control-description" style="width:50px;">Semanal</span>
+                            </label>
+                            <label class="custom-control custom-radio">
+                                <input name="TipodeTabela" type="radio" checked="checked" valor="3" class="custom-control-input TipodeTabela">
+                                <span class="custom-control-indicator"></span>
+                                <span class="custom-control-description" style="width:50px;">Mensal</span>
+                            </label>
+                        </div>
+                        <div class="card-header" style="margin-bottom:10px;background-color: rgba(255, 133, 27, 0.001);"><strong>Extra</strong></div>
+                        <div class="form-inline">
+                            <div class="form-group" style="margin-right:15px;">
+                                <div class="switch">
+                                    <label>
+                                        <input id="MostrarIntervaloSeparado" type="checkbox">
+                                        <span class="slider "></span>
+                                        <span>Mostrar separadamente hora extra do intervalo</span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="form-group" style="margin-right:15px;">
+                                <div class="switch">
+                                    <label>
+                                        <input id="PgDiautilvirada" type="checkbox">
+                                        <span class="slider "></span>
+                                        <span>Pagar Extra na virada "Dia Útil / Feriado"</span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div hidden="hidden" id="DescIntervalo" class="form-group">
+                                <div class="switch">
+                                    <label>
+                                        <input id="DescontaIntervalo" type="checkbox">
+                                        <span class="slider "></span>
+                                        <span>Descontar Intervalo</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-lg-4">
+                        <div class="card-header" style="margin-bottom:10px;margin-top:20px;background-color: rgba(255, 133, 27, 0.3);"><strong>Úteis</strong></div>
+                        <table class="table table-sm table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Horas</th>
+                                    <th class="text-center">%</th>
+                                    <th>Adic.%</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td style="width:40%">
+                                        <input class="form-control text-left form-control-sm Hrrr CamposUtil" id="HoraUtil" placeholder="___:__" />
+                                    </td>
+                                    <td style="width:24%">
+                                        <input class="form-control text-left form-control-sm perc CamposUtil" id="PercentUtil">
+                                    </td>
+                                    <td style="width:24%">
+                                        <input class="form-control text-left form-control-sm perc CamposUtil" id="AdicionalUtil">
+                                    </td>
+                                    <td class="text-center">
+                                        <button class="btn btn-sm btn-dark" id="AddUtil" type="button"><i class="fa fa-fw fa-plus"></i></button>
+                                    </td>
+                                </tr>
+                            </tbody>
+
+                        </table>
+                        <div style="height:120px;overflow-y:auto;">
+                            <table class="table table-sm table-bordered">
+                                <tbody id="TabUteis"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="col-12 col-lg-4">
+                        <div class="card-header" style="margin-bottom:10px;margin-top:20px;background-color: rgba(255, 133, 27, 0.3);">
+                            <div class="row">
+                                <div class="col-4 text-left">
+                                    <div>
+                                        <strong>Sábados</strong>
+                                    </div>
+                                </div>
+                                <div class="col-8 text-right">
+                                    <div class="switch">
+                                        <label>
+                                            <input id="SabadoUtil" type="checkbox">
+                                            <span class="slider "></span>
+                                            <span>Sábado Útil</span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <table class="table table-sm table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Horas</th>
+                                    <th class="text-center">%</th>
+                                    <th>Adic.%</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td style="width:40%">
+                                        <input class="form-control form-control-sm Hrrr CamposSabado" id="HoraSabado" placeholder="___:__" />
+                                    </td>
+                                    <td style="width:24%">
+                                        <input class="form-control form-control-sm perc CamposSabado" id="PercentSabado" style="max-width:60px;">
+                                    </td>
+                                    <td style="width:24%">
+                                        <input class="form-control form-control-sm perc CamposSabado" id="AdicionalSabado" style="max-width:60px;">
+                                    </td>
+                                    <td class="text-center">
+                                        <button class="btn btn-sm btn-dark" type="button" id="AddSabado"><i class="fa fa-fw fa-plus"></i></button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div style="height:120px;overflow-y:auto;">
+                            <table class="table table-sm table-bordered">
+                                <tbody id="TabSabado"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="col-12 col-lg-4">
+                        <div class="card-header" style="margin-bottom:10px;margin-top:20px;background-color: rgba(255, 133, 27, 0.3);">
+
+                            <div class="row">
+                                <div class="col-4 text-left">
+                                    <div>
+                                        <strong>Domingos</strong>
+                                    </div>
+                                </div>
+                                <div class="col-8 text-right">
+                                    <div class="switch">
+                                        <label>
+                                            <input id="DomingoUtil" type="checkbox">
+                                            <span class="slider "></span>
+                                            <span>Domingo Útil</span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <table class="table table-sm table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Horas</th>
+                                    <th class="text-center">%</th>
+                                    <th>Adic.%</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td style="width:40%">
+                                        <input class="form-control form-control-sm Hrrr CamposDomingo" id="HoraDomingo" placeholder="___:__" />
+                                    </td>
+                                    <td style="width:24%">
+                                        <input class="form-control form-control-sm perc CamposDomingo" id="PercentDomingo" style="max-width:60px;">
+                                    </td>
+                                    <td style="width:24%">
+                                        <input class="form-control form-control-sm perc CamposDomingo" id="AdicionalDomingo" style="max-width:60px;">
+                                    </td>
+                                    <td class="text-center">
+                                        <button class="btn btn-sm btn-dark" type="button" id="AddDomingo"><i class="fa fa-fw fa-plus"></i></button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div style="height:120px;overflow-y:auto;">
+                            <table class="table table-sm table-bordered">
+                                <tbody id="TabDomingo"></tbody>
+                            </table>
+                        </div>
+                        <div class="form-inline">
+                            <label style="width:90px;">% Acima de </label>
+                            <input class="form-control form-control-sm AcimaHE" name="AcimaHEDomingo" value="8" type="number" style="max-width:60px;" />
+                            <label style="width:60px;">Horas - </label>
+                            <input class="form-control form-control-sm perc Acimadexhoras" name="AcimadexhorasDomingo" style="max-width:60px;">
+                        </div>
+                    </div>
+                    <div class="col-12 col-lg-4">
+                        <div class="card-header" style="margin-bottom:10px;margin-top:20px;background-color: rgba(255, 133, 27, 0.3);">
+                            <div class="row">
+                                <div class="col-4 text-left">
+                                    <div>
+                                        <strong>Feriados</strong>
+                                    </div>
+                                </div>
+                                <div class="col-8 text-right">
+                                    <div class="switch">
+                                        <label>
+                                            <input id="FerAgregaDomingo" type="checkbox">
+                                            <span class="slider "></span>
+                                            <span>Agregar Domingo</span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <table class="table table-sm table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Horas</th>
+                                    <th class="text-center">%</th>
+                                    <th>Adic.%</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td style="width:40%">
+                                        <input class="form-control form-control-sm Hrrr CamposFeriado" id="HoraFeriado" placeholder="___:__" />
+                                    </td>
+                                    <td style="width:24%">
+                                        <input class="form-control form-control-sm perc CamposFeriado" id="PercentFeriado" style="max-width:60px;">
+                                    </td>
+                                    <td style="width:24%">
+                                        <input class="form-control form-control-sm perc CamposFeriado" id="AdicionalFeriado" style="max-width:60px;">
+                                    </td>
+                                    <td class="text-center">
+                                        <button class="btn btn-sm btn-dark" type="button" id="AddFeriado"><i class="fa fa-fw fa-plus"></i></button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div style="height:120px;overflow-y:auto;">
+                            <table class="table table-sm table-bordered">
+                                <tbody id="TabFeriado"></tbody>
+                            </table>
+                        </div>
+                        <div class="form-inline">
+                            <label style="width:90px;">% Acima de </label>
+                            <input class="form-control form-control-sm AcimaHE" name="AcimaHEFeriado" value="8" type="number" style="max-width:60px;" />
+                            <label style="width:60px;">Horas - </label>
+                            <input class="form-control form-control-sm perc Acimadexhoras" name="AcimadexhorasFeriado" style="max-width:60px;">
+                        </div>
+                    </div>
+                    <div class="col-12 col-lg-4">
+                        <div class="card-header" style="margin-bottom:10px;margin-top:20px;background-color: rgba(255, 133, 27, 0.3);">
+                            <div class="row">
+                                <div class="col-4 text-left">
+                                    <div>
+                                        <strong>Folgas</strong>
+                                    </div>
+                                </div>
+                                <div class="col-8 text-right">
+                                    <div class="switch">
+                                        <label>
+                                            <input id="FolAgregaDomingo" type="checkbox">
+                                            <span class="slider "></span>
+                                            <span>Agregar Domingo</span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <table class="table table-sm table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Horas</th>
+                                    <th class="text-center">%</th>
+                                    <th>Adic.%</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td style="width:40%">
+                                        <input class="form-control form-control-sm Hrrr CamposFolga" id="HoraFolga" placeholder="___:__" />
+                                    </td>
+                                    <td style="width:24%">
+                                        <input class="form-control form-control-sm perc CamposFolga" id="PercentFolga" style="max-width:60px;">
+                                    </td>
+                                    <td style="width:24%">
+                                        <input class="form-control form-control-sm perc CamposFolga" id="AdicionalFolga" style="max-width:60px;">
+                                    </td>
+                                    <td class="text-center">
+                                        <button class="btn btn-sm btn-dark" type="button" id="AddFolga"><i class="fa fa-fw fa-plus"></i></button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div style="height:120px;overflow-y:auto;">
+                            <table class="table table-sm table-bordered">
+                                <tbody id="TabFolga"></tbody>
+                            </table>
+                        </div>
+                        <div class="form-inline">
+                            <label style="width:90px;">% Acima de </label>
+                            <input class="form-control form-control-sm AcimaHE" name="AcimaHEFolga" value="8" type="number" style="max-width:60px;" />
+                            <label style="width:60px;">Horas - </label>
+                            <input class="form-control form-control-sm perc Acimadexhoras" name="AcimadexhorasFolga" style="max-width:60px;">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-pane fade Tab" id="PainelDsrHoras" role="tabpanel">
+                <div class="row">
+                    <div class="col-lg-3 col-md-6 col-12">
+                        <div class="form-group">
+                            <div class="form-inline">
+                                <label style="width:60px;">Sábado</label>
+                                <input class="form-control form-control-sm Hrr DsrSabado" name="DsrSabado" style="max-width:60px;" placeholder="__:__" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-6 col-12">
+                        <div class="form-group">
+                            <div class="form-inline">
+                                <label style="width:60px;">Domingo</label>
+                                <input class="form-control form-control-sm Hrr CampoDsr" name="DsrDomingo" style="max-width:60px;" placeholder="__:__" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-6 col-12">
+                        <div class="form-group">
+                            <div class="form-inline">
+                                <label style="width:60px;">Feriado</label>
+                                <input class="form-control form-control-sm Hrr CampoDsr" name="DsrFeriado" style="max-width:60px;" placeholder="__:__" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-6 col-12">
+                        <div class="form-group">
+                            <div class="form-inline">
+                                <label style="width:60px;">Folga</label>
+                                <input class="form-control form-control-sm Hrr CampoDsr" name="DsrFolga" style="max-width:60px;" placeholder="__:__" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="switch">
+                        <label>
+                            <input id="DsrContrAutomatico" type="checkbox">
+                            <span class="slider "></span>
+                            <span>Controle Automatico</span>
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="form-inline">
+                        <div class="form-group" style="margin-right:15px;">
+                            <div class="switch">
+                                <label>
+                                    <input id="DsrProporcional" type="checkbox">
+                                    <span class="slider "></span>
+                                    <span>DSR Proporcional</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-group DsrProporcional" hidden="hidden">
+                            <label class="custom-control custom-radio">
+                                <input name="TipoDSRProporcional" id="DsrProporcionalHoras" checked="checked" type="radio" class="custom-control-input">
+                                <span class="custom-control-indicator"></span>
+                                <span class="custom-control-description" style="width:50px;">Horas</span>
+                            </label>
+                        </div>
+                        <div class="form-group DsrProporcional" hidden="hidden">
+                            <label class="custom-control custom-radio">
+                                <input name="TipoDSRProporcional" type="radio" class="custom-control-input">
+                                <span class="custom-control-indicator"></span>
+                                <span class="custom-control-description" style="width:50px;">Dias</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="form-inline">
+                        <div class="form-group" style="margin-right:15px;">
+                            <div class="switch">
+                                <label>
+                                    <input id="DescontarDsrSemana" type="checkbox">
+                                    <span class="slider "></span>
+                                    <span>Desconto de todos os DSR da Semana</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-group DescontarDsrSemana" hidden="hidden">
+                            <label class="custom-control custom-checkbox">
+                                <input type="checkbox" id="DescDsrAnterioraFalta" class="custom-control-input">
+                                <span class="custom-control-indicator"></span>
+                                <span class="custom-control-description">Desconto do DSR Anterior a Falta</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-header" style="margin-bottom:10px;margin-top:20px;background-color: rgba(255, 133, 27, 0.3);"><strong>Ocorrencias para desconto do DSR</strong></div>
+                <div class="form-group">
+                    <div class="form-inline">
+                        <label style="margin-right:10px;">Tolerancia Semanal para "Atrasos e Saídas Antecipadas"</label>
+                        <input class="form-control form-control-sm Hrr OcorrenciaSemanalDsr" name="OcorrenciaSemanalDsr" style="max-width:60px;" placeholder="__:__" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer justify-content-between">
+        <div>
+            <a class="btn btn-outline-info mypopover" href="#" title="Tem certeza que deseja Adicionar os valores padrões ?" data-toggle="popover" data-content="@("<div class=\"modal-footer\"><button onclick=\"AdicionaValoresPadroes(); $('.popover').popover('hide');\" class=\"btn btn-outline-success\">Sim</button><button onclick=\"$('.popover').popover('hide');\" class=\"btn btn-outline-danger\">Não</button></div>")">Adicionar Valores Padrões</a>
+        </div>
+        <div>
+            <button type="submit" class="btn btn-outline-success"><i class="fa fa-fw fa-floppy-o"></i> Salvar</button>
+            <button type="button" class="btn btn-outline-danger" data-dismiss="modal"><i class="fa fa-fw fa-ban"></i> Cancelar</button>
+        </div>
+    </div>
+</form>
+<script>
+    monitorador();
+
+    var verificapopover = false;
+
+    $(document).on('click', '.popover', function () {
+        verificapopover = false;
+    });
+
+    $(document).on('mouseleave', '.popover', function () {
+        verificapopover = true;
+    });
+
+    $('.mypopover').mouseleave(function () {
+        verificapopover = true;
+    });
+
+    $('.mypopover').click(function () {
+        verificapopover = false;
+        $('.popover').popover('hide');
+    });
+
+    $(document).click(function () {
+        if (verificapopover) {
+            $('.popover').popover('hide');
+        }
+    });
+
+    $(document).ready(function () {
+        $('[data-toggle="popover"]').popover({ html: true });
+    });
+
+    var TipoTolerancia = 'Individual';
+
+    var ArrayUtil = new Array();
+
+    var ArraySabado = new Array();
+
+    var ArrayDomingo = new Array();
+
+    var ArrayFeriado = new Array();
+
+    var ArrayFolga = new Array();
+
+    var ArrayMemoriaSabado = new Array();
+
+    var ArrayMemoriaDomingo = new Array();
+
+    $('.AcimaHE').change(function () {
+        txt = $(this);
+        if (txt.val() == '') {
+            txt.val(8);
+        }
+    });
+
+    $('#SabadoUtil').click(function () {
+        sabado = $(this);
+        if (sabado.is(':checked')) {
+            ArrayMemoriaSabado = ArraySabado;
+            ArraySabado = ArrayUtil;
+        } else {
+            ArraySabado = ArrayMemoriaSabado;
+        }
+
+        $('#TabSabado').load('/CadastroParametros/GridExtras/?Array=' + ArraySabado.join('&Array='), function (r, s, x) {
+            if (s == 'success') {
+                $('.CamposSabado').val('');
+            }
+            if (s == 'error') {
+                $('#txtalertaModal').text('Erro: ' + x.status + " : " + x.statusText);
+                $('#AlertaModal').removeAttr('hidden');$('#Mywrapper').animate({ scrollTop: 0 }, 1000);
+            }
+        });
+    });
+
+    $('#DomingoUtil').click(function () {
+        domingo = $(this);
+        if(domingo.is(':checked')){
+            ArrayMemoriaDomingo = ArrayDomingo;
+            ArrayDomingo = ArrayUtil;
+        } else {
+            ArrayDomingo = ArrayMemoriaDomingo;
+        }
+
+        $('#TabDomingo').load('/CadastroParametros/GridExtras/?Array=' + ArrayDomingo.join('&Array='), function (r, s, x) {
+            if (s == 'success') {
+                $('.CamposDomingo').val('');
+            }
+            if (s == 'error') {
+                $('#txtalertaModal').text('Erro: ' + x.status + " : " + x.statusText);
+                $('#AlertaModal').removeAttr('hidden');$('#Mywrapper').animate({ scrollTop: 0 }, 1000);
+            }
+        });
+    });
+
+    function AdicionaValoresPadroes() {
+        ArrayUtil = [];
+        ArrayUtil.push('999:59/50//1');
+
+        ArraySabado = [];
+        ArraySabado.push('999:99/50//2');
+
+        ArrayDomingo = [];
+        ArrayDomingo.push('999:59/100//3');
+
+        ArrayFeriado = [];
+        ArrayFeriado.push('999:59/100//4');
+
+        ArrayFolga = [];
+        ArrayFolga.push('999:59/100//5');
+
+        $('#TabUteis').load('/CadastroParametros/GridExtras/?Array=' + ArrayUtil.join('&Array='), function (r, s, x) {
+            if (s == 'success') {
+                $('.CamposUtil').val('');
+            }
+            if (s == 'error') {
+                $('#txtalertaModal').text('Erro: ' + x.status + " : " + x.statusText);
+                $('#AlertaModal').removeAttr('hidden');$('#Mywrapper').animate({ scrollTop: 0 }, 1000);
+            }
+        });
+
+        $('#TabSabado').load('/CadastroParametros/GridExtras/?Array=' + ArraySabado.join('&Array='), function (r, s, x) {
+            if (s == 'success') {
+                $('.CamposSabado').val('');
+            }
+            if (s == 'error') {
+                $('#txtalertaModal').text('Erro: ' + x.status + " : " + x.statusText);
+                $('#AlertaModal').removeAttr('hidden');$('#Mywrapper').animate({ scrollTop: 0 }, 1000);
+            }
+        });
+
+        $('#TabDomingo').load('/CadastroParametros/GridExtras/?Array=' + ArrayDomingo.join('&Array='), function (r, s, x) {
+            if (s == 'success') {
+                $('.CamposDomingo').val('');
+            }
+            if (s == 'error') {
+                $('#txtalertaModal').text('Erro: ' + x.status + " : " + x.statusText);
+                $('#AlertaModal').removeAttr('hidden');$('#Mywrapper').animate({ scrollTop: 0 }, 1000);
+            }
+        });
+
+        $('#TabFeriado').load('/CadastroParametros/GridExtras/?Array=' + ArrayFeriado.join('&Array='), function (r, s, x) {
+            if (s == 'success') {
+                $('.CamposFeriado').val('');
+            }
+            if (s == 'error') {
+                $('#txtalertaModal').text('Erro: ' + x.status + " : " + x.statusText);
+                $('#AlertaModal').removeAttr('hidden');$('#Mywrapper').animate({ scrollTop: 0 }, 1000);
+            }
+        });
+
+        $('#TabFolga').load('/CadastroParametros/GridExtras/?Array=' + ArrayFolga.join('&Array='), function (r, s, x) {
+            if (s == 'success') {
+                $('.CamposFolga').val('');
+            }
+            if (s == 'error') {
+                $('#txtalertaModal').text('Erro: ' + x.status + " : " + x.statusText);
+                $('#AlertaModal').removeAttr('hidden');$('#Mywrapper').animate({ scrollTop: 0 }, 1000);
+            }
+        });
+
+        $('#CalcHrextRealAdcNotAcHrNorAdcNot,#CalcHrExtRelAdcNotAcHrExNor,#PgHrAboCmAdcNot,#PagaHrExtraemAdicionalNt,#TipodeTolerancia,#DsrContrAutomatico,#SabadoUtil').prop('checked', true);
+
+        $('#TipodeToleranciaSelecionado').load($('#TipodeTolerancia').attr('Evento'), function (r, s, x) {
+            if (s == 'success') {
+                $('#Per1Atraso').val('00:05');
+                $('#Per2Atraso').val('00:05');
+
+                $('#Per1Saida').val('00:00');
+                $('#Per2Saida').val('00:00');
+
+                $('#Per1Extra').val('00:10');
+                $('#IntExtra').val('00:10');
+                $('#Per2Extra').val('00:10');
+            }
+            if (s == 'error') {
+                $('#txtalertaModal').text('Erro: ' + x.status + " : " + x.statusText);
+                $('#AlertaModal').removeAttr('hidden');$('#Mywrapper').animate({ scrollTop: 0 }, 1000);
+            }
+        });
+
+        $('#InicioAdic').val('22:00');
+        $('#FimAdic').val('05:00');
+        $('#CalcAdic').val('52.5');
+
+        $('.CampoDsr').val('07:20');
+
+        $('.DsrSabado,.OcorrenciaSemanalDsr').val('');
+
+        $('.Acimadexhoras').val('150')
+
+        $('#AdcionalAvancado').click();
+    }
+
+    $('#AddUtil').click(function () {
+        if ($('#HoraUtil').val() != '' && $('#PercentUtil').val() != '') {
+            if (!ArrayUtil.includes($('#HoraUtil').val() + '/' + $('#PercentUtil').val() + '/' + $('#AdicionalUtil').val() + '/1')) {
+                ArrayUtil.push($('#HoraUtil').val() + '/' + $('#PercentUtil').val() + '/' + $('#AdicionalUtil').val() + '/1');
+                $('#TabUteis').load('/CadastroParametros/GridExtras/?Array=' + ArrayUtil.join('&Array='), function (r, s, x) {
+                    if (s == 'success') {
+                        $('.CamposUtil').val('');
+
+                        if ($('#SabadoUtil').is(':checked')) {
+                            ArraySabado = ArrayUtil;
+
+                            $('#TabSabado').load('/CadastroParametros/GridExtras/?Array=' + ArraySabado.join('&Array='), function (r, s, x) {
+                                if (s == 'success') {
+                                    $('.CamposSabado').val('');
+                                }
+                                if (s == 'error') {
+                                    $('#txtalertaModal').text('Erro: ' + x.status + " : " + x.statusText);
+                                    $('#AlertaModal').removeAttr('hidden');$('#Mywrapper').animate({ scrollTop: 0 }, 1000);
+                                }
+                            });
+                        }
+
+                        if ($('#DomingoUtil').is(':checked')) {
+                            ArrayDomingo = ArrayUtil;
+
+                            $('#TabDomingo').load('/CadastroParametros/GridExtras/?Array=' + ArrayDomingo.join('&Array='), function (r, s, x) {
+                                if (s == 'success') {
+                                    $('.CamposDomingo').val('');
+                                }
+                                if (s == 'error') {
+                                    $('#txtalertaModal').text('Erro: ' + x.status + " : " + x.statusText);
+                                    $('#AlertaModal').removeAttr('hidden');$('#Mywrapper').animate({ scrollTop: 0 }, 1000);
+                                }
+                            });
+                        }
+                    }
+                    if (s == 'error') {
+                        $('#txtalertaModal').text('Erro: ' + x.status + " : " + x.statusText);
+                        $('#AlertaModal').removeAttr('hidden');$('#Mywrapper').animate({ scrollTop: 0 }, 1000);
+                    }
+                });
+            } else {
+                $('#txtalertaModal').text('Já existe um escalonamento de hora extra com esses valores');
+                $('#AlertaModal').removeAttr('hidden');$('#Mywrapper').animate({ scrollTop: 0 }, 1000);
+            }
+        } else {
+            $('#txtalertaModal').text('Preencha todos os campos');
+            $('#AlertaModal').removeAttr('hidden');$('#Mywrapper').animate({ scrollTop: 0 }, 1000);
+        }
+    });
+
+    $('#TabUteis').on('click', '.btnRemoverUteis', function () {
+        btn = $(this);
+        ArrayUtil = ArrayUtil.filter(function (i) { return i != btn.attr('Array'); });
+        $('#TabUteis').load('/CadastroParametros/GridExtras/?Array=' + ArrayUtil.join('&Array='), function (r, s, x) {
+            if (s == 'error') {
+                $('#txtalertaModal').text('Erro: ' + x.status + " : " + x.statusText);
+                $('#AlertaModal').removeAttr('hidden');$('#Mywrapper').animate({ scrollTop: 0 }, 1000);
+            }
+        });
+
+        if ($('#SabadoUtil').is(':checked')) {
+            ArraySabado = ArrayUtil;
+
+            $('#TabSabado').load('/CadastroParametros/GridExtras/?Array=' + ArraySabado.join('&Array='), function (r, s, x) {
+                if (s == 'success') {
+                    $('.CamposSabado').val('');
+                }
+                if (s == 'error') {
+                    $('#txtalertaModal').text('Erro: ' + x.status + " : " + x.statusText);
+                    $('#AlertaModal').removeAttr('hidden');$('#Mywrapper').animate({ scrollTop: 0 }, 1000);
+                }
+            });
+        }
+
+        if ($('#DomingoUtil').is(':checked')) {
+            ArrayDomingo = ArrayUtil;
+
+            $('#TabDomingo').load('/CadastroParametros/GridExtras/?Array=' + ArrayDomingo.join('&Array='), function (r, s, x) {
+                if (s == 'success') {
+                    $('.CamposDomingo').val('');
+                }
+                if (s == 'error') {
+                    $('#txtalertaModal').text('Erro: ' + x.status + " : " + x.statusText);
+                    $('#AlertaModal').removeAttr('hidden');$('#Mywrapper').animate({ scrollTop: 0 }, 1000);
+                }
+            });
+        }
+    });
+
+    $('#AddSabado').click(function () {
+        if ($('#HoraSabado').val() != '' && $('#PercentSabado').val() != '') {
+            if (!ArraySabado.includes($('#HoraSabado').val() + '/' + $('#PercentSabado').val() + '/' + $('#AdicionalSabado').val() + '/2')) {
+                ArraySabado.push($('#HoraSabado').val() + '/' + $('#PercentSabado').val() + '/' + $('#AdicionalSabado').val() + '/2');
+                $('#TabSabado').load('/CadastroParametros/GridExtras/?Array=' + ArraySabado.join('&Array='), function (r, s, x) {
+                    if (s == 'success') {
+                        $('.CamposSabado').val('');
+                    }
+                    if (s == 'error') {
+                        $('#txtalertaModal').text('Erro: ' + x.status + " : " + x.statusText);
+                        $('#AlertaModal').removeAttr('hidden');$('#Mywrapper').animate({ scrollTop: 0 }, 1000);
+                    }
+                });
+            } else {
+                $('#txtalertaModal').text('Já existe um escalonamento de hora extra com esses valores...');
+                $('#AlertaModal').removeAttr('hidden');$('#Mywrapper').animate({ scrollTop: 0 }, 1000);
+            }
+        } else {
+            $('#txtalertaModal').text('Preencha todos os campos...');
+            $('#AlertaModal').removeAttr('hidden');$('#Mywrapper').animate({ scrollTop: 0 }, 1000);
+        }
+    });
+
+    $('#TabSabado').on('click', '.btnRemoverSabados', function () {
+        btn = $(this);
+        ArraySabado = ArraySabado.filter(function (i) { return i != btn.attr('Array'); });
+        $('#TabSabado').load('/CadastroParametros/GridExtras/?Array=' + ArraySabado.join('&Array='), function (r, s, x) {
+            if (s == 'error') {
+                $('#txtalertaModal').text('Erro: ' + x.status + " : " + x.statusText);
+                $('#AlertaModal').removeAttr('hidden');$('#Mywrapper').animate({ scrollTop: 0 }, 1000);
+            }
+        });
+    });
+
+    $('#AddDomingo').click(function () {
+        if ($('#HoraDomingo').val() != '' && $('#PercentDomingo').val() != '') {
+            if (!ArrayDomingo.includes($('#HoraDomingo').val() + '/' + $('#PercentDomingo').val() + '/' + $('#AdicionalDomingo').val() + '/3')) {
+                ArrayDomingo.push($('#HoraDomingo').val() + '/' + $('#PercentDomingo').val() + '/' + $('#AdicionalDomingo').val() + '/3');
+                $('#TabDomingo').load('/CadastroParametros/GridExtras/?Array=' + ArrayDomingo.join('&Array='), function (r, s, x) {
+                    if (s == 'success') {
+                        $('.CamposDomingo').val('');
+                    }
+                    if (s == 'error') {
+                        $('#txtalertaModal').text('Erro: ' + x.status + " : " + x.statusText);
+                        $('#AlertaModal').removeAttr('hidden');$('#Mywrapper').animate({ scrollTop: 0 }, 1000);
+                    }
+                });
+            } else {
+                $('#txtalertaModal').text('Já existe um escalonamento de hora extra com esses valores...');
+                $('#AlertaModal').removeAttr('hidden');$('#Mywrapper').animate({ scrollTop: 0 }, 1000);
+            }
+        } else {
+            $('#txtalertaModal').text('Preencha todos os campos...');
+            $('#AlertaModal').removeAttr('hidden');$('#Mywrapper').animate({ scrollTop: 0 }, 1000);
+        }
+    });
+
+    $('#TabDomingo').on('click', '.btnRemoverDomingos', function () {
+        btn = $(this);
+        ArrayDomingo = ArrayDomingo.filter(function (i) { return i != btn.attr('Array'); });
+        $('#TabDomingo').load('/CadastroParametros/GridExtras/?Array=' + ArrayDomingo.join('&Array='), function (r, s, x) {
+            if (s == 'error') {
+                $('#txtalertaModal').text('Erro: ' + x.status + " : " + x.statusText);
+                $('#AlertaModal').removeAttr('hidden');$('#Mywrapper').animate({ scrollTop: 0 }, 1000);
+            }
+        });
+    });
+
+    $('#AddFeriado').click(function () {
+        if ($('#HoraFeriado').val() != '' && $('#PercentFeriado').val() != '') {
+            if (!ArrayFeriado.includes($('#HoraFeriado').val() + '/' + $('#PercentFeriado').val() + '/' + $('#AdicionalFeriado').val() + '/4')) {
+                ArrayFeriado.push($('#HoraFeriado').val() + '/' + $('#PercentFeriado').val() + '/' + $('#AdicionalFeriado').val() + '/4');
+                $('#TabFeriado').load('/CadastroParametros/GridExtras/?Array=' + ArrayFeriado.join('&Array='), function (r, s, x) {
+                    if (s == 'success') {
+                        $('.CamposFeriado').val('');
+                    }
+                    if (s == 'error') {
+                        $('#txtalertaModal').text('Erro: ' + x.status + " : " + x.statusText);
+                        $('#AlertaModal').removeAttr('hidden');$('#Mywrapper').animate({ scrollTop: 0 }, 1000);
+                    }
+                });
+            } else {
+                $('#txtalertaModal').text('Já existe um escalonamento de hora extra com esses valores...');
+                $('#AlertaModal').removeAttr('hidden');$('#Mywrapper').animate({ scrollTop: 0 }, 1000);
+            }
+        } else {
+            $('#txtalertaModal').text('Preencha todos os campos...');
+            $('#AlertaModal').removeAttr('hidden');$('#Mywrapper').animate({ scrollTop: 0 }, 1000);
+        }
+    });
+
+    $('#TabFeriado').on('click', '.btnRemoverFeriados', function () {
+        btn = $(this);
+        ArrayFeriado = ArrayFeriado.filter(function (i) { return i != btn.attr('Array'); });
+        $('#TabFeriado').load('/CadastroParametros/GridExtras/?Array=' + ArrayFeriado.join('&Array='), function (r, s, x) {
+            if (s == 'error') {
+                $('#txtalertaModal').text('Erro: ' + x.status + " : " + x.statusText);
+                $('#AlertaModal').removeAttr('hidden');$('#Mywrapper').animate({ scrollTop: 0 }, 1000);
+            }
+        });
+    });
+
+    $('#AddFolga').click(function () {
+        if ($('#HoraFolga').val() != '' && $('#PercentFolga').val() != '') {
+            if (!ArrayFolga.includes($('#HoraFolga').val() + '/' + $('#PercentFolga').val() + '/' + $('#AdicionalFolga').val() + '/5')) {
+                ArrayFolga.push($('#HoraFolga').val() + '/' + $('#PercentFolga').val() + '/' + $('#AdicionalFolga').val() + '/5');
+                $('#TabFolga').load('/CadastroParametros/GridExtras/?Array=' + ArrayFolga.join('&Array='), function (r, s, x) {
+                    if (s == 'success') {
+                        $('.CamposFolga').val('');
+                    }
+                    if (s == 'error') {
+                        $('#txtalertaModal').text('Erro: ' + x.status + " : " + x.statusText);
+                        $('#AlertaModal').removeAttr('hidden');$('#Mywrapper').animate({ scrollTop: 0 }, 1000);
+                    }
+                });
+            } else {
+                $('#txtalertaModal').text('Já existe um escalonamento de hora extra com esses valores...');
+                $('#AlertaModal').removeAttr('hidden');$('#Mywrapper').animate({ scrollTop: 0 }, 1000);
+            }
+        } else {
+            $('#txtalertaModal').text('Preencha todos os campos...');
+            $('#AlertaModal').removeAttr('hidden');$('#Mywrapper').animate({ scrollTop: 0 }, 1000);
+        }
+    });
+
+    $('#TabFolga').on('click', '.btnRemoverFolgas', function () {
+        btn = $(this);
+        ArrayFolga = ArrayFolga.filter(function (i) { return i != btn.attr('Array'); });
+        $('#TabFolga').load('/CadastroParametros/GridExtras/?Array=' + ArrayFolga.join('&Array='), function (r, s, x) {
+            if (s == 'error') {
+                $('#txtalertaModal').text('Erro: ' + x.status + " : " + x.statusText);
+                $('#AlertaModal').removeAttr('hidden');$('#Mywrapper').animate({ scrollTop: 0 }, 1000);
+            }
+        });
+    });
+
+    $('#PgDiautilvirada').click(function () {
+        if ($(this).is(':checked')) {
+            $('#DescIntervalo').removeAttr('hidden');
+        } else {
+            $('#DescIntervalo').attr('hidden', 'hidden');
+        }
+    });
+
+
+    $('#DsrProporcional').click(function () {
+        if ($(this).is(':checked')) {
+            $('.DsrProporcional').removeAttr('hidden')
+        } else {
+            $('.DsrProporcional').attr('hidden', 'hidden')
+        }
+    });
+
+    $('#DescontarDsrSemana').click(function () {
+        if ($(this).is(':checked')) {
+            $('.DescontarDsrSemana').removeAttr('hidden')
+        } else {
+            $('.DescontarDsrSemana').attr('hidden', 'hidden')
+            $('#DescDsrAnterioraFalta').prop('checked', false);
+        }
+    });
+
+    $('#AdcionalAvancado').click(function () {
+        sw = $(this);
+        if (sw.is(':checked')) {
+            $('#PainelAvançado').removeAttr('hidden');
+            $('#PainelAvançado').addClass('show');
+        } else {
+            $('#PainelAvançado').removeClass('show');
+            $('#PainelAvançado').attr('hidden', 'hidden');
+        }
+    });
+
+    $('.Hrr').focusout(function () {
+        txt = $(this);
+        if (Tempo_Minuto([txt.val()])[0] >= 1440) {
+            txt.val('');
+        }
+        if (!txt.val().includes('_')) {
+            if (txt.val().split(':')[1] > 59) {
+                txt.val('');
+            }
+        }
+    });
+
+    $('.Hrrr').focusout(function () {
+        txt = $(this);
+        if (!txt.val().includes('_')) {
+            if (txt.val().split(':')[1] > 59) {
+                txt.val('');
+            }
+        }
+    });
+
+    $('.TipodeTolerancia').click(function () {
+        btn = $(this);
+        if (btn.attr('Tipo') != TipoTolerancia) {
+            $('#TipodeToleranciaSelecionado').load(btn.attr('Evento'), function (r, s, x) {
+                if (s == 'success') {
+                    TipoTolerancia = btn.attr('Tipo');
+                }
+                if (s == 'error') {
+                    $('#txtalertaModal').text('Erro: ' + x.status + " : " + x.statusText);
+                    $('#AlertaModal').removeAttr('hidden');$('#Mywrapper').animate({ scrollTop: 0 }, 1000);
+                }
+            });
+        }
+    });
+
+    $("#txtID").keyup(function () {
+        if ($("#txtID").val() != "") {
+            $("#txtID").val($("#txtID").val().replace(/[/\D]/gi, ""));
+        }
+    });
+
+    $('#FormInserirParametro').submit(function (e) {
+        e.preventDefault();
+        e.defaultPrevented = true;
+        $.post($(this).attr('Evento') + '?' + $(this).serialize(), { TipoTolerancia: ($('#TipodeTolerancia').is(':checked') ? 1 : 2), AtrasoTipo: $('#PeriodoAtrasos').length > 0 ? ($('#PeriodoAtrasos').is(':checked') ? 1 : 2) : null, SaidaTipo: $('#PeriodoSaida').length > 0 ? ($('#PeriodoSaida').is(':checked') ? 1 : 2) : null, ExtraTipo: $('#PeriodoExtra').length > 0 ? ($('#PeriodoExtra').is(':checked') ? 1 : 2) : null, TolGeralTipo: $('#PeriodoGeral').length > 0 ? ($('#PeriodoGeral').is(':checked') ? 1 : 2) : null, PagaHrExtraemAdicionalNt: $('#PagaHrExtraemAdicionalNt').is(':checked'), CalcHrextRealAdcNotAcHrNorAdcNot: $('#CalcHrextRealAdcNotAcHrNorAdcNot').is(':checked'), CalcHrExtRelAdcNotAcHrExNor: $('#CalcHrExtRelAdcNotAcHrExNor').is(':checked'), PgHrAboCmAdcNot: $('#PgHrAboCmAdcNot').is(':checked'), DsrContrAutomatico: $('#DsrContrAutomatico').is(':checked'), DsrProporcionalHoras: $('#DsrProporcional').is(':checked') ? ($('#DsrProporcionalHoras').is(':checked')) : null, DescontarDsrSemana: $('#DescontarDsrSemana').is(':checked'), DescDsrAnterioraFalta: $('#DescontarDsrSemana').is(':checked') ? ($('#DescDsrAnterioraFalta').is(':checked')) : null, Uteis: ArrayUtil, Sabados: ArraySabado, Domingos: ArrayDomingo, Feriados: ArrayFeriado, Folgas: ArrayFolga, PgDiautilvirada: $('#PgDiautilvirada').is(':checked'), DescIntervalo: $('#PgDiautilvirada').is(':checked') ? ($('#DescontaIntervalo').is(':checked')) : null, SabadoUtil: $('#SabadoUtil').is(':checked'), DomingoUtil: $('#DomingoUtil').is(':checked'), FerAgregaDomingo: $('#FerAgregaDomingo').is(':checked'), FolAgregaDomingo: $('#FolAgregaDomingo').is(':checked'), TipodeTabela: $('.TipodeTabela:checked').attr('valor'), MostrarIntervaloSeparado: $('#MostrarIntervaloSeparado').is(':checked'), AdcnFinaldoexpediente: $('#AdcnFinaldoexpediente').is(':checked') }, function (data) {
+            if (data.status == true) {
+                LoadGridCadastroParametros();
+                $('#WinGenerica').modal('hide');
+
+            } else {
+                $('#txtalertaModal').text(data.msg);
+                $('#AlertaModal').removeAttr('hidden', 'hidden');
+                $('.Tab').removeClass('show');
+                $('.Tab').removeClass('active');
+                $('.btntab').removeClass('active');
+
+                if (data.Tab.toUpperCase() == 'Tolerancia'.toUpperCase()) {
+                    $('#PainelTolerancias').addClass('show');
+                    $('#PainelTolerancias').addClass('active');
+                    $('#Tolerancias').addClass('active');
+                }
+                if (data.Tab.toUpperCase() == 'AdicionalNoturno'.toUpperCase()) {
+                    $('#PainelAdicionalNoturno').addClass('show');
+                    $('#PainelAdicionalNoturno').addClass('active');
+                    $('#AdicionalNoturno').addClass('active');
+                }
+                if (data.Tab.toUpperCase() == 'Escalonamento'.toUpperCase()) {
+                    $('#PainelHorasExtra').addClass('show');
+                    $('#PainelHorasExtra').addClass('active');
+                    $('#HorasExtra').addClass('active');
+                }
+
+                if (data.Tab.toUpperCase() == 'DsrHoras'.toUpperCase()) {
+                    $('#PainelDsrHoras').addClass('show');
+                    $('#PainelDsrHoras').addClass('active');
+                    $('#DsrHoras').addClass('active');
+                }
+
+                
+            }
+        });
+    });
+
+    $('#FechaAlertaModal').click(function () {
+        $(this).parent().attr('hidden', 'hidden');
+    });
+</script>
+

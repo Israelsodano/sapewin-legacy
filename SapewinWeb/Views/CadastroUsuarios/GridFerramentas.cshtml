@@ -1,0 +1,105 @@
+﻿@model IEnumerable<SapewinWeb.Models.Telas>
+
+<ul class="navbar-nav navbar-sidenav" id="FerramentaAccordion" style="font-size:small;">  
+
+    @foreach (var Telafer in Model)
+    {
+        <li class="nav-item" data-placement="right" title="@Telafer.Nome.Replace("Ferramenta", "").Replace("Marcacoes", " Marcações").Replace("de", " de ")">
+            <div class="form-inline">
+                <label style="margin-left:5px;" class="custom-control custom-checkbox mb-2 mr-sm-2 mb-sm-0">
+                    <input type="checkbox" checked="checked" Funcs="@($".Func{Telafer.Nome}")" id="@($"CkTelafer{Telafer.Nome}")" class="custom-control-input CkTelafer Tela">
+                    <span class="custom-control-indicator"></span>
+                    <span class="custom-control-description"></span>
+                </label>
+                <a class="nav-link nav-link-collapse collapsed Telafer" data-toggle="collapse" href="#@Telafer.Nome" data-parent="#FerramentaAccordion">
+                    <span class="nav-link-text">
+                        @Telafer.Nome.Replace("Ferramenta", "").Replace("Marcacoes", " Marcações").Replace("de", " de ")
+                        <i class="fa fa-angle-right iconTelafer" style="margin-left:5px;"></i>
+                    </span>
+                </a>
+            </div>
+            <ul style="list-style:none;" class="sidenav-second-level collapse" id="@Telafer.Nome">
+                @foreach (var Funcaofer in SapewinWeb.Metodos.ObjUsuario.RetornaFuncoes(Telafer.FuncoesdeTelas.ToList()))
+                {
+                    <li>
+                        <label class="custom-control custom-checkbox mb-2 mr-sm-2 mb-sm-0">
+                            <input type="checkbox" checked="checked" IDFunc="@Funcaofer.IDFuncao" IDFuncaoTela="@Telafer.Nome-@Funcaofer.Nome" Telafer="@($"#CkTelafer{Telafer.Nome}")" class="custom-control-input FuncaodeTela Funcaofer @($"Func{Telafer.Nome}")">
+                            <span class="custom-control-indicator"></span>
+                            <span class="custom-control-description">@Funcaofer.Nome.Replace("Importar", "Importar ")</span>
+                        </label>
+                    </li>
+                }
+            </ul>
+        </li>
+    }
+
+</ul>
+<script>
+    monitorador();
+    $('.Telafer').click(function () {
+        Telafer = $(this);
+        if (!Telafer.hasClass('collapsed')) {
+            Telafer.children().first().children().first().removeClass('fa-angle-down');
+            Telafer.children().first().children().first().addClass('fa-angle-right');
+        } else {
+            $('.iconTelafer').removeClass('fa-angle-down');
+            $('.iconTelafer').addClass('fa-angle-right');
+            Telafer.children().first().children().first().removeClass('fa-angle-right');
+            Telafer.children().first().children().first().addClass('fa-angle-down');
+        }
+    });
+
+    $('.CkTelafer').click(function () {
+        ck = $(this);
+        if(ck.is(':checked')){
+            $(ck.attr('Funcs')).prop('checked', true);
+        } else {
+            $(ck.attr('Funcs')).prop('checked', false);
+        }
+
+        if ($('.Funcaofer').length == $('.Funcaofer:checked').length) {
+            $('.MarcatdsFer').prop('checked', true);
+        } else {
+            $('.MarcatdsFer').prop('checked', false);
+        }
+
+    });
+
+    $('.Funcaofer').click(function () {
+        func = $(this);
+
+        funcoesgeraisfer = new Array();
+
+        funcoescheckadasfer = new Array();
+
+
+        $('.Funcaofer').each(function (idx, el) {
+            if ($(el).attr('Telafer') == func.attr('Telafer')) {
+                funcoesgeraisfer.push($(el).attr('Telafer'));
+                if($(el).is(':checked')){
+                    funcoescheckadasfer.push($(el).attr('Telafer'));
+                }
+            }
+        });
+
+        if (funcoesgeraisfer.length == funcoescheckadasfer.length) {
+            $(func.attr('Telafer')).prop('indeterminate', false);
+            $(func.attr('Telafer')).prop('checked', true);
+        } else if (funcoescheckadasfer.length == 0) {
+            $(func.attr('Telafer')).prop('indeterminate', false);
+            $(func.attr('Telafer')).prop('checked', false);
+        }
+        else {
+            $(func.attr('Telafer')).prop('indeterminate', true);
+        }
+
+        if ($('.Funcaofer').length == $('.Funcaofer:checked').length) {
+            $('.MarcatdsFer').prop('checked', true);
+        } else {
+            $('.MarcatdsFer').prop('checked', false);
+        }
+
+    });
+</script>
+
+

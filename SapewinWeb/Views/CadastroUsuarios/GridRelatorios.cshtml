@@ -1,0 +1,107 @@
+﻿@model IEnumerable<SapewinWeb.Models.Telas>
+
+<ul class="navbar-nav navbar-sidenav" id="RelatorioAccordion" style="font-size:small;">
+   
+    @foreach (var Telarel in Model)
+    {
+        <li class="nav-item" data-placement="right" title="@Telarel.Nome.Replace("Cadastro", "").Replace("Feriados", "Feriados ").Replace("de", " de ")">
+            <div class="form-inline">
+                <label style="margin-left:5px;" class="custom-control custom-checkbox mb-2 mr-sm-2 mb-sm-0">
+                    <input type="checkbox" checked="checked" Funcs="@($".Func{Telarel.Nome}")" id="@($"CkTelarel{Telarel.Nome}")" class="custom-control-input CkTelarel Tela">
+                    <span class="custom-control-indicator"></span>
+                    <span class="custom-control-description"></span>
+                </label>
+                <a class="nav-link nav-link-collapse collapsed Telarel" data-toggle="collapse" href="#@Telarel.Nome" data-parent="#RelatorioAccordion">
+                    <span class="nav-link-text">
+                        @Telarel.Nome.Replace("Cadastro", "").Replace("Feriados", "Feriados ").Replace("de", " de ")
+                        <i class="fa fa-angle-right iconTelarel" style="margin-left:5px;"></i>
+                    </span>
+                </a>
+            </div>
+            <ul style="list-style:none;" class="sidenav-second-level collapse" id="@Telarel.Nome">
+                @foreach (var Funcaorel in SapewinWeb.Metodos.ObjUsuario.RetornaFuncoes(Telarel.FuncoesdeTelas.ToList()))
+                {
+                    <li>
+                        <label class="custom-control custom-checkbox mb-2 mr-sm-2 mb-sm-0">
+                            <input type="checkbox" checked="checked" IDFunc="@Funcaorel.IDFuncao" IDFuncaoTela="@Telarel.Nome-@Funcaorel.Nome" Telarel="@($"#CkTelarel{Telarel.Nome}")" class="custom-control-input FuncaodeTela Funcaorel @($"Func{Telarel.Nome}")">
+                            <span class="custom-control-indicator"></span>
+                            <span class="custom-control-description">@Funcaorel.Nome</span>
+                        </label>
+                    </li>
+                }
+            </ul>
+        </li>
+    }
+
+</ul>
+<script>
+    monitorador();
+    $('.Telarel').click(function () {
+        Telarel = $(this);
+        if (!Telarel.hasClass('collapsed')) {
+            Telarel.children().first().children().first().removeClass('fa-angle-down');
+            Telarel.children().first().children().first().addClass('fa-angle-right');
+        } else {
+            $('.iconTelarel').removeClass('fa-angle-down');
+            $('.iconTelarel').addClass('fa-angle-right');
+            Telarel.children().first().children().first().removeClass('fa-angle-right');
+            Telarel.children().first().children().first().addClass('fa-angle-down');
+        }
+    });
+
+    $('.CkTelarel').click(function () {
+        ck = $(this);
+        if(ck.is(':checked')){
+            $(ck.attr('Funcs')).prop('checked', true);
+        } else {
+            $(ck.attr('Funcs')).prop('checked', false);
+        }
+
+        if ($('.Funcaorel').length == $('.Funcaorel:checked').length) {
+            $('.MarcatdsRel').prop('checked', true);
+        } else {
+            $('.MarcatdsRel').prop('checked', false);
+        }
+
+    });
+
+    $('.Funcaorel').click(function () {
+        func = $(this);
+
+        funcoesgeraisrel = new Array();
+
+        funcoescheckadasrel = new Array();
+
+
+        $('.Funcaorel').each(function (idx, el) {
+            if ($(el).attr('Telarel') == func.attr('Telarel')) {
+                funcoesgeraisrel.push($(el).attr('Telarel'));
+                if($(el).is(':checked')){
+                    funcoescheckadasrel.push($(el).attr('Telarel'));
+                }
+            }
+        });
+
+        if (funcoesgeraisrel.length == funcoescheckadasrel.length) {
+            $(func.attr('Telarel')).prop('indeterminate', false);
+            $(func.attr('Telarel')).prop('checked', true);
+        } else if (funcoescheckadasrel.length == 0) {
+            $(func.attr('Telarel')).prop('indeterminate', false);
+            $(func.attr('Telarel')).prop('checked', false);
+        }
+        else {
+            $(func.attr('Telarel')).prop('indeterminate', true);
+        }
+
+        if ($('.Funcaorel').length == $('.Funcaorel:checked').length) {
+            $('.MarcatdsRel').prop('checked', true);
+        } else {
+            $('.MarcatdsRel').prop('checked', false);
+        }
+
+    });
+</script>
+
+
+
+

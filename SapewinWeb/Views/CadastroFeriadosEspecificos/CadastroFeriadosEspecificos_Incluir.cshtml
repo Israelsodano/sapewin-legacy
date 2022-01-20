@@ -1,0 +1,130 @@
+﻿<div class="modal-header" style="margin-bottom:10px;">
+    <h5 class="modal-title"><i class="fa fa-th" aria-hidden="true"></i> Cadastro de Feriados Especificos > Novo Grupo de Feriados</h5>
+</div>
+<div class="alert alert-danger alert-dismissible fade show" hidden="hidden" id="AlertaModal" role="alert">
+    <button type="button" id="FechaAlertaModal" class="close" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+    <strong class="txtalerta" id="txtalertaModal"></strong>
+</div>
+<form id="FormInserir" action="/CadastroFeriadosEspecificos/CadastroFeriadosEspecificos_Incluir_Salvar/" method="post">
+    <div class="modal-body">
+        
+        <div class="form-group">
+            <label>Descrição do Grupo</label>
+            <input type="text" name="Descricao" maxlength="50" class="form-control">
+        </div>
+        <div class="card-header" style="margin-top:15px; margin-bottom:15px;">
+            <i class="fa fa-tasks" aria-hidden="true"></i><strong> Atribuir Feriados</strong>
+        </div>
+        <div class="alert alert-warning alert-dismissible fade show" hidden="hidden" id="AlertFeriados" role="alert">
+            <button type="button" id="FechaAlertFeriados" class="close" aria-label="Close">
+                <span aria-hidden="true">×</span>
+            </button>
+            <span class="txtalerta" id="txtAlertFeriados"></span>            
+        </div>
+        <div class="form-group">
+            <div class="row" style="margin-left:0px;">
+                <div class="form-group">
+                    <label>Data</label>
+                    <input type="date" id="txtData" class="form-control">                    
+                </div>
+                <div class="form-group" style="margin-left:20px">
+                    <label>Descrição do feriado</label>
+                    <div class="form-inline">
+                        <input type="text" id="txtDesc" maxlength="50" name="Descricao" class="form-control">
+                        <label class="custom-control custom-checkbox" style="margin-left:20px">
+                            <input type="checkbox" id="TdsDias" class="custom-control-input">
+                            <span class="custom-control-indicator"></span>
+                            <span class="custom-control-description"></span>
+                            <span> Todos os anos.</span>
+                        </label>
+                        <button type="button" style="margin-left:10px;" class="btn btn-dark" id="AddFeriado"><i class="fa fa-fw fa-plus"></i></button>
+                    </div>                    
+                </div>
+            </div>
+        </div>
+        <div class="container-fluid">
+            <script>
+                Feriados = new Array();
+            </script>
+            <table class="table table-hover" id="GridFeriados">
+                <thead>
+                    <tr>
+                        <th>Data</th>                        
+                        <th>Descrição</th>                        
+                        <th></th>
+                    </tr>
+                </thead>                
+                <tbody id="TabFeriados">                    
+                   
+                </tbody>
+            </table>
+           
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="submit" class="btn btn-outline-success"><i class="fa fa-fw fa-floppy-o"></i> Salvar</button>
+        <button type="button" class="btn btn-outline-danger" data-dismiss="modal"><i class="fa fa-fw fa-ban"></i> Cancelar</button>
+    </div>
+</form>
+<script>
+    monitorador();
+    $("#txtID").keyup(function () {
+        if ($("#txtID").val() != "") {
+            $("#txtID").val($("#txtID").val().replace(/[/\D]/gi, ""));
+        }
+    });
+
+    $('#TabFeriados').on('click', '.btnRemoverFeriado', function () {
+        data = $(this).attr('Feriado');
+        Feriados = Feriados.filter(function (item) { return !item.includes(data) });
+        $('#TabFeriados').load('/CadastroFeriadosEspecificos/TabFeriados/?Feriados=' + Feriados.join('&Feriados='));
+    });
+
+    $('#AddFeriado').click(function () {
+        if ($('#txtDesc').val() != '' && $('#txtData').val() != '') {
+            data = $('#TdsDias').is(':checked') ? ("0-" + $('#txtData').val().split('-')[1] + "-" + $('#txtData').val().split('-')[2]) : ($('#txtData').val().split('-')[0] + "-" + $('#txtData').val().split('-')[1] + "-" + $('#txtData').val().split('-')[2]);
+            if (Feriados.filter(function (item) { return item.includes($('#txtData').val().split('-')[1] + '-' + $('#txtData').val().split('-')[2]) }).length == 0) {
+                Feriados.push(($('#txtDesc').val() + "-" + data).replace(/ /gi, '*'));
+                $('#TabFeriados').load('/CadastroFeriadosEspecificos/TabFeriados/?Feriados=' + Feriados.join('&Feriados='), function (r, s, x) {
+                    if (s == 'success') {
+                        $('#txtDesc').val('');
+                        $('#txtData').val('');
+                    }
+                });
+            } else {
+                $('#txtAlertFeriados').text('Ja foi adicionado um feriado para esta data');
+                $('#AlertFeriados').removeAttr('hidden');
+            }
+        } else {
+            $('#txtAlertFeriados').text('Preencha todos os campos');
+            $('#AlertFeriados').removeAttr('hidden');
+        }
+    });
+
+    $('#FormInserir').submit(function (e) {
+        e.preventDefault();
+        e.defaultPrevented = true;
+        $.post($(this).attr('action') + '?Feriados=' + Feriados.join('&Feriados='), $(this).serialize(), function (data) {
+            if (data.status == true) {
+                LoadGridCadastroFeriadosEspecificos();
+                $('#WinGenerica').modal('hide');
+               
+            } else {
+                $('#txtalertaModal').text(data.msg);
+                $('#AlertaModal').removeAttr('hidden', 'hidden');
+            }
+        });
+    });
+
+    $('#FechaAlertFeriados').click(function () {
+        $(this).parent().attr('hidden', 'hidden');
+    });
+
+    $('#FechaAlertaModal').click(function () {
+        $(this).parent().attr('hidden', 'hidden');
+    });
+</script>
+
+

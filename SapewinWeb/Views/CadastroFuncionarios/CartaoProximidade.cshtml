@@ -1,0 +1,224 @@
+﻿<div class="modal-header" style="margin-bottom:10px;">
+    <h5 class="modal-title"><i class="fa fa-th" aria-hidden="true"></i> Cartão de Proximidade</h5>
+</div>
+<div class="alert alert-danger alert-dismissible fade show" hidden="hidden" id="AlertaModal" role="alert">
+    <button type="button" id="FechaAlertaModal" class="close" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+    <strong class="txtalerta" id="txtalertaModal"></strong>
+</div>
+<div class="modal-body" style="font-size:small;">    
+    <div class="row">
+        <div class="col-4 col-lg-3">
+            <div class="form-group">
+                <label>Data Inicial</label>
+                <input class="form-control form-control-sm" type="date" id="dataInicio" />
+            </div>
+        </div>
+        <div class="col-4 col-lg-3">
+            <div class="form-group">
+                <label>Data Final</label>
+                <div class="d-flex">
+                    <div class="d-flex">
+                        <input class="form-control form-control-sm" style="margin-right:10px;" type="date" id="dataFinal" />
+                        <div class="switch">
+                            <label>
+                                <input id="Indefinido" type="checkbox">
+                                <span class="slider"></span>
+                                <span>Indefinido</span>
+                            </label>
+                        </div>                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <label>N° do Crachá de Proximidade</label>
+        <div class="d-flex">            
+            <input class="form-control form-control-sm" type="text" maxlength="20" id="NumerodoCracha" style="margin-right:10px;" />
+            <button class="btn btn-sm btn-dark" id="AddCartao"><i class="fa fa-fw fa-plus"></i></button>
+        </div>        
+    </div>
+    <table class="table table-sm table-bordered">
+        <thead>
+            <tr>
+                <th>Inicío</th>
+                <th>Fim</th>
+                <th>Crachá Proximidade</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody id="tabCartaoproximidade">
+           
+        </tbody>
+    </table>
+    <script>
+
+        function AtualizaGridCartoes() {
+            $('#tabCartaoproximidade').load('/CadastroFuncionarios/GridCartaoProximidade/?Array=' + Cartoes.join('&Array='), function (r, s, x) {
+                if (s == 'success') {
+                    $('#dataInicio').val('');
+                    $('#NumerodoCracha').val('');
+                    $('#dataFinal').val('');
+
+                    if (Cartoes.length > 0) {
+                        $('#Cartaoproxtxt').attr('disabled', 'disabled');
+                        $('#Cartaoproxtxt').val('');
+                    } else {
+                        $('#Cartaoproxtxt').removeAttr('disabled');
+                        $('#Cartaoproxtxt').val('');
+                    }
+
+                    $('#AlertaModal').attr('hidden', 'hidden');
+
+                    var cartao = Cartoes.filter(function (x) {
+                        
+                        var ini = new Date(x.split('/')[0]).getTime();
+                        var fim = x.split('/')[1] == '' ? 'full' : new Date(x.split('/')[1]).getTime();
+
+                        var hoje = new Date(String(new Date().getFullYear()).padStart(4, '0') + '-' + String(new Date().getMonth() + 1).padStart(2, '0') + '-' + String(new Date().getDate()).padStart(2, '0')).getTime();
+                        
+                        return (DateDiff(hoje, ini) >= 0) && ((fim == 'full') || DateDiff(fim, hoje) >= 0);
+                    });                   
+                    if (cartao.length > 0) {
+                        var txt = cartao[0].split('/');
+                        $('#Cartaoproxtxt').val(txt[0].split('-')[2] + '/' + txt[0].split('-')[1] + '/' + txt[0].split('-')[0] + " até " + (txt[1] == '' ? 'Indefinido' : txt[1].split('-')[2] + '/' + txt[1].split('-')[1] + '/' + txt[1].split('-')[0]) + " - Código: " + txt[2].padStart(10, '0'));
+                       
+                    } else {
+                        $('#Cartaoproxtxt').val("");
+                    }
+
+                } else {
+                    Cartoes = [];
+                    $('#txtalertaModal').text('Erro: ' + x.statusText + ' : ' + x.status);
+                    $('#AlertaModal').removeAttr('hidden', 'hidden');
+                }
+            });
+        }
+
+        AtualizaGridCartoes();
+    </script>
+</div>
+<div class="modal-footer">   
+    <button type="button" class="btn btn-outline-info" data-dismiss="modal"><i class="fa fa-undo" aria-hidden="true"></i> Voltar</button>
+</div>
+<script src="~/scripts/Index.js"></script>
+<script>
+    monitorador();
+
+    $('#Indefinido').click(function () {
+        if ($(this).is(':checked')) {
+            $('#dataFinal').val('');
+            $('#dataFinal').attr('disabled', 'disabled');
+        } else {
+            $('#dataFinal').removeAttr('disabled');
+        }
+    });
+
+    $('#AddCartao').click(function () {
+        var cartao = "";        
+        if ($('#Indefinido').is(':checked')) {
+            if ($('#dataInicio').val() != '' && $('#NumerodoCracha').val() != '') {
+                cartao = $('#dataInicio').val() + '//' + $('#NumerodoCracha').val();
+                if (isNewIn(cartao, Cartoes)) {
+                    Cartoes.push(cartao);
+                    $.post('/CadastroFuncionarios/VerificaCartao/', '@ViewBag.IDFuncionario' == '' ? { Cartoes: Cartoes } : { Cartoes: Cartoes, id: parseInt('@ViewBag.IDFuncionario') }, function (data) {
+                        if(data.status){
+                            AtualizaGridCartoes();
+                        } else {
+                            Cartoes = data.Cartoes;
+                            $('#txtalertaModal').text('Já existe um cartão proximidade cadastrado para o mesmo período');
+                            $('#AlertaModal').removeAttr('hidden', 'hidden');
+                        }
+                    });
+                } else {
+                    $('#txtalertaModal').text('Já existe um cartão proximidade cadastrado para o mesmo período');
+                    $('#AlertaModal').removeAttr('hidden', 'hidden');
+                }
+
+            } else {
+                $('#txtalertaModal').text('Preencha todos os campos');
+                $('#AlertaModal').removeAttr('hidden', 'hidden');
+            }
+        } else {
+            if ($('#dataInicio').val() != '' && $('#NumerodoCracha').val() != '' && $('#dataFinal').val() != '') {
+                if (DateDiff($('#dataInicio').val(), $('#dataFinal').val()) <= 0) {
+                    cartao = $('#dataInicio').val() + '/' + $('#dataFinal').val() + '/' + $('#NumerodoCracha').val();
+                    if (isNewIn(cartao, Cartoes)) {
+                        Cartoes.push(cartao);
+                        $.post('/CadastroFuncionarios/VerificaCartao/', '@ViewBag.IDFuncionario' == '' ? { Cartoes: Cartoes } : { Cartoes: Cartoes, id: parseInt('@ViewBag.IDFuncionario') }, function (data) {
+                           if (data.status) {
+                                AtualizaGridCartoes();
+                            } else {
+                                Cartoes = data.Cartoes;
+                                $('#txtalertaModal').text('Já existe um cartão proximidade cadastrado para o mesmo período');
+                                $('#AlertaModal').removeAttr('hidden', 'hidden');
+                            }
+                        });
+                    } else {
+                        $('#txtalertaModal').text('Já existe um cartão proximidade cadastrado para o mesmo período');
+                        $('#AlertaModal').removeAttr('hidden', 'hidden');
+                    }
+                } else {
+                    $('#txtalertaModal').text('A data de inicio é maior que a final');
+                    $('#AlertaModal').removeAttr('hidden', 'hidden');
+                }
+            } else {
+                $('#txtalertaModal').text('Preencha todos os campos');
+                $('#AlertaModal').removeAttr('hidden', 'hidden');
+            }
+        }
+    });
+
+    $('#txtalertaModal').change(function () {
+        alert("asasasas");
+    });
+
+    $('#FechaAlertaModal').click(function () {
+        $(this).parent().attr('hidden', 'hidden');
+    });
+
+    $('#tabCartaoproximidade').on('click', '.btnRemoverCartao', function () {
+        btn = $(this);
+        Cartoes = Cartoes.filter(function (itens) { return itens != btn.attr('valor') });
+        AtualizaGridCartoes();
+    });
+
+    function DateDiff(data1, data2) {
+        try {
+            var one_day = 1000 * 60 * 60 * 24;
+
+            var ini = new Date(data1).getTime();
+            var fim = new Date(data2).getTime();
+
+            var diff = ini - fim;
+
+            return Math.round(diff / one_day);
+
+        } catch (e) {
+            throw DOMException;
+        }
+
+    }
+
+    function isNewIn(stringcartao, array) {
+
+        if (array.filter(function (x) {
+
+            var ini = new Date(x.split('/')[0]).getTime();
+            var fim = x.split('/')[1] == '' ? 0 : new Date(x.split('/')[1]).getTime();
+
+            var inistr = new Date(stringcartao.split('/')[0]).getTime();
+            var fimstr = stringcartao.split('/')[1] == '' ? 0 : new Date(stringcartao.split('/')[1]).getTime();
+
+            return ((inistr >= ini) && ((inistr <= fim && fim != 0) || fim == 0)) || ((fimstr >= ini && fimstr != 0) && ((fimstr == 0) || ((fimstr <= fim && fim != 0) || fim == 0))) || ((inistr <= ini && (fimstr == 0 || (fimstr >= fim && fim != 0))));
+
+        }).length > 0) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+</script>
